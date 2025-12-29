@@ -1,0 +1,639 @@
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #008080;
+  font-family: 'MS Sans Serif', 'Microsoft Sans Serif', sans-serif;
+}
+
+/* Header Styles - Windows 3.1 Title Bar */
+.app-header {
+  background: linear-gradient(to bottom, #000080 0%, #0000aa 100%);
+  color: white;
+  padding: 0.5rem 0.75rem;
+  box-shadow: 
+    inset 1px 1px 0 rgba(255,255,255,0.3),
+    inset -1px -1px 0 rgba(0,0,0,0.5),
+    0 4px 8px rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 200;
+  border: 2px solid #c0c0c0;
+  border-bottom: 2px solid #808080;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.user-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.user-info {
+  font-size: 0.85rem;
+  padding: 0.3rem 0.6rem;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    inset -1px -1px 0 rgba(0, 0, 0, 0.3),
+    inset 1px 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.logout-btn {
+  padding: 0.35rem 0.7rem;
+  background: #c0c0c0;
+  color: #000;
+  border: 2px solid;
+  border-color: #ffffff #000000 #000000 #ffffff;
+  font-size: 0.85rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.15s;
+  box-shadow: 
+    2px 2px 4px rgba(0,0,0,0.4);
+  text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+}
+
+.logout-btn:hover {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+}
+
+.logout-btn:active {
+  border-color: #000000 #ffffff #ffffff #000000;
+  transform: translate(2px, 2px);
+  box-shadow: inset 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.header-center {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.nautical-flags {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.flag {
+  width: 20px;
+  height: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  position: relative;
+  transform-origin: left center;
+  animation: flagWave 1.5s ease-in-out infinite;
+}
+
+.flag:nth-child(1) { animation-delay: 0s; }
+.flag:nth-child(2) { animation-delay: 0.1s; }
+.flag:nth-child(3) { animation-delay: 0.2s; }
+.flag:nth-child(4) { animation-delay: 0.3s; }
+.flag:nth-child(5) { animation-delay: 0.4s; }
+.flag:nth-child(6) { animation-delay: 0.5s; }
+.flag:nth-child(7) { animation-delay: 0.6s; }
+
+@keyframes flagWave {
+  0%, 100% {
+    transform: perspective(100px) rotateY(0deg) scaleX(1);
+  }
+  25% {
+    transform: perspective(100px) rotateY(-8deg) scaleX(0.95);
+  }
+  50% {
+    transform: perspective(100px) rotateY(0deg) scaleX(1);
+  }
+  75% {
+    transform: perspective(100px) rotateY(8deg) scaleX(0.95);
+  }
+}
+
+/* C - Charlie: Five horizontal stripes (blue, white, red, white, blue) */
+.flag-c {
+  background: linear-gradient(
+    to bottom,
+    #0000ff 0%, #0000ff 20%,
+    #ffffff 20%, #ffffff 40%,
+    #ff0000 40%, #ff0000 60%,
+    #ffffff 60%, #ffffff 80%,
+    #0000ff 80%, #0000ff 100%
+  );
+}
+
+/* L - Lima: Yellow and black checkerboard */
+.flag-l {
+  background: 
+    linear-gradient(to bottom, #ffff00 0%, #ffff00 50%, #000000 50%, #000000 100%);
+  position: relative;
+}
+.flag-l::before {
+  content: '';
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  right: 0;
+  background: linear-gradient(to bottom, #000000 0%, #000000 50%, #ffff00 50%, #ffff00 100%);
+}
+
+/* I - India: Black circle on yellow */
+.flag-i {
+  background: #ffff00;
+}
+.flag-i::after {
+  content: '';
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  background: #000000;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* P - Papa: Blue with white rectangle in center (Blue Peter) */
+.flag-p {
+  background: #0000ff;
+}
+.flag-p::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 12px;
+  background: #ffffff;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* E - Echo: Blue top, red bottom */
+.flag-e {
+  background: linear-gradient(
+    to bottom,
+    #0000ff 0%, #0000ff 50%,
+    #ff0000 50%, #ff0000 100%
+  );
+}
+
+/* R - Romeo: Yellow with red cross */
+.flag-r {
+  background: #ffff00;
+}
+.flag-r::before {
+  content: '';
+  position: absolute;
+  width: 3px;
+  height: 100%;
+  background: #ff0000;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.flag-r::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  background: #ff0000;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.header-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.time-display {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  align-items: flex-end;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.3rem 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.time {
+  font-size: 1rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  font-family: 'Courier New', monospace;
+}
+
+.date {
+  font-size: 0.75rem;
+  opacity: 0.9;
+  font-family: 'Courier New', monospace;
+}
+
+.time-toggle-btn {
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #ffffff #000000 #000000 #ffffff;
+  color: #000;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  box-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+}
+
+.time-toggle-btn:hover {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+}
+
+.time-toggle-btn:active {
+  border-color: #000000 #ffffff #ffffff #000000;
+  transform: translate(2px, 2px);
+  box-shadow: inset 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.logo {
+  width: 80px;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+}
+
+.logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.app-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+  font-family: 'MS Sans Serif', sans-serif;
+}
+
+
+
+/* Time Zone Dropdown - Windows 3.1 Window */
+.timezone-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 1rem;
+  margin-top: 0.5rem;
+  background: #c0c0c0;
+  color: #000;
+  border: 2px solid;
+  border-color: #ffffff #000000 #000000 #ffffff;
+  box-shadow: 4px 4px 8px rgba(0,0,0,0.5);
+  width: 400px;
+  max-height: 500px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.timezone-header {
+  padding: 0.4rem 0.6rem;
+  background: linear-gradient(to bottom, #000080 0%, #0000aa 100%);
+  color: white;
+  border-bottom: 2px solid #000000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.3);
+}
+
+.timezone-header h3 {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+}
+
+.close-btn {
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #ffffff #000000 #000000 #ffffff;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #000;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+  padding: 0;
+  line-height: 1;
+}
+
+.close-btn:hover {
+  transform: translate(1px, 1px);
+  box-shadow: 0px 0px 1px rgba(0,0,0,0.3);
+}
+
+.close-btn:active {
+  border-color: #000000 #ffffff #ffffff #000000;
+  box-shadow: inset 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.timezone-list {
+  overflow-y: auto;
+  padding: 0.5rem;
+  background: #ffffff;
+}
+
+.timezone-item {
+  padding: 0.6rem 0.8rem;
+  border: 2px solid;
+  border-color: #808080 #ffffff #ffffff #808080;
+  background: #c0c0c0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.15s;
+  margin-bottom: 0.4rem;
+  box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.timezone-item:hover {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+.timezone-item:last-child {
+  margin-bottom: 0;
+}
+
+.timezone-name {
+  font-weight: bold;
+  color: #000;
+  font-size: 0.9rem;
+}
+
+.timezone-details {
+  text-align: right;
+}
+
+.timezone-time {
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: #000080;
+  font-family: 'Courier New', monospace;
+}
+
+.timezone-date {
+  font-size: 0.8rem;
+  color: #000;
+  margin-top: 0.15rem;
+  font-family: 'Courier New', monospace;
+}
+
+/* Main Layout Container */
+.app-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  padding: 4px;
+  gap: 4px;
+}
+
+/* Sidebar Styles - Windows 3.1 Panel */
+.sidebar {
+  width: 250px;
+  background-color: #c0c0c0;
+  color: #000;
+  border: 2px solid;
+  border-color: #ffffff #000000 #000000 #ffffff;
+  box-shadow: 4px 4px 8px rgba(0,0,0,0.4);
+  display: flex;
+  flex-direction: column;
+  transition: width 0.2s ease;
+  position: relative;
+  z-index: 100;
+}
+
+.sidebar.collapsed {
+  width: 70px;
+}
+
+.sidebar-header {
+  padding: 0.6rem 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(to bottom, #000080 0%, #0000aa 100%);
+  color: white;
+  border-bottom: 2px solid #000000;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.3);
+}
+
+.sidebar-header h2 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: bold;
+  white-space: nowrap;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+}
+
+.sidebar.collapsed .sidebar-header {
+  justify-content: center;
+  padding: 0.6rem 0.4rem;
+}
+
+.toggle-btn {
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #ffffff #000000 #000000 #ffffff;
+  color: #000;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: all 0.15s;
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+.toggle-btn:hover {
+  transform: translate(1px, 1px);
+  box-shadow: 0px 0px 1px rgba(0,0,0,0.3);
+}
+
+.toggle-btn:active {
+  border-color: #000000 #ffffff #ffffff #000000;
+  box-shadow: inset 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 0.5rem;
+  overflow-y: auto;
+  background: #ffffff;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  padding: 0.6rem 0.8rem;
+  color: #000;
+  text-decoration: none;
+  transition: all 0.15s;
+  border: 2px solid;
+  border-color: #808080 #ffffff #ffffff #808080;
+  background: #c0c0c0;
+  margin-bottom: 0.4rem;
+  font-weight: bold;
+  font-size: 0.9rem;
+  box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+}
+
+.sidebar.collapsed .nav-link {
+  padding: 0.6rem 0.4rem;
+  justify-content: center;
+}
+
+.nav-link:hover {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+.nav-link.active {
+  background: #000080;
+  color: white;
+  border-color: #ffffff #000000 #000000 #ffffff;
+  box-shadow: inset 1px 1px 3px rgba(0,0,0,0.5);
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+  transform: translate(2px, 2px);
+}
+
+.nav-icon {
+  font-size: 1.3rem;
+  min-width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar.collapsed .nav-icon {
+  min-width: auto;
+}
+
+.nav-label {
+  margin-left: 0.5rem;
+  white-space: nowrap;
+}
+
+.sidebar.collapsed .nav-label {
+  display: none;
+}
+
+/* Content Area - Windows 3.1 Window */
+.content {
+  flex: 1;
+  padding: 0;
+  overflow-y: auto;
+  background: #ffffff;
+  border: 2px solid;
+  border-color: #808080 #ffffff #ffffff #808080;
+  box-shadow: 
+    inset 1px 1px 2px rgba(0,0,0,0.2),
+    4px 4px 8px rgba(0,0,0,0.4);
+}
+
+.page {
+  background: #ffffff;
+  padding: 1.5rem;
+  max-width: 1400px;
+  margin: 0;
+  min-height: 100%;
+}
+
+.page h1 {
+  color: #000080;
+  margin-top: 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-shadow: 2px 2px 0 rgba(192,192,192,0.5);
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #c0c0c0;
+  margin-bottom: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .app-header {
+    padding: 1rem;
+  }
+  
+  .header-center {
+    flex: 2;
+  }
+  
+  .app-title {
+    font-size: 1.5rem;
+  }
+  
+  .logo {
+    width: 65px;
+    height: 45px;
+  }
+  
+  .timezone-dropdown {
+    width: calc(100vw - 2rem);
+    left: 1rem;
+    right: 1rem;
+  }
+  
+  .sidebar {
+    width: 70px;
+  }
+  
+  .sidebar.collapsed {
+    width: 0;
+    overflow: hidden;
+  }
+  
+  .content {
+    padding: 1rem;
+  }
+}

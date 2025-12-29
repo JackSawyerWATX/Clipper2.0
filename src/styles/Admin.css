@@ -1,0 +1,354 @@
+.admin-page {
+  background: #ffffff;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #c0c0c0;
+}
+
+.admin-header p {
+  margin: 0;
+  color: #000;
+  font-size: 0.95rem;
+}
+
+/* Windows 3.1 Button Styles */
+.win31-btn {
+  padding: 0.5rem 1rem;
+  background: #c0c0c0;
+  color: #000;
+  border: 2px solid;
+  border-color: #ffffff #000000 #000000 #ffffff;
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.15s;
+  box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+  font-family: 'MS Sans Serif', sans-serif;
+}
+
+.win31-btn:hover {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+.win31-btn:active {
+  border-color: #000000 #ffffff #ffffff #000000;
+  transform: translate(2px, 2px);
+  box-shadow: inset 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.win31-btn.primary {
+  background: #000080;
+  color: #ffffff;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+}
+
+.win31-btn.danger {
+  background: #c00000;
+  color: #ffffff;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+}
+
+.win31-btn.small {
+  padding: 0.35rem 0.7rem;
+  font-size: 0.85rem;
+}
+
+.win31-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Table Styles */
+.users-table-container {
+  background: #ffffff;
+  border: 2px solid;
+  border-color: #808080 #ffffff #ffffff #808080;
+  box-shadow: inset 1px 1px 2px rgba(0,0,0,0.2);
+  padding: 0.5rem;
+}
+
+.win31-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+}
+
+.win31-table th {
+  background: #000080;
+  color: #ffffff;
+  padding: 0.6rem;
+  text-align: left;
+  font-weight: bold;
+  font-size: 0.9rem;
+  border: 1px solid #000000;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+}
+
+.win31-table td {
+  padding: 0.6rem;
+  border: 1px solid #c0c0c0;
+  font-size: 0.9rem;
+  background: #ffffff;
+}
+
+.win31-table tbody tr:nth-child(even) td {
+  background: #f0f0f0;
+}
+
+.win31-table tbody tr:hover td {
+  background: #e0e0ff;
+}
+
+/* Badges */
+.role-badge, .status-badge {
+  padding: 0.25rem 0.6rem;
+  border: 1px solid;
+  font-size: 0.8rem;
+  font-weight: bold;
+  display: inline-block;
+  text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+}
+
+.role-administrator {
+  background: #ff0000;
+  border-color: #cc0000;
+  color: #ffffff;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+}
+
+.role-manager {
+  background: #0000ff;
+  border-color: #0000cc;
+  color: #ffffff;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+}
+
+.role-employee {
+  background: #008000;
+  border-color: #006000;
+  color: #ffffff;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+}
+
+.role-viewer {
+  background: #808080;
+  border-color: #606060;
+  color: #ffffff;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+}
+
+.status-active {
+  background: #00ff00;
+  border-color: #00cc00;
+  color: #000000;
+}
+
+.status-inactive {
+  background: #c0c0c0;
+  border-color: #808080;
+  color: #000000;
+}
+
+.status-suspended {
+  background: #ff0000;
+  border-color: #cc0000;
+  color: #ffffff;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+}
+
+.permission-count {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  color: #000080;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.win31-modal {
+  background: #c0c0c0;
+  border: 3px solid;
+  border-color: #ffffff #000000 #000000 #ffffff;
+  box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
+  width: 90%;
+  max-width: 700px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  background: linear-gradient(to bottom, #000080 0%, #0000aa 100%);
+  color: #ffffff;
+  padding: 0.5rem 0.8rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #000000;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: bold;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+}
+
+.modal-content {
+  padding: 1rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: #000;
+  text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 2px solid;
+  border-color: #808080 #ffffff #ffffff #808080;
+  background: #ffffff;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+  font-family: 'MS Sans Serif', sans-serif;
+  box-shadow: inset 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: 2px solid #000080;
+  outline-offset: 1px;
+}
+
+.permissions-section {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: #ffffff;
+  border: 2px solid;
+  border-color: #808080 #ffffff #ffffff #808080;
+  box-shadow: inset 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+.permissions-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.permissions-header label {
+  font-weight: bold;
+  font-size: 0.95rem;
+  color: #000080;
+  text-shadow: 1px 1px 0 rgba(192,192,192,0.5);
+}
+
+.permissions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem;
+}
+
+.permission-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem;
+  background: #c0c0c0;
+  border: 1px solid #808080;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.15s;
+}
+
+.permission-item:hover {
+  background: #d0d0d0;
+}
+
+.permission-item input[type="checkbox"] {
+  width: auto;
+  cursor: pointer;
+}
+
+.modal-footer {
+  padding: 1rem;
+  border-top: 2px solid #808080;
+  display: flex;
+  gap: 0.8rem;
+  justify-content: flex-end;
+  background: #c0c0c0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .admin-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .permissions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .win31-table {
+    font-size: 0.8rem;
+  }
+
+  .win31-table th,
+  .win31-table td {
+    padding: 0.4rem;
+  }
+}
