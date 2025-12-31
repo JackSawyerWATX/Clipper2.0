@@ -50,288 +50,440 @@ function PlaceOrder() {
   }
 
   return (
-    <div className="page">
-      <h1>Place Order</h1>
-      <p style={{ color: '#6c757d', marginBottom: '2rem' }}>Create and manage orders for customers</p>
+    <div className="page" style={{ fontFamily: 'MS Sans Serif, sans-serif' }}>
+      <h1 style={{ 
+        color: '#000080', 
+        marginBottom: '0.5rem',
+        fontSize: '1.5rem',
+        fontWeight: 'bold'
+      }}>
+        Place Order
+      </h1>
+      <p style={{ color: '#808080', marginBottom: '2rem', fontSize: '0.875rem' }}>
+        Create and manage orders for customers
+      </p>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '2rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '2rem' }}>
         {/* Customer Selection Section */}
         <div>
-          <h2 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>1. Select or Add Customer</h2>
-          <div style={{ background: '#f8f9fa', padding: '1.5rem', borderRadius: '8px' }}>
-            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
-              Existing Customer:
-            </label>
-            <select 
-              value={selectedCustomer}
-              onChange={(e) => setSelectedCustomer(e.target.value)}
-              style={{ 
-                width: '100%',
-                padding: '0.75rem',
-                border: '1px solid #ddd',
-                borderRadius: '4px',
-                fontSize: '1rem',
-                marginBottom: '1rem'
-              }}
-            >
-              <option value="">-- Select a customer --</option>
-              {existingCustomers.map(customer => (
-                <option key={customer.id} value={customer.id}>
-                  {customer.name} ({customer.email})
-                </option>
-              ))}
-            </select>
-
-            <button 
-              onClick={() => setShowNewCustomerForm(!showNewCustomerForm)}
-              style={{ 
-                width: '100%',
-                padding: '0.75rem',
-                background: showNewCustomerForm ? '#6c757d' : '#28a745',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                fontWeight: '500'
-              }}
-            >
-              {showNewCustomerForm ? 'Cancel' : '+ Add New Customer'}
-            </button>
-
-            {showNewCustomerForm && (
-              <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid #dee2e6' }}>
-                <input 
-                  type="text" 
-                  placeholder="Company Name"
-                  style={{ 
-                    width: '100%',
-                    padding: '0.75rem',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
-                    marginBottom: '0.5rem'
-                  }}
-                />
-                <input 
-                  type="email" 
-                  placeholder="Email"
-                  style={{ 
-                    width: '100%',
-                    padding: '0.75rem',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
-                    marginBottom: '0.5rem'
-                  }}
-                />
-                <input 
-                  type="tel" 
-                  placeholder="Phone"
-                  style={{ 
-                    width: '100%',
-                    padding: '0.75rem',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
-                    marginBottom: '0.5rem'
-                  }}
-                />
-                <button style={{ 
+          <div style={{
+            background: '#c0c0c0',
+            border: '2px solid',
+            borderColor: '#ffffff #000000 #000000 #ffffff',
+            marginBottom: '1rem'
+          }}>
+            <div style={{
+              background: 'linear-gradient(to right, #000080, #0000aa)',
+              color: 'white',
+              padding: '0.25rem 0.5rem',
+              fontWeight: 'bold',
+              fontSize: '0.875rem'
+            }}>
+              1. Select or Add Customer
+            </div>
+            <div style={{ padding: '1rem', background: 'white' }}>
+              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
+                Existing Customer:
+              </label>
+              <select 
+                value={selectedCustomer}
+                onChange={(e) => setSelectedCustomer(e.target.value)}
+                style={{ 
                   width: '100%',
-                  padding: '0.75rem',
-                  background: '#61dafb',
-                  color: '#282c34',
-                  border: 'none',
-                  borderRadius: '4px',
+                  padding: '0.5rem',
+                  border: '2px solid',
+                  borderColor: '#808080 #ffffff #ffffff #808080',
+                  fontSize: '0.875rem',
+                  marginBottom: '1rem',
+                  fontFamily: 'MS Sans Serif, sans-serif'
+                }}
+              >
+                <option value="">-- Select a customer --</option>
+                {existingCustomers.map(customer => (
+                  <option key={customer.id} value={customer.id}>
+                    {customer.name} ({customer.email})
+                  </option>
+                ))}
+              </select>
+
+              <button 
+                onClick={() => setShowNewCustomerForm(!showNewCustomerForm)}
+                style={{ 
+                  width: '100%',
+                  padding: '0.5rem 1rem',
+                  background: '#c0c0c0',
+                  border: '2px solid',
+                  borderColor: '#ffffff #000000 #000000 #ffffff',
                   cursor: 'pointer',
-                  fontWeight: 'bold'
-                }}>
-                  Save Customer
-                </button>
-              </div>
-            )}
+                  fontWeight: 'bold',
+                  fontSize: '0.875rem',
+                  fontFamily: 'MS Sans Serif, sans-serif'
+                }}
+                onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
+                onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
+              >
+                {showNewCustomerForm ? 'Cancel' : '+ Add New Customer'}
+              </button>
+
+              {showNewCustomerForm && (
+                <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '2px solid #c0c0c0' }}>
+                  <input 
+                    type="text" 
+                    placeholder="Company Name"
+                    style={{ 
+                      width: '100%',
+                      padding: '0.5rem',
+                      border: '2px solid',
+                      borderColor: '#808080 #ffffff #ffffff #808080',
+                      marginBottom: '0.5rem',
+                      fontFamily: 'MS Sans Serif, sans-serif',
+                      fontSize: '0.875rem'
+                    }}
+                  />
+                  <input 
+                    type="email" 
+                    placeholder="Email"
+                    style={{ 
+                      width: '100%',
+                      padding: '0.5rem',
+                      border: '2px solid',
+                      borderColor: '#808080 #ffffff #ffffff #808080',
+                      marginBottom: '0.5rem',
+                      fontFamily: 'MS Sans Serif, sans-serif',
+                      fontSize: '0.875rem'
+                    }}
+                  />
+                  <input 
+                    type="tel" 
+                    placeholder="Phone"
+                    style={{ 
+                      width: '100%',
+                      padding: '0.5rem',
+                      border: '2px solid',
+                      borderColor: '#808080 #ffffff #ffffff #808080',
+                      marginBottom: '0.5rem',
+                      fontFamily: 'MS Sans Serif, sans-serif',
+                      fontSize: '0.875rem'
+                    }}
+                  />
+                  <button 
+                    style={{ 
+                      width: '100%',
+                      padding: '0.5rem 1rem',
+                      background: '#c0c0c0',
+                      border: '2px solid',
+                      borderColor: '#ffffff #000000 #000000 #ffffff',
+                      cursor: 'pointer',
+                      fontWeight: 'bold',
+                      fontFamily: 'MS Sans Serif, sans-serif',
+                      fontSize: '0.875rem'
+                    }}
+                    onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
+                    onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
+                  >
+                    Save Customer
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
         {/* Payment Section */}
         <div>
-          <h2 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>3. Payment Information</h2>
-          <div style={{ background: '#f8f9fa', padding: '1.5rem', borderRadius: '8px' }}>
-            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
-              Payment Method:
-            </label>
-            <select 
-              value={paymentMethod}
-              onChange={(e) => setPaymentMethod(e.target.value)}
-              style={{ 
-                width: '100%',
-                padding: '0.75rem',
-                border: '1px solid #ddd',
-                borderRadius: '4px',
-                fontSize: '1rem',
-                marginBottom: '1rem'
-              }}
-            >
-              <option value="credit_card">Credit Card</option>
-              <option value="debit_card">Debit Card</option>
-              <option value="cash">Cash</option>
-              <option value="check">Check</option>
-              <option value="bank_transfer">Bank Transfer</option>
-            </select>
-
-            <div style={{ 
-              padding: '1rem',
-              background: 'white',
-              borderRadius: '4px',
-              marginBottom: '1rem'
-            }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                <span>Subtotal:</span>
-                <span style={{ fontWeight: '500' }}>${calculateTotal()}</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                <span>Tax (8%):</span>
-                <span style={{ fontWeight: '500' }}>${(calculateTotal() * 0.08).toFixed(2)}</span>
-              </div>
-              <div style={{ 
-                display: 'flex', 
-                justifyContent: 'space-between',
-                paddingTop: '0.5rem',
-                borderTop: '2px solid #dee2e6',
-                fontSize: '1.25rem',
-                fontWeight: 'bold'
-              }}>
-                <span>Total:</span>
-                <span>${(parseFloat(calculateTotal()) * 1.08).toFixed(2)}</span>
-              </div>
-            </div>
-
-            <button style={{ 
-              width: '100%',
-              padding: '1rem',
-              background: '#28a745',
+          <div style={{
+            background: '#c0c0c0',
+            border: '2px solid',
+            borderColor: '#ffffff #000000 #000000 #ffffff'
+          }}>
+            <div style={{
+              background: 'linear-gradient(to right, #000080, #0000aa)',
               color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer',
+              padding: '0.25rem 0.5rem',
               fontWeight: 'bold',
-              fontSize: '1rem'
+              fontSize: '0.875rem'
             }}>
-              Process Payment & Complete Order
-            </button>
+              3. Payment Information
+            </div>
+            <div style={{ padding: '1rem', background: 'white' }}>
+              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
+                Payment Method:
+              </label>
+              <select 
+                value={paymentMethod}
+                onChange={(e) => setPaymentMethod(e.target.value)}
+                style={{ 
+                  width: '100%',
+                  padding: '0.5rem',
+                  border: '2px solid',
+                  borderColor: '#808080 #ffffff #ffffff #808080',
+                  fontSize: '0.875rem',
+                  marginBottom: '1rem',
+                  fontFamily: 'MS Sans Serif, sans-serif'
+                }}
+              >
+                <option value="credit_card">Credit Card</option>
+                <option value="debit_card">Debit Card</option>
+                <option value="cash">Cash</option>
+                <option value="check">Check</option>
+                <option value="bank_transfer">Bank Transfer</option>
+              </select>
+
+              <div style={{ 
+                padding: '1rem',
+                background: '#f0f0f0',
+                border: '2px solid',
+                borderColor: '#808080 #ffffff #ffffff #808080',
+                marginBottom: '1rem',
+                fontSize: '0.875rem'
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                  <span>Subtotal:</span>
+                  <span style={{ fontWeight: 'bold' }}>${calculateTotal()}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                  <span>Tax (8%):</span>
+                  <span style={{ fontWeight: 'bold' }}>${(calculateTotal() * 0.08).toFixed(2)}</span>
+                </div>
+                <div style={{ 
+                  display: 'flex', 
+                  justifyContent: 'space-between',
+                  paddingTop: '0.5rem',
+                  marginTop: '0.5rem',
+                  borderTop: '2px solid #000080',
+                  fontSize: '1rem',
+                  fontWeight: 'bold',
+                  color: '#000080'
+                }}>
+                  <span>Total:</span>
+                  <span>${(parseFloat(calculateTotal()) * 1.08).toFixed(2)}</span>
+                </div>
+              </div>
+
+              <button 
+                style={{ 
+                  width: '100%',
+                  padding: '0.75rem 1rem',
+                  background: '#c0c0c0',
+                  border: '2px solid',
+                  borderColor: '#ffffff #000000 #000000 #ffffff',
+                  cursor: 'pointer',
+                  fontWeight: 'bold',
+                  fontSize: '0.875rem',
+                  fontFamily: 'MS Sans Serif, sans-serif'
+                }}
+                onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
+                onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
+              >
+                Process Payment & Complete Order
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Add Items Section */}
       <div>
-        <h2 style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>2. Add Items to Order</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '2rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem' }}>
           {/* Available Items */}
           <div>
-            <h3 style={{ fontSize: '1rem', marginBottom: '1rem', color: '#495057' }}>Available Inventory</h3>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem' }}>
-              {availableItems.map(item => (
-                <div 
-                  key={item.id}
-                  style={{ 
-                    padding: '1rem',
-                    background: '#f8f9fa',
-                    borderRadius: '8px',
-                    border: '1px solid #dee2e6'
-                  }}
-                >
-                  <h4 style={{ margin: '0 0 0.5rem 0' }}>{item.name}</h4>
-                  <p style={{ margin: '0 0 0.5rem 0', color: '#495057' }}>
-                    ${item.price.toFixed(2)}
-                  </p>
-                  <p style={{ margin: '0 0 0.75rem 0', fontSize: '0.875rem', color: '#6c757d' }}>
-                    Stock: {item.stock}
-                  </p>
-                  <button 
-                    onClick={() => addItemToOrder(item)}
-                    style={{ 
-                      width: '100%',
-                      padding: '0.5rem',
-                      background: '#61dafb',
-                      color: '#282c34',
-                      border: 'none',
-                      borderRadius: '4px',
-                      cursor: 'pointer',
-                      fontWeight: '500'
-                    }}
-                  >
-                    + Add
-                  </button>
+            <div style={{
+              background: '#c0c0c0',
+              border: '2px solid',
+              borderColor: '#ffffff #000000 #000000 #ffffff'
+            }}>
+              <div style={{
+                background: 'linear-gradient(to right, #000080, #0000aa)',
+                color: 'white',
+                padding: '0.25rem 0.5rem',
+                fontWeight: 'bold',
+                fontSize: '0.875rem'
+              }}>
+                2. Available Inventory
+              </div>
+              <div style={{ padding: '1rem', background: 'white' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '0.75rem' }}>
+                  {availableItems.map(item => (
+                    <div 
+                      key={item.id}
+                      style={{ 
+                        padding: '0.75rem',
+                        background: '#f0f0f0',
+                        border: '2px solid',
+                        borderColor: '#ffffff #808080 #808080 #ffffff'
+                      }}
+                    >
+                      <h4 style={{ 
+                        margin: '0 0 0.5rem 0', 
+                        fontSize: '0.875rem',
+                        fontWeight: 'bold',
+                        color: '#000080'
+                      }}>
+                        {item.name}
+                      </h4>
+                      <p style={{ 
+                        margin: '0 0 0.25rem 0', 
+                        fontSize: '0.875rem',
+                        fontWeight: 'bold'
+                      }}>
+                        ${item.price.toFixed(2)}
+                      </p>
+                      <p style={{ 
+                        margin: '0 0 0.5rem 0', 
+                        fontSize: '0.75rem', 
+                        color: '#808080' 
+                      }}>
+                        Stock: {item.stock}
+                      </p>
+                      <button 
+                        onClick={() => addItemToOrder(item)}
+                        style={{ 
+                          width: '100%',
+                          padding: '0.4rem',
+                          background: '#c0c0c0',
+                          border: '2px solid',
+                          borderColor: '#ffffff #000000 #000000 #ffffff',
+                          cursor: 'pointer',
+                          fontWeight: 'bold',
+                          fontSize: '0.75rem',
+                          fontFamily: 'MS Sans Serif, sans-serif'
+                        }}
+                        onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
+                        onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
+                      >
+                        + Add
+                      </button>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
             </div>
           </div>
 
           {/* Current Order */}
           <div>
-            <h3 style={{ fontSize: '1rem', marginBottom: '1rem', color: '#495057' }}>Current Order</h3>
-            <div style={{ background: '#f8f9fa', padding: '1rem', borderRadius: '8px', minHeight: '200px' }}>
-              {orderItems.length === 0 ? (
-                <p style={{ color: '#6c757d', textAlign: 'center', padding: '2rem' }}>
-                  No items added yet
-                </p>
-              ) : (
-                orderItems.map(item => (
-                  <div 
-                    key={item.id}
-                    style={{ 
-                      padding: '0.75rem',
-                      background: 'white',
-                      borderRadius: '4px',
-                      marginBottom: '0.5rem',
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center'
-                    }}
-                  >
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontWeight: '500' }}>{item.name}</div>
-                      <div style={{ fontSize: '0.875rem', color: '#6c757d' }}>
+            <div style={{
+              background: '#c0c0c0',
+              border: '2px solid',
+              borderColor: '#ffffff #000000 #000000 #ffffff'
+            }}>
+              <div style={{
+                background: 'linear-gradient(to right, #000080, #0000aa)',
+                color: 'white',
+                padding: '0.25rem 0.5rem',
+                fontWeight: 'bold',
+                fontSize: '0.875rem'
+              }}>
+                Current Order
+              </div>
+              <div style={{ 
+                padding: '1rem', 
+                background: 'white',
+                minHeight: '300px',
+                maxHeight: '500px',
+                overflowY: 'auto'
+              }}>
+                {orderItems.length === 0 ? (
+                  <p style={{ 
+                    color: '#808080', 
+                    textAlign: 'center', 
+                    padding: '2rem',
+                    fontSize: '0.875rem'
+                  }}>
+                    No items added yet
+                  </p>
+                ) : (
+                  orderItems.map(item => (
+                    <div 
+                      key={item.id}
+                      style={{ 
+                        padding: '0.5rem',
+                        background: '#f0f0f0',
+                        border: '2px solid',
+                        borderColor: '#808080 #ffffff #ffffff #808080',
+                        marginBottom: '0.5rem'
+                      }}
+                    >
+                      <div style={{ 
+                        fontWeight: 'bold',
+                        fontSize: '0.875rem',
+                        marginBottom: '0.25rem'
+                      }}>
+                        {item.name}
+                      </div>
+                      <div style={{ 
+                        fontSize: '0.75rem', 
+                        color: '#808080',
+                        marginBottom: '0.5rem'
+                      }}>
                         ${item.price.toFixed(2)} each
                       </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <input 
+                          type="number"
+                          value={item.quantity}
+                          onChange={(e) => updateQuantity(item.id, parseInt(e.target.value))}
+                          min="1"
+                          max={item.stock}
+                          style={{ 
+                            width: '50px',
+                            padding: '0.25rem',
+                            border: '2px solid',
+                            borderColor: '#808080 #ffffff #ffffff #808080',
+                            textAlign: 'center',
+                            fontFamily: 'MS Sans Serif, sans-serif',
+                            fontSize: '0.75rem'
+                          }}
+                        />
+                        <button 
+                          onClick={() => removeItemFromOrder(item.id)}
+                          style={{ 
+                            padding: '0.25rem 0.5rem',
+                            background: '#c0c0c0',
+                            border: '2px solid',
+                            borderColor: '#ffffff #000000 #000000 #ffffff',
+                            cursor: 'pointer',
+                            fontWeight: 'bold',
+                            fontSize: '0.75rem',
+                            fontFamily: 'MS Sans Serif, sans-serif',
+                            lineHeight: '1'
+                          }}
+                          onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
+                          onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
+                        >
+                          ×
+                        </button>
+                      </div>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <input 
-                        type="number"
-                        value={item.quantity}
-                        onChange={(e) => updateQuantity(item.id, parseInt(e.target.value))}
-                        min="1"
-                        max={item.stock}
-                        style={{ 
-                          width: '60px',
-                          padding: '0.25rem',
-                          border: '1px solid #ddd',
-                          borderRadius: '4px',
-                          textAlign: 'center'
-                        }}
-                      />
-                      <button 
-                        onClick={() => removeItemFromOrder(item.id)}
-                        style={{ 
-                          padding: '0.25rem 0.5rem',
-                          background: '#dc3545',
-                          color: 'white',
-                          border: 'none',
-                          borderRadius: '4px',
-                          cursor: 'pointer'
-                        }}
-                      >
-                        ×
-                      </button>
-                    </div>
-                  </div>
-                ))
-              )}
+                  ))
+                )}
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div style={{ marginTop: '2rem', padding: '1rem', background: '#d1ecf1', borderRadius: '4px', color: '#0c5460' }}>
-        <strong>Note:</strong> Database integration pending. Orders will be tracked and stored once connected.
+      <div style={{ 
+        marginTop: '1.5rem', 
+        padding: '1rem', 
+        background: '#c0c0c0',
+        border: '2px solid',
+        borderColor: '#ffffff #000000 #000000 #ffffff',
+        fontSize: '0.875rem'
+      }}>
+        <div style={{
+          background: 'linear-gradient(to right, #000080, #0000aa)',
+          color: 'white',
+          padding: '0.25rem 0.5rem',
+          fontWeight: 'bold',
+          fontSize: '0.875rem',
+          marginBottom: '0.5rem'
+        }}>
+          Note
+        </div>
+        <div style={{ padding: '0.5rem', background: 'white' }}>
+          <strong>Database integration pending.</strong> Orders will be tracked and stored once connected.
+        </div>
       </div>
     </div>
   )
