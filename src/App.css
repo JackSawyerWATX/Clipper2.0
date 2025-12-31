@@ -518,7 +518,7 @@
   text-decoration: none;
   transition: all 0.15s;
   border: 2px solid;
-  border-color: #808080 #ffffff #ffffff #808080;
+  border-color: #ffffff #808080 #808080 #ffffff;
   background: #c0c0c0;
   margin-bottom: 0.4rem;
   font-weight: bold;
