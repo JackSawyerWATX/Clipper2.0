@@ -63,13 +63,13 @@ function PlaceOrder() {
         Create and manage orders for customers
       </p>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '2rem' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', marginBottom: '2rem' }}>
         {/* Customer Selection Section */}
-        <div>
+        <div style={{ width: '100%' }}>
           <div style={{
             background: '#c0c0c0',
             border: '2px solid',
-            borderColor: '#ffffff #000000 #000000 #ffffff',
+            borderColor: '#ebebeb #000000 #000000 #ebebeb',
             marginBottom: '1rem'
           }}>
             <div style={{
@@ -92,7 +92,7 @@ function PlaceOrder() {
                   width: '100%',
                   padding: '0.5rem',
                   border: '2px solid',
-                  borderColor: '#808080 #ffffff #ffffff #808080',
+                  borderColor: '#808080 #ebebeb #ebebeb #808080',
                   fontSize: '0.875rem',
                   marginBottom: '1rem',
                   fontFamily: 'MS Sans Serif, sans-serif'
@@ -113,14 +113,14 @@ function PlaceOrder() {
                   padding: '0.5rem 1rem',
                   background: '#c0c0c0',
                   border: '2px solid',
-                  borderColor: '#ffffff #000000 #000000 #ffffff',
+                  borderColor: '#ebebeb #000000 #000000 #ebebeb',
                   cursor: 'pointer',
                   fontWeight: 'bold',
                   fontSize: '0.875rem',
                   fontFamily: 'MS Sans Serif, sans-serif'
                 }}
-                onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
-                onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
+                onMouseDown={(e) => e.target.style.borderColor = '#000000 #ebebeb #ebebeb #000000'}
+                onMouseUp={(e) => e.target.style.borderColor = '#ebebeb #000000 #000000 #ebebeb'}
               >
                 {showNewCustomerForm ? 'Cancel' : '+ Add New Customer'}
               </button>
@@ -134,7 +134,7 @@ function PlaceOrder() {
                       width: '100%',
                       padding: '0.5rem',
                       border: '2px solid',
-                      borderColor: '#808080 #ffffff #ffffff #808080',
+                      borderColor: '#808080 #ebebeb #ebebeb #808080',
                       marginBottom: '0.5rem',
                       fontFamily: 'MS Sans Serif, sans-serif',
                       fontSize: '0.875rem'
@@ -147,7 +147,7 @@ function PlaceOrder() {
                       width: '100%',
                       padding: '0.5rem',
                       border: '2px solid',
-                      borderColor: '#808080 #ffffff #ffffff #808080',
+                      borderColor: '#808080 #ebebeb #ebebeb #808080',
                       marginBottom: '0.5rem',
                       fontFamily: 'MS Sans Serif, sans-serif',
                       fontSize: '0.875rem'
@@ -160,7 +160,7 @@ function PlaceOrder() {
                       width: '100%',
                       padding: '0.5rem',
                       border: '2px solid',
-                      borderColor: '#808080 #ffffff #ffffff #808080',
+                      borderColor: '#808080 #ebebeb #ebebeb #808080',
                       marginBottom: '0.5rem',
                       fontFamily: 'MS Sans Serif, sans-serif',
                       fontSize: '0.875rem'
@@ -172,14 +172,14 @@ function PlaceOrder() {
                       padding: '0.5rem 1rem',
                       background: '#c0c0c0',
                       border: '2px solid',
-                      borderColor: '#ffffff #000000 #000000 #ffffff',
+                      borderColor: '#ebebeb #000000 #000000 #ebebeb',
                       cursor: 'pointer',
                       fontWeight: 'bold',
                       fontFamily: 'MS Sans Serif, sans-serif',
                       fontSize: '0.875rem'
                     }}
-                    onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
-                    onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
+                    onMouseDown={(e) => e.target.style.borderColor = '#000000 #ebebeb #ebebeb #000000'}
+                    onMouseUp={(e) => e.target.style.borderColor = '#ebebeb #000000 #000000 #ebebeb'}
                   >
                     Save Customer
                   </button>
@@ -190,11 +190,11 @@ function PlaceOrder() {
         </div>
 
         {/* Payment Section */}
-        <div>
+        <div style={{ width: '100%' }}>
           <div style={{
             background: '#c0c0c0',
             border: '2px solid',
-            borderColor: '#ffffff #000000 #000000 #ffffff'
+            borderColor: '#ebebeb #000000 #000000 #ebebeb'
           }}>
             <div style={{
               background: 'linear-gradient(to right, #000080, #0000aa)',
@@ -216,7 +216,7 @@ function PlaceOrder() {
                   width: '100%',
                   padding: '0.5rem',
                   border: '2px solid',
-                  borderColor: '#808080 #ffffff #ffffff #808080',
+                  borderColor: '#808080 #ebebeb #ebebeb #808080',
                   fontSize: '0.875rem',
                   marginBottom: '1rem',
                   fontFamily: 'MS Sans Serif, sans-serif'
@@ -233,7 +233,7 @@ function PlaceOrder() {
                 padding: '1rem',
                 background: '#f0f0f0',
                 border: '2px solid',
-                borderColor: '#808080 #ffffff #ffffff #808080',
+                borderColor: '#808080 #ebebeb #ebebeb #808080',
                 marginBottom: '1rem',
                 fontSize: '0.875rem'
               }}>
@@ -266,14 +266,14 @@ function PlaceOrder() {
                   padding: '0.75rem 1rem',
                   background: '#c0c0c0',
                   border: '2px solid',
-                  borderColor: '#ffffff #000000 #000000 #ffffff',
+                  borderColor: '#ebebeb #000000 #000000 #ebebeb',
                   cursor: 'pointer',
                   fontWeight: 'bold',
                   fontSize: '0.875rem',
                   fontFamily: 'MS Sans Serif, sans-serif'
                 }}
-                onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
-                onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
+                onMouseDown={(e) => e.target.style.borderColor = '#000000 #ebebeb #ebebeb #000000'}
+                onMouseUp={(e) => e.target.style.borderColor = '#ebebeb #000000 #000000 #ebebeb'}
               >
                 Process Payment & Complete Order
               </button>
@@ -283,14 +283,13 @@ function PlaceOrder() {
       </div>
 
       {/* Add Items Section */}
-      <div>
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem' }}>
-          {/* Available Items */}
-          <div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+        {/* Available Items */}
+        <div style={{ width: '100%' }}>
             <div style={{
               background: '#c0c0c0',
               border: '2px solid',
-              borderColor: '#ffffff #000000 #000000 #ffffff'
+              borderColor: '#ebebeb #000000 #000000 #ebebeb'
             }}>
               <div style={{
                 background: 'linear-gradient(to right, #000080, #0000aa)',
@@ -310,7 +309,7 @@ function PlaceOrder() {
                         padding: '0.75rem',
                         background: '#f0f0f0',
                         border: '2px solid',
-                        borderColor: '#ffffff #808080 #808080 #ffffff'
+                        borderColor: '#ebebeb #808080 #808080 #ebebeb'
                       }}
                     >
                       <h4 style={{ 
@@ -342,14 +341,14 @@ function PlaceOrder() {
                           padding: '0.4rem',
                           background: '#c0c0c0',
                           border: '2px solid',
-                          borderColor: '#ffffff #000000 #000000 #ffffff',
+                          borderColor: '#ebebeb #000000 #000000 #ebebeb',
                           cursor: 'pointer',
                           fontWeight: 'bold',
                           fontSize: '0.75rem',
                           fontFamily: 'MS Sans Serif, sans-serif'
                         }}
-                        onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
-                        onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
+                        onMouseDown={(e) => e.target.style.borderColor = '#000000 #ebebeb #ebebeb #000000'}
+                        onMouseUp={(e) => e.target.style.borderColor = '#ebebeb #000000 #000000 #ebebeb'}
                       >
                         + Add
                       </button>
@@ -360,12 +359,12 @@ function PlaceOrder() {
             </div>
           </div>
 
-          {/* Current Order */}
-          <div>
+        {/* Current Order */}
+        <div style={{ width: '100%' }}>
             <div style={{
               background: '#c0c0c0',
               border: '2px solid',
-              borderColor: '#ffffff #000000 #000000 #ffffff'
+              borderColor: '#ebebeb #000000 #000000 #ebebeb'
             }}>
               <div style={{
                 background: 'linear-gradient(to right, #000080, #0000aa)',
@@ -400,7 +399,7 @@ function PlaceOrder() {
                         padding: '0.5rem',
                         background: '#f0f0f0',
                         border: '2px solid',
-                        borderColor: '#808080 #ffffff #ffffff #808080',
+                        borderColor: '#808080 #ebebeb #ebebeb #808080',
                         marginBottom: '0.5rem'
                       }}
                     >
@@ -429,7 +428,7 @@ function PlaceOrder() {
                             width: '50px',
                             padding: '0.25rem',
                             border: '2px solid',
-                            borderColor: '#808080 #ffffff #ffffff #808080',
+                            borderColor: '#808080 #ebebeb #ebebeb #808080',
                             textAlign: 'center',
                             fontFamily: 'MS Sans Serif, sans-serif',
                             fontSize: '0.75rem'
@@ -441,15 +440,15 @@ function PlaceOrder() {
                             padding: '0.25rem 0.5rem',
                             background: '#c0c0c0',
                             border: '2px solid',
-                            borderColor: '#ffffff #000000 #000000 #ffffff',
+                            borderColor: '#ebebeb #000000 #000000 #ebebeb',
                             cursor: 'pointer',
                             fontWeight: 'bold',
                             fontSize: '0.75rem',
                             fontFamily: 'MS Sans Serif, sans-serif',
                             lineHeight: '1'
                           }}
-                          onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
-                          onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
+                          onMouseDown={(e) => e.target.style.borderColor = '#000000 #ebebeb #ebebeb #000000'}
+                          onMouseUp={(e) => e.target.style.borderColor = '#ebebeb #000000 #000000 #ebebeb'}
                         >
                           ×
                         </button>
@@ -461,14 +460,13 @@ function PlaceOrder() {
             </div>
           </div>
         </div>
-      </div>
 
       <div style={{ 
         marginTop: '1.5rem', 
         padding: '1rem', 
         background: '#c0c0c0',
         border: '2px solid',
-        borderColor: '#ffffff #000000 #000000 #ffffff',
+        borderColor: '#ebebeb #000000 #000000 #ebebeb',
         fontSize: '0.875rem'
       }}>
         <div style={{
