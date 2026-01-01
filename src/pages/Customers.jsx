@@ -8,6 +8,8 @@ function Customers() {
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [total, setTotal] = useState(0)
+  const [sortColumn, setSortColumn] = useState(null)
+  const [sortDirection, setSortDirection] = useState('asc') // 'asc' or 'desc'
   const [showAddModal, setShowAddModal] = useState(false)
   const [editingCustomer, setEditingCustomer] = useState(null) // Track which customer is being edited
   const [showDeleteModal, setShowDeleteModal] = useState(false)
@@ -33,27 +35,89 @@ function Customers() {
   // Fetch customers from API
   useEffect(() => {
     fetchCustomers()
-  }, [page, searchTerm])
+  }, [page, searchTerm, sortColumn, sortDirection])
 
   const fetchCustomers = async () => {
     try {
       setLoading(true)
-      const url = new URL('http://localhost:5000/api/customers')
-      url.searchParams.append('page', page)
-      url.searchParams.append('page_size', 10)
-      if (searchTerm) {
-        url.searchParams.append('search', searchTerm)
-      }
-
+      const url = new URL('http://localhost:3000/api/customers')
+      
       const response = await fetch(url)
       if (!response.ok) {
         throw new Error('Failed to fetch customers')
       }
       
       const data = await response.json()
-      setCustomers(data.customers)
-      setTotalPages(data.total_pages)
-      setTotal(data.total)
+      
+      // Filter by search term on frontend if provided
+      let filteredData = data
+      if (searchTerm) {
+        const term = searchTerm.toLowerCase()
+        filteredData = data.filter(customer => 
+          customer.company_name?.toLowerCase().includes(term) ||
+          customer.contact_name?.toLowerCase().includes(term) ||
+          customer.email?.toLowerCase().includes(term) ||
+          customer.phone?.toLowerCase().includes(term)
+        )
+      }
+      
+      // Apply sorting if a column is selected
+      if (sortColumn) {
+        filteredData.sort((a, b) => {
+          let aVal, bVal
+          
+          // Get values based on column
+          switch(sortColumn) {
+            case 'customer_id':
+              aVal = a.customer_id || 0
+              bVal = b.customer_id || 0
+              break
+            case 'company_name':
+              aVal = (a.company_name || '').toLowerCase()
+              bVal = (b.company_name || '').toLowerCase()
+              break
+            case 'contact_name':
+              aVal = (a.contact_name || '').toLowerCase()
+              bVal = (b.contact_name || '').toLowerCase()
+              break
+            case 'email':
+              aVal = (a.email || '').toLowerCase()
+              bVal = (b.email || '').toLowerCase()
+              break
+            case 'phone':
+              aVal = (a.phone || '').toLowerCase()
+              bVal = (b.phone || '').toLowerCase()
+              break
+            case 'address_city':
+              aVal = (a.address_city || '').toLowerCase()
+              bVal = (b.address_city || '').toLowerCase()
+              break
+            default:
+              return 0
+          }
+          
+          // Compare values
+          let comparison = 0
+          if (typeof aVal === 'number') {
+            comparison = aVal - bVal
+          } else {
+            comparison = aVal < bVal ? -1 : aVal > bVal ? 1 : 0
+          }
+          
+          // Apply sort direction
+          return sortDirection === 'asc' ? comparison : -comparison
+        })
+      }
+      
+      // Calculate pagination on frontend
+      const pageSize = 25
+      const startIndex = (page - 1) * pageSize
+      const endIndex = startIndex + pageSize
+      const paginatedData = filteredData.slice(startIndex, endIndex)
+      
+      setCustomers(paginatedData)
+      setTotal(filteredData.length)
+      setTotalPages(Math.ceil(filteredData.length / pageSize))
       setError(null)
     } catch (err) {
       setError(err.message)
@@ -66,6 +130,18 @@ function Customers() {
   const handleSearch = (e) => {
     setSearchTerm(e.target.value)
     setPage(1) // Reset to first page on search
+  }
+
+  const handleSort = (column) => {
+    if (sortColumn === column) {
+      // Toggle direction if same column
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
+    } else {
+      // New column, default to ascending
+      setSortColumn(column)
+      setSortDirection('asc')
+    }
+    setPage(1) // Reset to first page on sort
   }
 
   const formatPhoneNumber = (value) => {
@@ -157,7 +233,7 @@ function Customers() {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/api/customers/${deletingCustomer.customer_id}`, {
+      const response = await fetch(`http://localhost:3000/api/customers/${deletingCustomer.customer_id}`, {
         method: 'DELETE'
       })
 
@@ -199,7 +275,7 @@ function Customers() {
       let response
       if (editingCustomer) {
         // Update existing customer
-        response = await fetch(`http://localhost:5000/api/customers/${editingCustomer.customer_id}`, {
+        response = await fetch(`http://localhost:3000/api/customers/${editingCustomer.customer_id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -208,7 +284,7 @@ function Customers() {
         })
       } else {
         // Create new customer
-        response = await fetch('http://localhost:5000/api/customers', {
+        response = await fetch('http://localhost:3000/api/customers', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -287,14 +363,17 @@ function Customers() {
         <button 
           onClick={() => setShowAddModal(true)}
           style={{ 
-            padding: '0.75rem 1.5rem', 
-            background: '#61dafb', 
-            border: 'none', 
-            borderRadius: '4px',
+            padding: '0.5rem 1.5rem', 
+            background: '#c0c0c0', 
+            border: '2px solid',
+            borderColor: '#ebebeb #000000 #000000 #ebebeb',
             cursor: 'pointer',
             fontWeight: 'bold',
-            color: '#282c34'
+            fontFamily: 'MS Sans Serif, sans-serif',
+            fontSize: '0.875rem'
           }}
+          onMouseDown={(e) => e.target.style.borderColor = '#000000 #ebebeb #ebebeb #000000'}
+          onMouseUp={(e) => e.target.style.borderColor = '#ebebeb #000000 #000000 #ebebeb'}
         >
           + Add New Customer
         </button>
@@ -303,120 +382,294 @@ function Customers() {
       <div style={{ marginBottom: '1.5rem' }}>
         <input 
           type="text" 
-          placeholder="Search customers..." 
+          placeholder="Search Customers..." 
           value={searchTerm}
           onChange={handleSearch}
           style={{ 
-            padding: '0.75rem', 
+            padding: '0.5rem', 
             width: '100%', 
             maxWidth: '400px',
-            border: '1px solid #ddd',
-            borderRadius: '4px',
-            fontSize: '1rem'
+            border: '2px solid',
+            borderColor: '#808080 #ebebeb #ebebeb #808080',
+            fontSize: '1rem',
+            fontFamily: 'MS Sans Serif, sans-serif',
+            background: '#ffffff'
           }}
         />
       </div>
 
-      <div style={{ overflowX: 'auto' }}>
-        <table style={{ 
-          width: '100%', 
-          borderCollapse: 'collapse',
-          background: 'white',
-          boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+      {loading && (
+        <div style={{ textAlign: 'center', padding: '3rem', fontSize: '1.1rem', color: '#6c757d' }}>
+          Loading customers...
+        </div>
+      )}
+
+      {error && (
+        <div style={{ 
+          padding: '1rem', 
+          background: '#f8d7da', 
+          color: '#721c24', 
+          borderRadius: '4px',
+          marginBottom: '1rem'
         }}>
-          <thead>
-            <tr style={{ background: '#f8f9fa', borderBottom: '2px solid #dee2e6' }}>
-              <th style={{ padding: '1rem', textAlign: 'left', fontWeight: '600' }}>ID</th>
-              <th style={{ padding: '1rem', textAlign: 'left', fontWeight: '600' }}>Company Name</th>
-              <th style={{ padding: '1rem', textAlign: 'left', fontWeight: '600' }}>Contact</th>
-              <th style={{ padding: '1rem', textAlign: 'left', fontWeight: '600' }}>Email</th>
-              <th style={{ padding: '1rem', textAlign: 'left', fontWeight: '600' }}>Phone</th>
-              <th style={{ padding: '1rem', textAlign: 'left', fontWeight: '600' }}>City</th>
-              <th style={{ padding: '1rem', textAlign: 'left', fontWeight: '600' }}>Status</th>
-              <th style={{ padding: '1rem', textAlign: 'left', fontWeight: '600' }}>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {customers.map((customer) => (
-              <tr key={customer.customer_id} style={{ borderBottom: '1px solid #dee2e6' }}>
-                <td style={{ padding: '1rem' }}>{customer.customer_id}</td>
-                <td style={{ padding: '1rem', fontWeight: '500' }}>{customer.company_name}</td>
-                <td style={{ padding: '1rem' }}>{customer.contact_name || 'N/A'}</td>
-                <td style={{ padding: '1rem' }}>{customer.email || 'N/A'}</td>
-                <td style={{ padding: '1rem' }}>{customer.phone || 'N/A'}</td>
-                <td style={{ padding: '1rem' }}>{customer.address_city || 'N/A'}</td>
-                <td style={{ padding: '1rem' }}>
-                  <span style={{ 
-                    padding: '0.25rem 0.75rem',
-                    borderRadius: '12px',
-                    fontSize: '0.875rem',
-                    fontWeight: '500',
-                    background: customer.status === 'Active' ? '#d4edda' : 
-                               customer.status === 'Inactive' ? '#f8d7da' : '#fff3cd',
-                    color: customer.status === 'Active' ? '#155724' : 
-                           customer.status === 'Inactive' ? '#721c24' : '#856404'
-                  }}>
-                    {customer.status}
-                  </span>
-                </td>
-                <td style={{ padding: '1rem' }}>
-                  <button 
-                    onClick={() => handleEditCustomer(customer)}
-                    style={{ 
-                      padding: '0.5rem 1rem', 
-                      marginRight: '0.5rem',
-                      background: '#f8f9fa',
-                      border: '1px solid #dee2e6',
-                      borderRadius: '4px',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    Edit
-                  </button>
-                  <button 
-                    onClick={() => handleDeleteClick(customer)}
-                    style={{ 
-                      padding: '0.5rem 1rem',
-                      background: '#dc3545',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '4px',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    Delete
-                  </button>
-                </td>
+          Error: {error}
+        </div>
+      )}
+
+      {!loading && !error && customers && customers.length === 0 && (
+        <div style={{ textAlign: 'center', padding: '3rem', fontSize: '1.1rem', color: '#6c757d' }}>
+          No customers found
+        </div>
+      )}
+
+      {!loading && !error && customers && customers.length > 0 && (
+        <div style={{ 
+          overflowX: 'auto',
+          border: '2px solid',
+          borderColor: '#808080 #ffffff #ffffff #808080',
+          background: 'white'
+        }}>
+          <table style={{ 
+            width: '100%', 
+            borderCollapse: 'collapse',
+            background: 'white',
+            fontFamily: 'MS Sans Serif, sans-serif',
+            fontSize: '0.875rem'
+          }}>
+            <thead>
+              <tr style={{ 
+                background: '#000080',
+                color: 'white'
+              }}>
+                <th 
+                  onClick={() => handleSort('customer_id')}
+                  style={{ 
+                    padding: '0.5rem', 
+                    textAlign: 'left', 
+                    fontWeight: 'bold', 
+                    borderRight: '1px solid #808080',
+                    cursor: 'pointer',
+                    userSelect: 'none'
+                  }}
+                >
+                  ID {sortColumn === 'customer_id' && (sortDirection === 'asc' ? '▲' : '▼')}
+                </th>
+                <th 
+                  onClick={() => handleSort('company_name')}
+                  style={{ 
+                    padding: '0.5rem', 
+                    textAlign: 'left', 
+                    fontWeight: 'bold', 
+                    borderRight: '1px solid #808080',
+                    cursor: 'pointer',
+                    userSelect: 'none'
+                  }}
+                >
+                  Company Name {sortColumn === 'company_name' && (sortDirection === 'asc' ? '▲' : '▼')}
+                </th>
+                <th 
+                  onClick={() => handleSort('contact_name')}
+                  style={{ 
+                    padding: '0.5rem', 
+                    textAlign: 'left', 
+                    fontWeight: 'bold', 
+                    borderRight: '1px solid #808080',
+                    cursor: 'pointer',
+                    userSelect: 'none'
+                  }}
+                >
+                  Contact {sortColumn === 'contact_name' && (sortDirection === 'asc' ? '▲' : '▼')}
+                </th>
+                <th 
+                  onClick={() => handleSort('email')}
+                  style={{ 
+                    padding: '0.5rem', 
+                    textAlign: 'left', 
+                    fontWeight: 'bold', 
+                    borderRight: '1px solid #808080',
+                    cursor: 'pointer',
+                    userSelect: 'none'
+                  }}
+                >
+                  Email {sortColumn === 'email' && (sortDirection === 'asc' ? '▲' : '▼')}
+                </th>
+                <th 
+                  onClick={() => handleSort('phone')}
+                  style={{ 
+                    padding: '0.5rem', 
+                    textAlign: 'left', 
+                    fontWeight: 'bold', 
+                    borderRight: '1px solid #808080',
+                    cursor: 'pointer',
+                    userSelect: 'none'
+                  }}
+                >
+                  Phone {sortColumn === 'phone' && (sortDirection === 'asc' ? '▲' : '▼')}
+                </th>
+                <th 
+                  onClick={() => handleSort('address_city')}
+                  style={{ 
+                    padding: '0.5rem', 
+                    textAlign: 'left', 
+                    fontWeight: 'bold', 
+                    borderRight: '1px solid #808080',
+                    cursor: 'pointer',
+                    userSelect: 'none'
+                  }}
+                >
+                  City {sortColumn === 'address_city' && (sortDirection === 'asc' ? '▲' : '▼')}
+                </th>
+                <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Status</th>
+                <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold' }}>Actions</th>
               </tr>
-            ))}
+            </thead>
+            <tbody>
+            {customers.map((customer, index) => {
+              const isEvenRow = index % 2 === 0
+              const getStatusColors = (status) => {
+                switch(status) {
+                  case 'Active':
+                    return { bg: '#00ff00', text: '#000000' }
+                  case 'Inactive':
+                    return { bg: '#ff0000', text: '#ffffff' }
+                  default:
+                    return { bg: '#ffff00', text: '#000000' }
+                }
+              }
+              const statusColors = getStatusColors(customer.status)
+              
+              return (
+                <tr key={customer.customer_id} style={{ 
+                  background: isEvenRow ? 'white' : '#f0f0f0',
+                  borderBottom: '1px solid #c0c0c0'
+                }}>
+                  <td style={{ 
+                    padding: '0.5rem',
+                    fontWeight: 'bold',
+                    color: '#000080',
+                    borderRight: '1px solid #c0c0c0'
+                  }}>
+                    {customer.customer_id}
+                  </td>
+                  <td style={{ 
+                    padding: '0.5rem',
+                    fontWeight: 'bold',
+                    borderRight: '1px solid #c0c0c0'
+                  }}>
+                    {customer.company_name}
+                  </td>
+                  <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>
+                    {customer.contact_name || 'N/A'}
+                  </td>
+                  <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>
+                    {customer.email || 'N/A'}
+                  </td>
+                  <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>
+                    {customer.phone || 'N/A'}
+                  </td>
+                  <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>
+                    {customer.address_city || 'N/A'}
+                  </td>
+                  <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>
+                    <span style={{ 
+                      padding: '0.2rem 0.5rem',
+                      fontSize: '0.75rem',
+                      fontWeight: 'bold',
+                      background: statusColors.bg,
+                      color: statusColors.text,
+                      border: '1px solid',
+                      borderColor: statusColors.text
+                    }}>
+                      {customer.status}
+                    </span>
+                  </td>
+                  <td style={{ padding: '0.5rem' }}>
+                    <button 
+                      onClick={() => handleEditCustomer(customer)}
+                      onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
+                      onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
+                      style={{ 
+                        padding: '0.25rem 0.75rem',
+                        marginRight: '0.25rem',
+                        background: '#c0c0c0',
+                        border: '2px solid',
+                        borderColor: '#ffffff #000000 #000000 #ffffff',
+                        cursor: 'pointer',
+                        fontSize: '0.75rem',
+                        fontFamily: 'MS Sans Serif, sans-serif'
+                      }}
+                    >
+                      Edit
+                    </button>
+                    <button 
+                      onClick={() => handleDeleteClick(customer)}
+                      onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
+                      onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
+                      style={{ 
+                        padding: '0.25rem 0.75rem',
+                        background: '#c0c0c0',
+                        border: '2px solid',
+                        borderColor: '#ffffff #000000 #000000 #ffffff',
+                        cursor: 'pointer',
+                        fontSize: '0.75rem',
+                        fontFamily: 'MS Sans Serif, sans-serif'
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              )
+            })}
           </tbody>
         </table>
       </div>
+      )}
 
       {/* Pagination and Info */}
-      <div style={{ 
-        marginTop: '1.5rem', 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center',
-        flexWrap: 'wrap',
-        gap: '1rem'
-      }}>
-        <div style={{ color: '#6c757d', fontSize: '0.875rem' }}>
-          Showing {customers.length} of {total} customers
-        </div>
+      {!loading && !error && customers && customers.length > 0 && (
+        <div style={{ 
+          marginTop: '1.5rem', 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          gap: '1rem'
+        }}>
+          <div style={{ color: '#6c757d', fontSize: '0.875rem' }}>
+            Showing {customers.length} of {total} customers
+          </div>
         
         <div style={{ display: 'flex', gap: '0.5rem' }}>
           <button 
             onClick={() => setPage(p => Math.max(1, p - 1))}
             disabled={page === 1}
+            onMouseDown={(e) => {
+              if (page !== 1) {
+                e.currentTarget.style.borderTop = '2px solid #808080';
+                e.currentTarget.style.borderLeft = '2px solid #808080';
+                e.currentTarget.style.borderRight = '2px solid #ffffff';
+                e.currentTarget.style.borderBottom = '2px solid #ffffff';
+              }
+            }}
+            onMouseUp={(e) => {
+              if (page !== 1) {
+                e.currentTarget.style.borderTop = '2px solid #ffffff';
+                e.currentTarget.style.borderLeft = '2px solid #ffffff';
+                e.currentTarget.style.borderRight = '2px solid #000000';
+                e.currentTarget.style.borderBottom = '2px solid #000000';
+              }
+            }}
             style={{ 
               padding: '0.5rem 1rem',
-              background: page === 1 ? '#e9ecef' : '#f8f9fa',
-              border: '1px solid #dee2e6',
-              borderRadius: '4px',
+              background: page === 1 ? '#808080' : '#c0c0c0',
+              borderTop: '2px solid #ffffff',
+              borderLeft: '2px solid #ffffff',
+              borderRight: '2px solid #000000',
+              borderBottom: '2px solid #000000',
               cursor: page === 1 ? 'not-allowed' : 'pointer',
-              color: page === 1 ? '#6c757d' : '#000'
+              color: page === 1 ? '#a0a0a0' : '#000',
+              fontFamily: 'MS Sans Serif, sans-serif'
             }}
           >
             Previous
@@ -434,19 +687,39 @@ function Customers() {
           <button 
             onClick={() => setPage(p => Math.min(totalPages, p + 1))}
             disabled={page === totalPages}
+            onMouseDown={(e) => {
+              if (page !== totalPages) {
+                e.currentTarget.style.borderTop = '2px solid #808080';
+                e.currentTarget.style.borderLeft = '2px solid #808080';
+                e.currentTarget.style.borderRight = '2px solid #ffffff';
+                e.currentTarget.style.borderBottom = '2px solid #ffffff';
+              }
+            }}
+            onMouseUp={(e) => {
+              if (page !== totalPages) {
+                e.currentTarget.style.borderTop = '2px solid #ffffff';
+                e.currentTarget.style.borderLeft = '2px solid #ffffff';
+                e.currentTarget.style.borderRight = '2px solid #000000';
+                e.currentTarget.style.borderBottom = '2px solid #000000';
+              }
+            }}
             style={{ 
               padding: '0.5rem 1rem',
-              background: page === totalPages ? '#e9ecef' : '#f8f9fa',
-              border: '1px solid #dee2e6',
-              borderRadius: '4px',
+              background: page === totalPages ? '#808080' : '#c0c0c0',
+              borderTop: '2px solid #ffffff',
+              borderLeft: '2px solid #ffffff',
+              borderRight: '2px solid #000000',
+              borderBottom: '2px solid #000000',
               cursor: page === totalPages ? 'not-allowed' : 'pointer',
-              color: page === totalPages ? '#6c757d' : '#000'
+              color: page === totalPages ? '#a0a0a0' : '#000',
+              fontFamily: 'MS Sans Serif, sans-serif'
             }}
           >
             Next
           </button>
         </div>
       </div>
+      )}
 
       {/* Add Customer Modal */}
       {showAddModal && (
