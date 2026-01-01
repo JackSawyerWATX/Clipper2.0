@@ -1,38 +1,58 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 function PlaceOrder() {
-  // Mock data - will be replaced with database data later
-  const [existingCustomers] = useState([
-    { id: 1, name: 'Acme Corporation', email: 'contact@acme.com' },
-    { id: 2, name: 'Tech Solutions Inc', email: 'info@techsolutions.com' },
-    { id: 3, name: 'Global Enterprises', email: 'hello@global.com' },
-  ])
-
-  const [availableItems] = useState([
-    { id: 1, name: 'Product A', price: 25.00, stock: 100 },
-    { id: 2, name: 'Product B', price: 45.00, stock: 50 },
-    { id: 3, name: 'Product C', price: 15.00, stock: 200 },
-    { id: 4, name: 'Product D', price: 60.00, stock: 30 },
-  ])
-
+  const [existingCustomers, setExistingCustomers] = useState([])
+  const [availableItems, setAvailableItems] = useState([])
+  const [loading, setLoading] = useState(true)
   const [selectedCustomer, setSelectedCustomer] = useState('')
   const [showNewCustomerForm, setShowNewCustomerForm] = useState(false)
   const [orderItems, setOrderItems] = useState([])
   const [paymentMethod, setPaymentMethod] = useState('credit_card')
 
+  useEffect(() => {
+    fetchCustomers()
+    fetchInventory()
+  }, [])
+
+  const fetchCustomers = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/api/customers')
+      const data = await response.json()
+      setExistingCustomers(data)
+    } catch (error) {
+      console.error('Error fetching customers:', error)
+    }
+  }
+
+  const fetchInventory = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/api/inventory')
+      const data = await response.json()
+      setAvailableItems(data)
+      setLoading(false)
+    } catch (error) {
+      console.error('Error fetching inventory:', error)
+      setLoading(false)
+    }
+  }
+
   const addItemToOrder = (item) => {
-    const existing = orderItems.find(i => i.id === item.id)
+    const existing = orderItems.find(i => i.item_id === item.item_id)
     if (existing) {
       setOrderItems(orderItems.map(i => 
-        i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+        i.item_id === item.item_id ? { ...i, quantity: i.quantity + 1 } : i
       ))
     } else {
-      setOrderItems([...orderItems, { ...item, quantity: 1 }])
+      setOrderItems([...orderItems, { 
+        ...item, 
+        quantity: 1,
+        price: parseFloat(item.unit_price)
+      }])
     }
   }
 
   const removeItemFromOrder = (itemId) => {
-    setOrderItems(orderItems.filter(i => i.id !== itemId))
+    setOrderItems(orderItems.filter(i => i.item_id !== itemId))
   }
 
   const updateQuantity = (itemId, newQuantity) => {
@@ -40,7 +60,7 @@ function PlaceOrder() {
       removeItemFromOrder(itemId)
     } else {
       setOrderItems(orderItems.map(i => 
-        i.id === itemId ? { ...i, quantity: newQuantity } : i
+        i.item_id === itemId ? { ...i, quantity: newQuantity } : i
       ))
     }
   }
@@ -88,6 +108,7 @@ function PlaceOrder() {
               <select 
                 value={selectedCustomer}
                 onChange={(e) => setSelectedCustomer(e.target.value)}
+                disabled={loading}
                 style={{ 
                   width: '100%',
                   padding: '0.5rem',
@@ -95,13 +116,14 @@ function PlaceOrder() {
                   borderColor: '#808080 #ebebeb #ebebeb #808080',
                   fontSize: '0.875rem',
                   marginBottom: '1rem',
-                  fontFamily: 'MS Sans Serif, sans-serif'
+                  fontFamily: 'MS Sans Serif, sans-serif',
+                  opacity: loading ? 0.6 : 1
                 }}
               >
-                <option value="">-- Select a customer --</option>
+                <option value="">{loading ? '-- Loading customers... --' : '-- Select a customer --'}</option>
                 {existingCustomers.map(customer => (
-                  <option key={customer.id} value={customer.id}>
-                    {customer.name} ({customer.email})
+                  <option key={customer.customer_id} value={customer.customer_id}>
+                    {customer.company_name} ({customer.email})
                   </option>
                 ))}
               </select>
@@ -203,7 +225,7 @@ function PlaceOrder() {
               fontWeight: 'bold',
               fontSize: '0.875rem'
             }}>
-              3. Payment Information
+              2. Payment Information
             </div>
             <div style={{ padding: '1rem', background: 'white' }}>
               <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
@@ -298,63 +320,73 @@ function PlaceOrder() {
                 fontWeight: 'bold',
                 fontSize: '0.875rem'
               }}>
-                2. Available Inventory
+                3. Available Inventory
               </div>
               <div style={{ padding: '1rem', background: 'white' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '0.75rem' }}>
-                  {availableItems.map(item => (
-                    <div 
-                      key={item.id}
-                      style={{ 
-                        padding: '0.75rem',
-                        background: '#f0f0f0',
-                        border: '2px solid',
-                        borderColor: '#ebebeb #808080 #808080 #ebebeb'
-                      }}
-                    >
-                      <h4 style={{ 
-                        margin: '0 0 0.5rem 0', 
-                        fontSize: '0.875rem',
-                        fontWeight: 'bold',
-                        color: '#000080'
-                      }}>
-                        {item.name}
-                      </h4>
-                      <p style={{ 
-                        margin: '0 0 0.25rem 0', 
-                        fontSize: '0.875rem',
-                        fontWeight: 'bold'
-                      }}>
-                        ${item.price.toFixed(2)}
-                      </p>
-                      <p style={{ 
-                        margin: '0 0 0.5rem 0', 
-                        fontSize: '0.75rem', 
-                        color: '#808080' 
-                      }}>
-                        Stock: {item.stock}
-                      </p>
-                      <button 
-                        onClick={() => addItemToOrder(item)}
+                {loading ? (
+                  <p style={{ textAlign: 'center', padding: '2rem', color: '#808080', fontSize: '0.875rem' }}>
+                    Loading inventory...
+                  </p>
+                ) : availableItems.length === 0 ? (
+                  <p style={{ textAlign: 'center', padding: '2rem', color: '#808080', fontSize: '0.875rem' }}>
+                    No inventory items available
+                  </p>
+                ) : (
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '0.75rem' }}>
+                    {availableItems.map(item => (
+                      <div 
+                        key={item.item_id}
                         style={{ 
-                          width: '100%',
-                          padding: '0.4rem',
-                          background: '#c0c0c0',
+                          padding: '0.75rem',
+                          background: '#f0f0f0',
                           border: '2px solid',
-                          borderColor: '#ebebeb #000000 #000000 #ebebeb',
-                          cursor: 'pointer',
-                          fontWeight: 'bold',
-                          fontSize: '0.75rem',
-                          fontFamily: 'MS Sans Serif, sans-serif'
+                          borderColor: '#ebebeb #808080 #808080 #ebebeb'
                         }}
-                        onMouseDown={(e) => e.target.style.borderColor = '#000000 #ebebeb #ebebeb #000000'}
-                        onMouseUp={(e) => e.target.style.borderColor = '#ebebeb #000000 #000000 #ebebeb'}
                       >
-                        + Add
-                      </button>
-                    </div>
-                  ))}
-                </div>
+                        <h4 style={{ 
+                          margin: '0 0 0.5rem 0', 
+                          fontSize: '0.875rem',
+                          fontWeight: 'bold',
+                          color: '#000080'
+                        }}>
+                          {item.item_name}
+                        </h4>
+                        <p style={{ 
+                          margin: '0 0 0.25rem 0', 
+                          fontSize: '0.875rem',
+                          fontWeight: 'bold'
+                        }}>
+                          ${parseFloat(item.unit_price).toFixed(2)}
+                        </p>
+                        <p style={{ 
+                          margin: '0 0 0.5rem 0', 
+                          fontSize: '0.75rem', 
+                          color: '#808080' 
+                        }}>
+                          Stock: {item.quantity_in_stock}
+                        </p>
+                        <button 
+                          onClick={() => addItemToOrder(item)}
+                          style={{ 
+                            width: '100%',
+                            padding: '0.4rem',
+                            background: '#c0c0c0',
+                            border: '2px solid',
+                            borderColor: '#ebebeb #000000 #000000 #ebebeb',
+                            cursor: 'pointer',
+                            fontWeight: 'bold',
+                            fontSize: '0.75rem',
+                            fontFamily: 'MS Sans Serif, sans-serif'
+                          }}
+                          onMouseDown={(e) => e.target.style.borderColor = '#000000 #ebebeb #ebebeb #000000'}
+                          onMouseUp={(e) => e.target.style.borderColor = '#ebebeb #000000 #000000 #ebebeb'}
+                        >
+                          + Add
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -394,7 +426,7 @@ function PlaceOrder() {
                 ) : (
                   orderItems.map(item => (
                     <div 
-                      key={item.id}
+                      key={item.item_id}
                       style={{ 
                         padding: '0.5rem',
                         background: '#f0f0f0',
@@ -408,7 +440,7 @@ function PlaceOrder() {
                         fontSize: '0.875rem',
                         marginBottom: '0.25rem'
                       }}>
-                        {item.name}
+                        {item.item_name}
                       </div>
                       <div style={{ 
                         fontSize: '0.75rem', 
@@ -421,9 +453,9 @@ function PlaceOrder() {
                         <input 
                           type="number"
                           value={item.quantity}
-                          onChange={(e) => updateQuantity(item.id, parseInt(e.target.value))}
+                          onChange={(e) => updateQuantity(item.item_id, parseInt(e.target.value))}
                           min="1"
-                          max={item.stock}
+                          max={item.quantity_in_stock}
                           style={{ 
                             width: '50px',
                             padding: '0.25rem',
@@ -435,7 +467,7 @@ function PlaceOrder() {
                           }}
                         />
                         <button 
-                          onClick={() => removeItemFromOrder(item.id)}
+                          onClick={() => removeItemFromOrder(item.item_id)}
                           style={{ 
                             padding: '0.25rem 0.5rem',
                             background: '#c0c0c0',
