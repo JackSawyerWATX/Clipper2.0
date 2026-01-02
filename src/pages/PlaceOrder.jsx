@@ -16,7 +16,7 @@ function PlaceOrder() {
 
   const fetchCustomers = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/customers')
+      const response = await fetch('http://localhost:5000/api/customers')
       const data = await response.json()
       setExistingCustomers(data)
     } catch (error) {
@@ -26,7 +26,7 @@ function PlaceOrder() {
 
   const fetchInventory = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/inventory')
+      const response = await fetch('http://localhost:5000/api/inventory')
       const data = await response.json()
       setAvailableItems(data)
       setLoading(false)

@@ -25,8 +25,8 @@ function Orders() {
   const fetchOrders = async () => {
     try {
       setLoading(true)
-      console.log('Fetching orders from:', 'http://localhost:3000/api/orders')
-      const response = await fetch('http://localhost:3000/api/orders')
+      console.log('Fetching orders from:', 'http://localhost:5000/api/orders')
+      const response = await fetch('http://localhost:5000/api/orders')
       console.log('Response status:', response.status)
       if (!response.ok) throw new Error('Failed to fetch orders')
       const data = await response.json()
@@ -57,7 +57,7 @@ function Orders() {
     
     try {
       // Fetch order items for this specific order
-      const response = await fetch(`http://localhost:3000/api/customer-orders/order/${order.order_id}`)
+      const response = await fetch(`http://localhost:5000/api/customer-orders/order/${order.order_id}`)
       if (response.ok) {
         const items = await response.json()
         setOrderDetails(items)
@@ -103,7 +103,7 @@ function Orders() {
     
     try {
       // Fetch order items
-      const response = await fetch(`http://localhost:3000/api/customer-orders/order/${order.order_id}`)
+      const response = await fetch(`http://localhost:5000/api/customer-orders/order/${order.order_id}`)
       if (response.ok) {
         const items = await response.json()
         setEditOrderItems(items)
@@ -160,7 +160,7 @@ function Orders() {
       const { subtotal, grandTotal } = calculateTotals()
       
       // Update order
-      const orderResponse = await fetch(`http://localhost:3000/api/orders/${selectedOrder.order_id}`, {
+      const orderResponse = await fetch(`http://localhost:5000/api/orders/${selectedOrder.order_id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -174,7 +174,7 @@ function Orders() {
 
       // Update order items
       for (const item of editOrderItems) {
-        const itemResponse = await fetch(`http://localhost:3000/api/customer-orders/${item.order_item_id}`, {
+        const itemResponse = await fetch(`http://localhost:5000/api/customer-orders/${item.order_item_id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -238,13 +238,13 @@ function Orders() {
 
   const getStatusColor = (status) => {
     const colors = {
-      'Completed': { bg: '#d4edda', text: '#155724' },
-      'Processing': { bg: '#fff3cd', text: '#856404' },
-      'Shipped': { bg: '#d1ecf1', text: '#0c5460' },
-      'Pending': { bg: '#f8d7da', text: '#721c24' },
-      'Cancelled': { bg: '#e2e3e5', text: '#383d41' }
+      'Completed': { bg: '#00ff00', text: '#000000' },
+      'Processing': { bg: '#ffff00', text: '#000000' },
+      'Shipped': { bg: '#00ffff', text: '#000000' },
+      'Pending': { bg: '#c0c0c0', text: '#000000' },
+      'Cancelled': { bg: '#ff0000', text: '#ffffff' }
     }
-    return colors[status] || { bg: '#f8f9fa', text: '#212529' }
+    return colors[status] || { bg: '#c0c0c0', text: '#000000' }
   }
 
   if (loading) {
@@ -417,6 +417,7 @@ function Orders() {
                     </td>
                     <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>
                       <span style={{ 
+                        display: 'inline-block',
                         padding: '0.2rem 0.5rem',
                         fontSize: '0.75rem',
                         fontWeight: 'bold',
