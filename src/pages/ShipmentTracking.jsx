@@ -67,14 +67,14 @@ function ShipmentTracking() {
 
   const getStatusColor = (status) => {
     const colors = {
-      'Delivered': { bg: '#d4edda', text: '#155724' },
-      'Shipped': { bg: '#d1ecf1', text: '#0c5460' },
-      'In Transit': { bg: '#cfe2ff', text: '#084298' },
-      'Waiting for Carrier Pick Up': { bg: '#fff3cd', text: '#856404' },
-      'Processing': { bg: '#f8d7da', text: '#721c24' },
-      'Pending': { bg: '#e2e3e5', text: '#383d41' }
+      'Delivered': { bg: '#00ff00', text: '#000000' },
+      'Shipped': { bg: '#00ffff', text: '#000000' },
+      'In Transit': { bg: '#0000ff', text: '#ffffff' },
+      'Waiting for Carrier Pick Up': { bg: '#ffff00', text: '#000000' },
+      'Processing': { bg: '#ff00ff', text: '#000000' },
+      'Pending': { bg: '#c0c0c0', text: '#000000' }
     }
-    return colors[status] || { bg: '#f8f9fa', text: '#212529' }
+    return colors[status] || { bg: '#c0c0c0', text: '#000000' }
   }
 
   const getStatusProgress = (status) => {
@@ -93,15 +93,20 @@ function ShipmentTracking() {
     <div className="page">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
         <h1>Shipment Tracking</h1>
-        <button style={{ 
-          padding: '0.75rem 1.5rem', 
-          background: '#61dafb', 
-          border: 'none', 
-          borderRadius: '4px',
-          cursor: 'pointer',
-          fontWeight: 'bold',
-          color: '#282c34'
-        }}>
+        <button 
+          onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
+          onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
+          style={{ 
+            padding: '0.5rem 1.5rem', 
+            background: '#c0c0c0', 
+            border: '2px solid',
+            borderColor: '#ffffff #000000 #000000 #ffffff',
+            cursor: 'pointer',
+            fontWeight: 'bold',
+            fontFamily: 'MS Sans Serif, sans-serif',
+            fontSize: '0.875rem'
+          }}
+        >
           + Create New Shipment
         </button>
       </div>
@@ -111,19 +116,23 @@ function ShipmentTracking() {
           type="text" 
           placeholder="Search by tracking number, order ID, or customer..." 
           style={{ 
-            padding: '0.75rem', 
+            padding: '0.5rem', 
             flex: '1',
             minWidth: '300px',
-            border: '1px solid #ddd',
-            borderRadius: '4px',
-            fontSize: '1rem'
+            border: '2px solid',
+            borderColor: '#808080 #ebebeb #ebebeb #808080',
+            fontSize: '1rem',
+            fontFamily: 'MS Sans Serif, sans-serif',
+            background: '#ffffff'
           }}
         />
         <select style={{ 
-          padding: '0.75rem',
-          border: '1px solid #ddd',
-          borderRadius: '4px',
+          padding: '0.5rem',
+          border: '2px solid',
+          borderColor: '#808080 #ebebeb #ebebeb #808080',
           fontSize: '1rem',
+          fontFamily: 'MS Sans Serif, sans-serif',
+          background: '#ffffff',
           cursor: 'pointer'
         }}>
           <option value="">All Statuses</option>
@@ -135,10 +144,12 @@ function ShipmentTracking() {
           <option value="delivered">Delivered</option>
         </select>
         <select style={{ 
-          padding: '0.75rem',
-          border: '1px solid #ddd',
-          borderRadius: '4px',
+          padding: '0.5rem',
+          border: '2px solid',
+          borderColor: '#808080 #ebebeb #ebebeb #808080',
           fontSize: '1rem',
+          fontFamily: 'MS Sans Serif, sans-serif',
+          background: '#ffffff',
           cursor: 'pointer'
         }}>
           <option value="">All Carriers</option>
@@ -149,61 +160,100 @@ function ShipmentTracking() {
         </select>
       </div>
 
-      <div style={{ overflowX: 'auto' }}>
+      <div style={{ 
+        overflowX: 'auto',
+        border: '2px solid',
+        borderColor: '#808080 #ffffff #ffffff #808080',
+        background: 'white'
+      }}>
         <table style={{ 
           width: '100%', 
           borderCollapse: 'collapse',
           background: 'white',
-          boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+          fontFamily: 'MS Sans Serif, sans-serif',
+          fontSize: '0.875rem'
         }}>
           <thead>
-            <tr style={{ background: '#f8f9fa', borderBottom: '2px solid #dee2e6' }}>
-              <th style={{ padding: '1rem', textAlign: 'left', fontWeight: '600' }}>Shipment ID</th>
-              <th style={{ padding: '1rem', textAlign: 'left', fontWeight: '600' }}>Order ID</th>
-              <th style={{ padding: '1rem', textAlign: 'left', fontWeight: '600' }}>Customer</th>
-              <th style={{ padding: '1rem', textAlign: 'left', fontWeight: '600' }}>Carrier</th>
-              <th style={{ padding: '1rem', textAlign: 'left', fontWeight: '600' }}>Tracking Number</th>
-              <th style={{ padding: '1rem', textAlign: 'left', fontWeight: '600' }}>Destination</th>
-              <th style={{ padding: '1rem', textAlign: 'left', fontWeight: '600' }}>Date</th>
-              <th style={{ padding: '1rem', textAlign: 'left', fontWeight: '600' }}>Status</th>
-              <th style={{ padding: '1rem', textAlign: 'left', fontWeight: '600' }}>Actions</th>
+            <tr style={{ 
+              background: '#000080',
+              color: 'white'
+            }}>
+              <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Shipment ID</th>
+              <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Order ID</th>
+              <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Customer</th>
+              <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Carrier</th>
+              <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Tracking Number</th>
+              <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Destination</th>
+              <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Date</th>
+              <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Status</th>
+              <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold' }}>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {shipments.map((shipment) => {
+            {shipments.map((shipment, index) => {
               const statusColors = getStatusColor(shipment.status)
               const progress = getStatusProgress(shipment.status)
+              const isEvenRow = index % 2 === 0
               return (
-                <tr key={shipment.id} style={{ borderBottom: '1px solid #dee2e6' }}>
-                  <td style={{ padding: '1rem', fontWeight: '500' }}>{shipment.id}</td>
-                  <td style={{ padding: '1rem', color: '#0d6efd' }}>{shipment.orderId}</td>
-                  <td style={{ padding: '1rem' }}>{shipment.customer}</td>
-                  <td style={{ padding: '1rem' }}>
+                <tr key={shipment.id} style={{ 
+                  background: isEvenRow ? 'white' : '#f0f0f0',
+                  borderBottom: '1px solid #c0c0c0'
+                }}>
+                  <td style={{ 
+                    padding: '0.5rem',
+                    fontWeight: 'bold',
+                    color: '#000080',
+                    borderRight: '1px solid #c0c0c0'
+                  }}>
+                    {shipment.id}
+                  </td>
+                  <td style={{ 
+                    padding: '0.5rem',
+                    fontWeight: 'bold',
+                    borderRight: '1px solid #c0c0c0'
+                  }}>
+                    {shipment.orderId}
+                  </td>
+                  <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>
+                    {shipment.customer}
+                  </td>
+                  <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>
                     <span style={{ 
-                      padding: '0.25rem 0.5rem',
-                      background: '#f8f9fa',
-                      borderRadius: '4px',
-                      fontSize: '0.875rem',
-                      fontWeight: '500'
+                      padding: '0.2rem 0.5rem',
+                      background: '#c0c0c0',
+                      border: '1px solid',
+                      borderColor: '#ffffff #000000 #000000 #ffffff',
+                      fontSize: '0.75rem',
+                      fontWeight: 'bold'
                     }}>
                       {shipment.carrier}
                     </span>
                   </td>
-                  <td style={{ padding: '1rem', fontFamily: 'monospace', fontSize: '0.875rem' }}>
+                  <td style={{ 
+                    padding: '0.5rem',
+                    fontFamily: 'Courier New, monospace',
+                    fontSize: '0.75rem',
+                    borderRight: '1px solid #c0c0c0'
+                  }}>
                     {shipment.trackingNumber}
                   </td>
-                  <td style={{ padding: '1rem' }}>{shipment.destination}</td>
-                  <td style={{ padding: '1rem' }}>{shipment.date}</td>
-                  <td style={{ padding: '1rem' }}>
+                  <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>
+                    {shipment.destination}
+                  </td>
+                  <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>
+                    {shipment.date}
+                  </td>
+                  <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>
                     <div>
                       <span style={{ 
                         display: 'inline-block',
-                        padding: '0.25rem 0.75rem',
-                        borderRadius: '12px',
-                        fontSize: '0.875rem',
-                        fontWeight: '500',
+                        padding: '0.2rem 0.5rem',
+                        fontSize: '0.75rem',
+                        fontWeight: 'bold',
                         background: statusColors.bg,
                         color: statusColors.text,
+                        border: '1px solid',
+                        borderColor: statusColors.text,
                         marginBottom: '0.25rem'
                       }}>
                         {shipment.status}
@@ -211,8 +261,9 @@ function ShipmentTracking() {
                       <div style={{ 
                         width: '100%',
                         height: '4px',
-                        background: '#e9ecef',
-                        borderRadius: '2px',
+                        background: '#808080',
+                        border: '1px solid',
+                        borderColor: '#808080 #ffffff #ffffff #808080',
                         overflow: 'hidden'
                       }}>
                         <div style={{ 
@@ -224,26 +275,36 @@ function ShipmentTracking() {
                       </div>
                     </div>
                   </td>
-                  <td style={{ padding: '1rem' }}>
-                    <button style={{ 
-                      padding: '0.5rem 1rem', 
-                      marginRight: '0.5rem',
-                      background: '#f8f9fa',
-                      border: '1px solid #dee2e6',
-                      borderRadius: '4px',
-                      cursor: 'pointer',
-                      fontSize: '0.875rem'
-                    }}>
+                  <td style={{ padding: '0.5rem' }}>
+                    <button 
+                      onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
+                      onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
+                      style={{ 
+                        padding: '0.25rem 0.75rem',
+                        marginRight: '0.25rem',
+                        background: '#c0c0c0',
+                        border: '2px solid',
+                        borderColor: '#ffffff #000000 #000000 #ffffff',
+                        cursor: 'pointer',
+                        fontSize: '0.75rem',
+                        fontFamily: 'MS Sans Serif, sans-serif'
+                      }}
+                    >
                       Track
                     </button>
-                    <button style={{ 
-                      padding: '0.5rem 1rem',
-                      background: '#f8f9fa',
-                      border: '1px solid #dee2e6',
-                      borderRadius: '4px',
-                      cursor: 'pointer',
-                      fontSize: '0.875rem'
-                    }}>
+                    <button 
+                      onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
+                      onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
+                      style={{ 
+                        padding: '0.25rem 0.75rem',
+                        background: '#c0c0c0',
+                        border: '2px solid',
+                        borderColor: '#ffffff #000000 #000000 #ffffff',
+                        cursor: 'pointer',
+                        fontSize: '0.75rem',
+                        fontFamily: 'MS Sans Serif, sans-serif'
+                      }}
+                    >
                       Details
                     </button>
                   </td>
@@ -254,7 +315,13 @@ function ShipmentTracking() {
         </table>
       </div>
 
-      <div style={{ marginTop: '1.5rem', color: '#6c757d', fontSize: '0.875rem' }}>
+      <div style={{ 
+        marginTop: '1rem',
+        padding: '0.5rem',
+        color: '#000000',
+        fontFamily: 'MS Sans Serif, sans-serif',
+        fontSize: '0.875rem'
+      }}>
         Showing {shipments.length} shipments (Database integration pending)
       </div>
     </div>

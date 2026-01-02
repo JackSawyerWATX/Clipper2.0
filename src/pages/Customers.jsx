@@ -426,7 +426,7 @@ function Customers() {
         <div style={{ 
           overflowX: 'auto',
           border: '2px solid',
-          borderColor: '#808080 #ffffff #ffffff #808080',
+          borderColor: '#808080 #ebebeb #ebebeb #808080',
           background: 'white'
         }}>
           <table style={{ 
@@ -827,7 +827,7 @@ function Customers() {
                       width: '100%',
                       padding: '0.4rem',
                       border: '2px solid',
-                      borderColor: '#808080 #ffffff #ffffff #808080',
+                      borderColor: '#808080 #ebebeb #ebebeb #808080',
                       background: '#ffffff',
                       fontSize: '0.9rem',
                       fontFamily: 'MS Sans Serif, Microsoft Sans Serif, sans-serif',
@@ -850,7 +850,7 @@ function Customers() {
                         width: '100%',
                         padding: '0.4rem',
                         border: '2px solid',
-                        borderColor: '#808080 #ffffff #ffffff #808080',
+                        borderColor: '#808080 #ebebeb #ebebeb #808080',
                         background: '#ffffff',
                         fontSize: '0.9rem',
                         fontFamily: 'MS Sans Serif, Microsoft Sans Serif, sans-serif',
@@ -873,7 +873,7 @@ function Customers() {
                       width: '100%',
                       padding: '0.4rem',
                       border: '2px solid',
-                      borderColor: '#808080 #ffffff #ffffff #808080',
+                      borderColor: '#808080 #ebebeb #ebebeb #808080',
                       background: '#ffffff',
                       fontSize: '0.9rem',
                       fontFamily: 'MS Sans Serif, Microsoft Sans Serif, sans-serif',
@@ -897,7 +897,7 @@ function Customers() {
                       width: '100%',
                       padding: '0.4rem',
                       border: '2px solid',
-                      borderColor: '#808080 #ffffff #ffffff #808080',
+                      borderColor: '#808080 #ebebeb #ebebeb #808080',
                       background: '#ffffff',
                       fontSize: '0.9rem',
                       fontFamily: 'MS Sans Serif, Microsoft Sans Serif, sans-serif',
@@ -920,7 +920,7 @@ function Customers() {
                         width: '100%',
                         padding: '0.4rem',
                         border: '2px solid',
-                        borderColor: '#808080 #ffffff #ffffff #808080',
+                        borderColor: '#808080 #ebebeb #ebebeb #808080',
                         background: '#ffffff',
                         fontSize: '0.9rem',
                         fontFamily: 'MS Sans Serif, Microsoft Sans Serif, sans-serif',
@@ -944,7 +944,7 @@ function Customers() {
                           width: '100%',
                           padding: '0.4rem',
                           border: '2px solid',
-                          borderColor: '#808080 #ffffff #ffffff #808080',
+                          borderColor: '#808080 #ebebeb #ebebeb #808080',
                           background: '#ffffff',
                           fontSize: '0.9rem',
                           fontFamily: 'MS Sans Serif, Microsoft Sans Serif, sans-serif',
@@ -967,7 +967,7 @@ function Customers() {
                           width: '100%',
                           padding: '0.4rem',
                           border: '2px solid',
-                          borderColor: '#808080 #ffffff #ffffff #808080',
+                          borderColor: '#808080 #ebebeb #ebebeb #808080',
                           background: '#ffffff',
                           fontSize: '0.9rem',
                           fontFamily: 'MS Sans Serif, Microsoft Sans Serif, sans-serif',
@@ -988,7 +988,7 @@ function Customers() {
                           width: '100%',
                           padding: '0.4rem',
                           border: '2px solid',
-                          borderColor: '#808080 #ffffff #ffffff #808080',
+                          borderColor: '#808080 #ebebeb #ebebeb #808080',
                           background: '#ffffff',
                           fontSize: '0.9rem',
                           fontFamily: 'MS Sans Serif, Microsoft Sans Serif, sans-serif',
@@ -1012,7 +1012,7 @@ function Customers() {
                         width: '100%',
                         padding: '0.4rem',
                         border: '2px solid',
-                        borderColor: '#808080 #ffffff #ffffff #808080',
+                        borderColor: '#808080 #ebebeb #ebebeb #808080',
                         background: '#ffffff',
                         fontSize: '0.9rem',
                         fontFamily: 'MS Sans Serif, Microsoft Sans Serif, sans-serif',
@@ -1035,7 +1035,7 @@ function Customers() {
                           width: '100%',
                           padding: '0.4rem',
                           border: '2px solid',
-                          borderColor: '#808080 #ffffff #ffffff #808080',
+                          borderColor: '#808080 #ebebeb #ebebeb #808080',
                           background: '#ffffff',
                           fontSize: '0.9rem',
                           fontFamily: 'MS Sans Serif, Microsoft Sans Serif, sans-serif',
@@ -1059,7 +1059,7 @@ function Customers() {
                           width: '100%',
                           padding: '0.4rem',
                           border: '2px solid',
-                          borderColor: '#808080 #ffffff #ffffff #808080',
+                          borderColor: '#808080 #ebebeb #ebebeb #808080',
                           background: '#ffffff',
                           fontSize: '0.9rem',
                           fontFamily: 'MS Sans Serif, Microsoft Sans Serif, sans-serif',
@@ -1388,3 +1388,5 @@ function Customers() {
 }
 
 export default Customers
+
+
