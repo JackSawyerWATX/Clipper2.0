@@ -311,7 +311,7 @@ function Orders() {
             flex: '1',
             minWidth: '200px',
             border: '2px solid',
-            borderColor: '#808080 #ffffff #ffffff #808080',
+            borderColor: '#808080 #ebebeb #ebebeb #808080',
             background: 'white',
             fontSize: '0.875rem',
             fontFamily: 'MS Sans Serif, sans-serif'
@@ -323,7 +323,7 @@ function Orders() {
           style={{ 
             padding: '0.4rem 0.5rem',
             border: '2px solid',
-            borderColor: '#808080 #ffffff #ffffff #808080',
+            borderColor: '#808080 #ebebeb #ebebeb #808080',
             background: 'white',
             fontSize: '0.875rem',
             fontFamily: 'MS Sans Serif, sans-serif',
@@ -826,7 +826,7 @@ function Orders() {
                             width: '100%',
                             padding: '0.4rem',
                             border: '2px solid',
-                            borderColor: '#808080 #ffffff #ffffff #808080',
+                            borderColor: '#808080 #ebebeb #ebebeb #808080',
                             fontFamily: 'MS Sans Serif, sans-serif',
                             fontSize: '0.875rem'
                           }}
@@ -844,7 +844,7 @@ function Orders() {
                             width: '100%',
                             padding: '0.4rem',
                             border: '2px solid',
-                            borderColor: '#808080 #ffffff #ffffff #808080',
+                            borderColor: '#808080 #ebebeb #ebebeb #808080',
                             fontFamily: 'MS Sans Serif, sans-serif',
                             fontSize: '0.875rem'
                           }}
@@ -871,7 +871,7 @@ function Orders() {
                             width: '100%',
                             padding: '0.4rem',
                             border: '2px solid',
-                            borderColor: '#808080 #ffffff #ffffff #808080',
+                            borderColor: '#808080 #ebebeb #ebebeb #808080',
                             fontFamily: 'MS Sans Serif, sans-serif',
                             fontSize: '0.875rem'
                           }}
@@ -890,7 +890,7 @@ function Orders() {
                               width: '100%',
                               padding: '0.4rem',
                               border: '2px solid',
-                              borderColor: '#808080 #ffffff #ffffff #808080',
+                              borderColor: '#808080 #ebebeb #ebebeb #808080',
                               fontFamily: 'MS Sans Serif, sans-serif',
                               fontSize: '0.875rem'
                             }}
@@ -908,7 +908,7 @@ function Orders() {
                               width: '100%',
                               padding: '0.4rem',
                               border: '2px solid',
-                              borderColor: '#808080 #ffffff #ffffff #808080',
+                              borderColor: '#808080 #ebebeb #ebebeb #808080',
                               fontFamily: 'MS Sans Serif, sans-serif',
                               fontSize: '0.875rem'
                             }}
@@ -926,7 +926,7 @@ function Orders() {
                               width: '100%',
                               padding: '0.4rem',
                               border: '2px solid',
-                              borderColor: '#808080 #ffffff #ffffff #808080',
+                              borderColor: '#808080 #ebebeb #ebebeb #808080',
                               fontFamily: 'MS Sans Serif, sans-serif',
                               fontSize: '0.875rem'
                             }}
@@ -953,7 +953,7 @@ function Orders() {
                             width: '100%',
                             padding: '0.4rem',
                             border: '2px solid',
-                            borderColor: '#808080 #ffffff #ffffff #808080',
+                            borderColor: '#808080 #ebebeb #ebebeb #808080',
                             fontFamily: 'MS Sans Serif, sans-serif',
                             fontSize: '0.875rem'
                           }}
@@ -976,7 +976,7 @@ function Orders() {
                             width: '100%',
                             padding: '0.4rem',
                             border: '2px solid',
-                            borderColor: '#808080 #ffffff #ffffff #808080',
+                            borderColor: '#808080 #ebebeb #ebebeb #808080',
                             fontFamily: 'MS Sans Serif, sans-serif',
                             fontSize: '0.875rem'
                           }}
@@ -998,7 +998,7 @@ function Orders() {
                             width: '100%',
                             padding: '0.4rem',
                             border: '2px solid',
-                            borderColor: '#808080 #ffffff #ffffff #808080',
+                            borderColor: '#808080 #ebebeb #ebebeb #808080',
                             fontFamily: 'MS Sans Serif, sans-serif',
                             fontSize: '0.875rem'
                           }}
@@ -1049,7 +1049,7 @@ function Orders() {
                                   width: '60px',
                                   padding: '0.25rem',
                                   border: '2px solid',
-                                  borderColor: '#808080 #ffffff #ffffff #808080',
+                                  borderColor: '#808080 #ebebeb #ebebeb #808080',
                                   fontFamily: 'MS Sans Serif, sans-serif',
                                   fontSize: '0.875rem',
                                   textAlign: 'center'
@@ -1066,7 +1066,7 @@ function Orders() {
                                   width: '80px',
                                   padding: '0.25rem',
                                   border: '2px solid',
-                                  borderColor: '#808080 #ffffff #ffffff #808080',
+                                  borderColor: '#808080 #ebebeb #ebebeb #808080',
                                   fontFamily: 'MS Sans Serif, sans-serif',
                                   fontSize: '0.875rem',
                                   textAlign: 'right'
@@ -1120,7 +1120,7 @@ function Orders() {
                             width: '100px',
                             padding: '0.25rem',
                             border: '2px solid',
-                            borderColor: '#808080 #ffffff #ffffff #808080',
+                            borderColor: '#808080 #ebebeb #ebebeb #808080',
                             fontFamily: 'MS Sans Serif, sans-serif',
                             fontSize: '0.875rem',
                             textAlign: 'right',
@@ -1394,3 +1394,4 @@ function Orders() {
 }
 
 export default Orders
+
