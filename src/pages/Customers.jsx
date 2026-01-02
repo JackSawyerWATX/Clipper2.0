@@ -40,7 +40,7 @@ function Customers() {
   const fetchCustomers = async () => {
     try {
       setLoading(true)
-      const url = new URL('http://localhost:3000/api/customers')
+      const url = new URL('http://localhost:5000/api/customers')
       
       const response = await fetch(url)
       if (!response.ok) {
@@ -233,7 +233,7 @@ function Customers() {
     }
 
     try {
-      const response = await fetch(`http://localhost:3000/api/customers/${deletingCustomer.customer_id}`, {
+      const response = await fetch(`http://localhost:5000/api/customers/${deletingCustomer.customer_id}`, {
         method: 'DELETE'
       })
 
@@ -275,7 +275,7 @@ function Customers() {
       let response
       if (editingCustomer) {
         // Update existing customer
-        response = await fetch(`http://localhost:3000/api/customers/${editingCustomer.customer_id}`, {
+        response = await fetch(`http://localhost:5000/api/customers/${editingCustomer.customer_id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -284,7 +284,7 @@ function Customers() {
         })
       } else {
         // Create new customer
-        response = await fetch('http://localhost:3000/api/customers', {
+        response = await fetch('http://localhost:5000/api/customers', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
