@@ -35,27 +35,69 @@ router.get('/:id', async (req, res) => {
 
 // POST create shipment
 router.post('/', async (req, res) => {
+  const connection = await pool.getConnection();
   try {
+    await connection.beginTransaction();
+
     const {
-      order_id, tracking_number, carrier, status, shipped_date,
+      customer_id, carrier, status, shipped_date,
       estimated_delivery, from_location, to_location, notes
     } = req.body;
 
-    const [result] = await pool.query(
+    // Generate next order number
+    const [lastOrder] = await connection.query(
+      'SELECT order_number FROM orders ORDER BY order_id DESC LIMIT 1'
+    );
+    let nextOrderNum = 1001;
+    if (lastOrder.length > 0) {
+      const lastNum = parseInt(lastOrder[0].order_number.replace(/\D/g, ''));
+      nextOrderNum = lastNum + 1;
+    }
+    const orderNumber = `ORD-${nextOrderNum}`;
+
+    // Generate tracking number based on carrier
+    const carrierPrefixes = {
+      'FedEx': 'FDX',
+      'UPS': 'UPS',
+      'USPS': 'USP',
+      'DHL': 'DHL'
+    };
+    const prefix = carrierPrefixes[carrier] || 'TRK';
+    const timestamp = Date.now().toString().slice(-8);
+    const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+    const trackingNumber = `${prefix}${timestamp}${random}`;
+
+    // Create order first
+    const [orderResult] = await connection.query(
+      `INSERT INTO orders (order_number, customer_id, order_date, status, payment_status)
+       VALUES (?, ?, CURDATE(), 'Pending', 'Pending')`,
+      [orderNumber, customer_id]
+    );
+    const orderId = orderResult.insertId;
+
+    // Create shipment
+    const [shipmentResult] = await connection.query(
       `INSERT INTO shipments (order_id, tracking_number, carrier, status, shipped_date,
        estimated_delivery, from_location, to_location, notes)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [order_id, tracking_number, carrier, status, shipped_date, estimated_delivery,
-       from_location, to_location, notes]
+      [orderId, trackingNumber, carrier, status || 'Pending', shipped_date, 
+       estimated_delivery, from_location, to_location, notes]
     );
+
+    await connection.commit();
 
     res.status(201).json({ 
       message: 'Shipment created successfully',
-      shipment_id: result.insertId 
+      shipment_id: shipmentResult.insertId,
+      order_number: orderNumber,
+      tracking_number: trackingNumber
     });
   } catch (error) {
+    await connection.rollback();
     console.error('Error creating shipment:', error);
     res.status(500).json({ error: 'Failed to create shipment' });
+  } finally {
+    connection.release();
   }
 });
 
