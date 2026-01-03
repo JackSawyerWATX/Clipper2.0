@@ -1,0 +1,93 @@
+-- Sample Suppliers Data for Clipper 2.0
+-- 78 supplier companies with complete information
+
+USE clipper_db;
+
+-- Clear existing supplier data (optional - comment out if you want to keep existing data)
+-- DELETE FROM suppliers;
+
+-- Insert 78 sample suppliers
+INSERT INTO suppliers (company_name, contact_person, email, phone, address_street, address_city, address_state, address_zip, address_country, status) VALUES
+('Global Supply Co.', 'John Smith', 'john.smith@globalsupply.com', '555-0100', '123 Industrial Park Drive', 'Austin', 'TX', '78701', 'USA', 'Active'),
+('Premier Manufacturing Inc.', 'Sarah Johnson', 'sarah.johnson@premiermfg.com', '555-0200', '456 Factory Lane', 'Detroit', 'MI', '48201', 'USA', 'Active'),
+('Pacific Imports LLC', 'Michael Chen', 'michael.chen@pacificimports.com', '555-0300', '789 Harbor Boulevard', 'San Francisco', 'CA', '94102', 'USA', 'Active'),
+('Atlantic Wholesale Group', 'Emily Davis', 'emily.davis@atlanticwholesale.com', '555-0400', '321 Commerce Street', 'Boston', 'MA', '02101', 'USA', 'Active'),
+('Midwest Parts Distributors', 'Robert Wilson', 'robert.wilson@midwestparts.com', '555-0500', '654 Distribution Center Road', 'Chicago', 'IL', '60601', 'USA', 'Active'),
+('Southern Materials Corp', 'Jennifer Martinez', 'jennifer.martinez@southernmaterials.com', '555-0600', '987 Logistics Way', 'Atlanta', 'GA', '30301', 'USA', 'Active'),
+('Northern Tech Supplies', 'David Anderson', 'david.anderson@northerntech.com', '555-0700', '147 Technology Drive', 'Seattle', 'WA', '98101', 'USA', 'Active'),
+('Eastern Components Ltd', 'Lisa Thompson', 'lisa.thompson@easterncomponents.com', '555-0800', '258 Component Circle', 'Philadelphia', 'PA', '19101', 'USA', 'Active'),
+('Rocky Mountain Suppliers', 'James Garcia', 'james.garcia@rockymtn.com', '555-0900', '369 Mountain View Avenue', 'Denver', 'CO', '80201', 'USA', 'Active'),
+('Sunshine State Distributors', 'Maria Rodriguez', 'maria.rodriguez@sunshinestate.com', '555-1000', '741 Palm Beach Road', 'Miami', 'FL', '33101', 'USA', 'Active'),
+('Great Lakes Manufacturing', 'Christopher Lee', 'christopher.lee@greatlakes.com', '555-1100', '852 Lakeshore Drive', 'Milwaukee', 'WI', '53201', 'USA', 'Active'),
+('Desert Southwest Supply', 'Patricia White', 'patricia.white@desertsouthwest.com', '555-1200', '963 Canyon Ridge Parkway', 'Phoenix', 'AZ', '85001', 'USA', 'Active'),
+('Coastal Trading Company', 'Daniel Harris', 'daniel.harris@coastaltrading.com', '555-1300', '159 Waterfront Plaza', 'San Diego', 'CA', '92101', 'USA', 'Active'),
+('Metropolitan Materials Inc', 'Nancy Clark', 'nancy.clark@metromaterials.com', '555-1400', '357 Metro Center Boulevard', 'New York', 'NY', '10001', 'USA', 'Active'),
+('Heartland Wholesale Corp', 'Mark Lewis', 'mark.lewis@heartlandwholesale.com', '555-1500', '753 Prairie Vista Lane', 'Kansas City', 'MO', '64101', 'USA', 'Active'),
+('Cascade Supply Chain', 'Barbara Robinson', 'barbara.robinson@cascadesupply.com', '555-1600', '951 Cascade Loop', 'Portland', 'OR', '97201', 'USA', 'Active'),
+('Appalachian Parts Network', 'Steven Walker', 'steven.walker@appalachianparts.com', '555-1700', '246 Mountain Hollow Road', 'Charlotte', 'NC', '28201', 'USA', 'Active'),
+('Gulf Coast Distributors', 'Susan Young', 'susan.young@gulfcoast.com', '555-1800', '468 Bayfront Street', 'Houston', 'TX', '77001', 'USA', 'Active'),
+('Lone Star Suppliers', 'Thomas Allen', 'thomas.allen@lonestar.com', '555-1900', '135 Texas Avenue', 'Dallas', 'TX', '75201', 'USA', 'Active'),
+('New England Trading Post', 'Jessica King', 'jessica.king@newenglandtrading.com', '555-2000', '579 Colonial Way', 'Providence', 'RI', '02901', 'USA', 'Active'),
+('Sunbelt Industrial Supply', 'Joseph Wright', 'joseph.wright@sunbelt.com', '555-2100', '864 Industrial Boulevard', 'Nashville', 'TN', '37201', 'USA', 'Active'),
+('Plains States Wholesale', 'Karen Hill', 'karen.hill@plainsstates.com', '555-2200', '972 Grain Elevator Road', 'Omaha', 'NE', '68101', 'USA', 'Active'),
+('Bayou Manufacturing Group', 'Charles Scott', 'charles.scott@bayoumfg.com', '555-2300', '186 Bayou Bend Drive', 'New Orleans', 'LA', '70112', 'USA', 'Active'),
+('Mountain Valley Supplies', 'Michelle Green', 'michelle.green@mountainvalley.com', '555-2400', '394 Valley Ridge Parkway', 'Salt Lake City', 'UT', '84101', 'USA', 'Active'),
+('Great Plains Distributors', 'Paul Adams', 'paul.adams@greatplains.com', '555-2500', '507 Plains Highway', 'Oklahoma City', 'OK', '73101', 'USA', 'Active'),
+('Pacific Northwest Trading', 'Linda Baker', 'linda.baker@pnwtrading.com', '555-2600', '618 Rainforest Avenue', 'Spokane', 'WA', '99201', 'USA', 'Active'),
+('Bluegrass Supply Company', 'Brian Nelson', 'brian.nelson@bluegrass.com', '555-2700', '729 Derby Lane', 'Louisville', 'KY', '40201', 'USA', 'Active'),
+('Frontier Materials Corp', 'Rebecca Carter', 'rebecca.carter@frontiermaterials.com', '555-2800', '831 Pioneer Trail', 'Billings', 'MT', '59101', 'USA', 'Active'),
+('Copper State Wholesalers', 'George Mitchell', 'george.mitchell@copperstate.com', '555-2900', '942 Copper Mine Road', 'Tucson', 'AZ', '85701', 'USA', 'Active'),
+('Keystone Parts & Supply', 'Sandra Perez', 'sandra.perez@keystoneparts.com', '555-3000', '153 Liberty Bell Plaza', 'Pittsburgh', 'PA', '15201', 'USA', 'Active'),
+('Golden State Manufacturers', 'Kevin Roberts', 'kevin.roberts@goldenstate.com', '555-3100', '264 Silicon Valley Way', 'San Jose', 'CA', '95101', 'USA', 'Active'),
+('Magnolia Trading Partners', 'Carol Turner', 'carol.turner@magnoliatrading.com', '555-3200', '375 Magnolia Boulevard', 'Jackson', 'MS', '39201', 'USA', 'Active'),
+('Granite State Supply Co', 'Ronald Phillips', 'ronald.phillips@granitestate.com', '555-3300', '486 Granite Quarry Road', 'Concord', 'NH', '03301', 'USA', 'Active'),
+('Prairie Wind Distributors', 'Donna Campbell', 'donna.campbell@prairiewind.com', '555-3400', '597 Windmill Lane', 'Wichita', 'KS', '67201', 'USA', 'Active'),
+('Sunshine Manufacturing Inc', 'Jason Parker', 'jason.parker@sunshinemfg.com', '555-3500', '608 Sunny Vista Drive', 'Orlando', 'FL', '32801', 'USA', 'Active'),
+('Liberty Industrial Group', 'Ruth Evans', 'ruth.evans@libertyindustrial.com', '555-3600', '719 Freedom Way', 'Newark', 'NJ', '07101', 'USA', 'Active'),
+('Pioneer Supply Network', 'Raymond Edwards', 'raymond.edwards@pioneersupply.com', '555-3700', '820 Oregon Trail Road', 'Boise', 'ID', '83701', 'USA', 'Active'),
+('Palmetto State Materials', 'Sharon Collins', 'sharon.collins@palmettostate.com', '555-3800', '931 Palmetto Grove Avenue', 'Columbia', 'SC', '29201', 'USA', 'Active'),
+('Buckeye Manufacturing Co', 'Gregory Stewart', 'gregory.stewart@buckeyemfg.com', '555-3900', '142 Buckeye Boulevard', 'Columbus', 'OH', '43201', 'USA', 'Active'),
+('Hoosier Wholesale Partners', 'Deborah Morris', 'deborah.morris@hoosierwholesale.com', '555-4000', '253 Hoosier Highway', 'Indianapolis', 'IN', '46201', 'USA', 'Active'),
+('Hawkeye Supply Company', 'Kenneth Rogers', 'kenneth.rogers@hawkeyesupply.com', '555-4100', '364 Cornfield Road', 'Des Moines', 'IA', '50301', 'USA', 'Active'),
+('Evergreen Trading Corp', 'Betty Reed', 'betty.reed@evergreentrading.com', '555-4200', '475 Evergreen Forest Way', 'Olympia', 'WA', '98501', 'USA', 'Active'),
+('Peach State Distributors', 'Larry Cook', 'larry.cook@peachstate.com', '555-4300', '586 Peach Orchard Lane', 'Savannah', 'GA', '31401', 'USA', 'Active'),
+('Wolverine Parts Supply', 'Janet Morgan', 'janet.morgan@wolverineparts.com', '555-4400', '697 Automotive Drive', 'Lansing', 'MI', '48901', 'USA', 'Active'),
+('Badger State Materials', 'Terry Bell', 'terry.bell@badgerstate.com', '555-4500', '708 Dairy Farm Road', 'Madison', 'WI', '53701', 'USA', 'Active'),
+('Silver State Suppliers Inc', 'Gerald Murphy', 'gerald.murphy@silverstate.com', '555-4600', '819 Casino Boulevard', 'Las Vegas', 'NV', '89101', 'USA', 'Active'),
+('Volunteer State Trading', 'Judith Bailey', 'judith.bailey@volunteerstate.com', '555-4700', '920 Music City Plaza', 'Memphis', 'TN', '38101', 'USA', 'Active'),
+('Diamond State Supply Co', 'Lawrence Rivera', 'lawrence.rivera@diamondstate.com', '555-4800', '131 First State Avenue', 'Wilmington', 'DE', '19801', 'USA', 'Active'),
+('Razorback Manufacturing', 'Katherine Cooper', 'katherine.cooper@razorback.com', '555-4900', '242 Razorback Ridge', 'Little Rock', 'AR', '72201', 'USA', 'Active'),
+('Pelican State Materials', 'Willie Richardson', 'willie.richardson@pelicanstate.com', '555-5000', '353 Bayou Trading Post', 'Baton Rouge', 'LA', '70801', 'USA', 'Active'),
+('Beehive Wholesale Group', 'Alice Cox', 'alice.cox@beehivewholesale.com', '555-5100', '464 Beehive Boulevard', 'Provo', 'UT', '84601', 'USA', 'Active'),
+('Sooner State Supplies', 'Harold Howard', 'harold.howard@soonerstate.com', '555-5200', '575 Sooner Avenue', 'Tulsa', 'OK', '74101', 'USA', 'Active'),
+('Pine Tree Distributors', 'Virginia Ward', 'virginia.ward@pinetree.com', '555-5300', '686 Pine Forest Road', 'Portland', 'ME', '04101', 'USA', 'Active'),
+('Ocean State Trading', 'Henry Torres', 'henry.torres@oceanstate.com', '555-5400', '797 Newport Harbor Way', 'Warwick', 'RI', '02886', 'USA', 'Active'),
+('Empire State Supply Co', 'Theresa Peterson', 'theresa.peterson@empirestate.com', '555-5500', '808 Empire Plaza', 'Albany', 'NY', '12201', 'USA', 'Active'),
+('Tar Heel Manufacturing', 'Walter Gray', 'walter.gray@tarheel.com', '555-5600', '919 Tar Heel Parkway', 'Raleigh', 'NC', '27601', 'USA', 'Active'),
+('Yellowhammer Materials Inc', 'Gloria Ramirez', 'gloria.ramirez@yellowhammer.com', '555-5700', '130 Cotton Gin Road', 'Birmingham', 'AL', '35201', 'USA', 'Active'),
+('Cornhusker Supply Network', 'Carl James', 'carl.james@cornhusker.com', '555-5800', '241 Cornhusker Highway', 'Lincoln', 'NE', '68501', 'USA', 'Active'),
+('Sunflower State Trading', 'Teresa Watson', 'teresa.watson@sunflowerstate.com', '555-5900', '352 Sunflower Fields Road', 'Topeka', 'KS', '66601', 'USA', 'Active'),
+('Green Mountain Suppliers', 'Arthur Brooks', 'arthur.brooks@greenmountain.com', '555-6000', '463 Maple Syrup Lane', 'Burlington', 'VT', '05401', 'USA', 'Active'),
+('Aloha Trading Company', 'Julie Kelly', 'julie.kelly@alohatrading.com', '555-6100', '574 Pineapple Grove Avenue', 'Honolulu', 'HI', '96801', 'USA', 'Active'),
+('Last Frontier Supply Co', 'Roy Sanders', 'roy.sanders@lastfrontier.com', '555-6200', '685 Glacier Bay Road', 'Anchorage', 'AK', '99501', 'USA', 'Active'),
+('Equality State Materials', 'Jacqueline Price', 'jacqueline.price@equalitystate.com', '555-6300', '796 Buffalo Plains Trail', 'Cheyenne', 'WY', '82001', 'USA', 'Active'),
+('Constitution State Supply', 'Russell Bennett', 'russell.bennett@constitutionstate.com', '555-6400', '807 Constitution Plaza', 'Hartford', 'CT', '06101', 'USA', 'Active'),
+('Mount Rushmore Trading', 'Frances Wood', 'frances.wood@mtrushmore.com', '555-6500', '918 Presidential Avenue', 'Sioux Falls', 'SD', '57101', 'USA', 'Active'),
+('Treasure State Distributors', 'Eugene Barnes', 'eugene.barnes@treasurestate.com', '555-6600', '129 Mining District Road', 'Helena', 'MT', '59601', 'USA', 'Active'),
+('Flickertail Supply Group', 'Marie Ross', 'marie.ross@flickertail.com', '555-6700', '230 Prairie Dog Lane', 'Fargo', 'ND', '58101', 'USA', 'Active'),
+('Sagebrush State Materials', 'Louis Henderson', 'louis.henderson@sagebrush.com', '555-6800', '341 Desert Vista Boulevard', 'Reno', 'NV', '89501', 'USA', 'Active'),
+('Centennial State Trading', 'Marilyn Coleman', 'marilyn.coleman@centennialstate.com', '555-6900', '452 Rocky Peak Parkway', 'Colorado Springs', 'CO', '80901', 'USA', 'Active'),
+('Land of Enchantment Supply', 'Philip Jenkins', 'philip.jenkins@landofenchantment.com', '555-7000', '563 Adobe Ridge Road', 'Albuquerque', 'NM', '87101', 'USA', 'Active'),
+('Show Me State Distributors', 'Ann Perry', 'ann.perry@showmestate.com', '555-7100', '674 Gateway Arch Avenue', 'St. Louis', 'MO', '63101', 'USA', 'Active'),
+('Bluebonnet Trading Partners', 'Ralph Powell', 'ralph.powell@bluebonnet.com', '555-7200', '785 Bluebonnet Trail', 'San Antonio', 'TX', '78201', 'USA', 'Active'),
+('Gem State Supply Company', 'Lillian Long', 'lillian.long@gemstate.com', '555-7300', '896 Gem Mine Road', 'Nampa', 'ID', '83651', 'USA', 'Active'),
+('Beaver State Materials Inc', 'Randy Patterson', 'randy.patterson@beaverstate.com', '555-7400', '107 Beaver Dam Drive', 'Eugene', 'OR', '97401', 'USA', 'Active'),
+('Volunteer Wholesale Network', 'Evelyn Hughes', 'evelyn.hughes@volunteerwholesale.com', '555-7500', '218 Volunteer Parkway', 'Knoxville', 'TN', '37901', 'USA', 'Active'),
+('Magnolia State Trading Co', 'Willie Flores', 'willie.flores@magnoliastate.com', '555-7600', '329 Southern Belle Avenue', 'Gulfport', 'MS', '39501', 'USA', 'Inactive'),
+('Pecan State Supply Group', 'Benjamin Washington', 'benjamin.washington@pecanstate.com', '555-7700', '430 Pecan Grove Lane', 'Fort Worth', 'TX', '76101', 'USA', 'Inactive');
+
+-- Display confirmation
+SELECT 'Successfully inserted 78 supplier records.' AS message;
+
+-- Show summary
+SELECT status, COUNT(*) as count FROM suppliers GROUP BY status;
