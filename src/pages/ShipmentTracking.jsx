@@ -7,10 +7,12 @@ function ShipmentTracking() {
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState('')
   const [carrierFilter, setCarrierFilter] = useState('')
+  const [sortColumn, setSortColumn] = useState(null)
+  const [sortDirection, setSortDirection] = useState('asc') // 'asc' or 'desc'
 
   useEffect(() => {
     fetchShipments()
-  }, [])
+  }, [searchTerm, statusFilter, carrierFilter, sortColumn, sortDirection])
 
   const fetchShipments = async () => {
     try {
@@ -38,6 +40,74 @@ function ShipmentTracking() {
     const matchesCarrier = !carrierFilter || shipment.carrier?.toLowerCase() === carrierFilter.toLowerCase()
     return matchesSearch && matchesStatus && matchesCarrier
   })
+
+  // Apply sorting to filtered shipments
+  const sortedShipments = [...filteredShipments]
+  if (sortColumn) {
+    sortedShipments.sort((a, b) => {
+      let aVal, bVal
+      
+      // Get values based on column
+      switch(sortColumn) {
+        case 'shipment_id':
+          aVal = a.shipment_id || 0
+          bVal = b.shipment_id || 0
+          break
+        case 'order_number':
+          aVal = (a.order_number || '').toLowerCase()
+          bVal = (b.order_number || '').toLowerCase()
+          break
+        case 'customer_name':
+          aVal = (a.customer_name || '').toLowerCase()
+          bVal = (b.customer_name || '').toLowerCase()
+          break
+        case 'carrier':
+          aVal = (a.carrier || '').toLowerCase()
+          bVal = (b.carrier || '').toLowerCase()
+          break
+        case 'tracking_number':
+          aVal = (a.tracking_number || '').toLowerCase()
+          bVal = (b.tracking_number || '').toLowerCase()
+          break
+        case 'to_location':
+          aVal = (a.to_location || '').toLowerCase()
+          bVal = (b.to_location || '').toLowerCase()
+          break
+        case 'shipped_date':
+          aVal = a.shipped_date ? new Date(a.shipped_date).getTime() : 0
+          bVal = b.shipped_date ? new Date(b.shipped_date).getTime() : 0
+          break
+        case 'status':
+          aVal = (a.status || '').toLowerCase()
+          bVal = (b.status || '').toLowerCase()
+          break
+        default:
+          return 0
+      }
+      
+      // Compare values
+      let comparison = 0
+      if (typeof aVal === 'number') {
+        comparison = aVal - bVal
+      } else {
+        comparison = aVal < bVal ? -1 : aVal > bVal ? 1 : 0
+      }
+      
+      // Apply sort direction
+      return sortDirection === 'asc' ? comparison : -comparison
+    })
+  }
+
+  const handleSort = (column) => {
+    if (sortColumn === column) {
+      // Toggle direction if same column
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
+    } else {
+      // New column, default to ascending
+      setSortColumn(column)
+      setSortDirection('asc')
+    }
+  }
 
   const getStatusColor = (status) => {
     const colors = {
@@ -178,13 +248,13 @@ function ShipmentTracking() {
         </div>
       )}
 
-      {!loading && !error && filteredShipments.length === 0 && (
+      {!loading && !error && sortedShipments.length === 0 && (
         <div style={{ textAlign: 'center', padding: '3rem', fontSize: '1.1rem', color: '#808080' }}>
           No shipments found
         </div>
       )}
 
-      {!loading && !error && filteredShipments.length > 0 && (
+      {!loading && !error && sortedShipments.length > 0 && (
       <div style={{ 
         overflowX: 'auto',
         border: '2px solid',
@@ -203,19 +273,115 @@ function ShipmentTracking() {
               background: '#000080',
               color: 'white'
             }}>
-              <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Shipment ID</th>
-              <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Order ID</th>
-              <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Customer</th>
-              <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Carrier</th>
-              <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Tracking Number</th>
-              <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Destination</th>
-              <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Date</th>
-              <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Status</th>
+              <th 
+                onClick={() => handleSort('shipment_id')}
+                style={{ 
+                  padding: '0.5rem', 
+                  textAlign: 'left', 
+                  fontWeight: 'bold', 
+                  borderRight: '1px solid #808080',
+                  cursor: 'pointer',
+                  userSelect: 'none'
+                }}
+              >
+                Shipment ID {sortColumn === 'shipment_id' && (sortDirection === 'asc' ? '▲' : '▼')}
+              </th>
+              <th 
+                onClick={() => handleSort('order_number')}
+                style={{ 
+                  padding: '0.5rem', 
+                  textAlign: 'left', 
+                  fontWeight: 'bold', 
+                  borderRight: '1px solid #808080',
+                  cursor: 'pointer',
+                  userSelect: 'none'
+                }}
+              >
+                Order ID {sortColumn === 'order_number' && (sortDirection === 'asc' ? '▲' : '▼')}
+              </th>
+              <th 
+                onClick={() => handleSort('customer_name')}
+                style={{ 
+                  padding: '0.5rem', 
+                  textAlign: 'left', 
+                  fontWeight: 'bold', 
+                  borderRight: '1px solid #808080',
+                  cursor: 'pointer',
+                  userSelect: 'none'
+                }}
+              >
+                Customer {sortColumn === 'customer_name' && (sortDirection === 'asc' ? '▲' : '▼')}
+              </th>
+              <th 
+                onClick={() => handleSort('carrier')}
+                style={{ 
+                  padding: '0.5rem', 
+                  textAlign: 'left', 
+                  fontWeight: 'bold', 
+                  borderRight: '1px solid #808080',
+                  cursor: 'pointer',
+                  userSelect: 'none'
+                }}
+              >
+                Carrier {sortColumn === 'carrier' && (sortDirection === 'asc' ? '▲' : '▼')}
+              </th>
+              <th 
+                onClick={() => handleSort('tracking_number')}
+                style={{ 
+                  padding: '0.5rem', 
+                  textAlign: 'left', 
+                  fontWeight: 'bold', 
+                  borderRight: '1px solid #808080',
+                  cursor: 'pointer',
+                  userSelect: 'none'
+                }}
+              >
+                Tracking Number {sortColumn === 'tracking_number' && (sortDirection === 'asc' ? '▲' : '▼')}
+              </th>
+              <th 
+                onClick={() => handleSort('to_location')}
+                style={{ 
+                  padding: '0.5rem', 
+                  textAlign: 'left', 
+                  fontWeight: 'bold', 
+                  borderRight: '1px solid #808080',
+                  cursor: 'pointer',
+                  userSelect: 'none'
+                }}
+              >
+                Destination {sortColumn === 'to_location' && (sortDirection === 'asc' ? '▲' : '▼')}
+              </th>
+              <th 
+                onClick={() => handleSort('shipped_date')}
+                style={{ 
+                  padding: '0.5rem', 
+                  textAlign: 'left', 
+                  fontWeight: 'bold', 
+                  borderRight: '1px solid #808080',
+                  cursor: 'pointer',
+                  userSelect: 'none'
+                }}
+              >
+                Date {sortColumn === 'shipped_date' && (sortDirection === 'asc' ? '▲' : '▼')}
+              </th>
+              <th 
+                onClick={() => handleSort('status')}
+                style={{ 
+                  padding: '0.5rem', 
+                  textAlign: 'left', 
+                  fontWeight: 'bold', 
+                  borderRight: '1px solid #808080',
+                  cursor: 'pointer',
+                  userSelect: 'none'
+                }}
+              >
+                Status {sortColumn === 'status' && (sortDirection === 'asc' ? '▲' : '▼')}
+              </th>
               <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold' }}>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {filteredShipments.map((shipment, index) => {
+            {sortedShipments.map((shipment, index) => {
               const statusColors = getStatusColor(shipment.status)
               const progress = getStatusProgress(shipment.status)
               const isEvenRow = index % 2 === 0
@@ -349,7 +515,7 @@ function ShipmentTracking() {
         fontFamily: 'MS Sans Serif, sans-serif',
         fontSize: '0.875rem'
       }}>
-        Showing {filteredShipments.length} of {shipments.length} shipments
+        Showing {sortedShipments.length} of {shipments.length} shipments
       </div>
       )}
     </div>
