@@ -5,10 +5,12 @@ function Suppliers() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [searchTerm, setSearchTerm] = useState('')
+  const [sortColumn, setSortColumn] = useState(null)
+  const [sortDirection, setSortDirection] = useState('asc') // 'asc' or 'desc'
 
   useEffect(() => {
     fetchSuppliers()
-  }, [])
+  }, [searchTerm, sortColumn, sortDirection])
 
   const fetchSuppliers = async () => {
     try {
@@ -37,6 +39,66 @@ function Suppliers() {
       supplier.email?.toLowerCase().includes(term)
     )
   })
+
+  // Apply sorting to filtered suppliers
+  const sortedSuppliers = [...filteredSuppliers]
+  if (sortColumn) {
+    sortedSuppliers.sort((a, b) => {
+      let aVal, bVal
+      
+      // Get values based on column
+      switch(sortColumn) {
+        case 'supplier_id':
+          aVal = a.supplier_id || 0
+          bVal = b.supplier_id || 0
+          break
+        case 'company_name':
+          aVal = (a.company_name || '').toLowerCase()
+          bVal = (b.company_name || '').toLowerCase()
+          break
+        case 'contact_person':
+          aVal = (a.contact_person || '').toLowerCase()
+          bVal = (b.contact_person || '').toLowerCase()
+          break
+        case 'email':
+          aVal = (a.email || '').toLowerCase()
+          bVal = (b.email || '').toLowerCase()
+          break
+        case 'phone':
+          aVal = (a.phone || '').toLowerCase()
+          bVal = (b.phone || '').toLowerCase()
+          break
+        case 'address_city':
+          aVal = (a.address_city || '').toLowerCase()
+          bVal = (b.address_city || '').toLowerCase()
+          break
+        default:
+          return 0
+      }
+      
+      // Compare values
+      let comparison = 0
+      if (typeof aVal === 'number') {
+        comparison = aVal - bVal
+      } else {
+        comparison = aVal < bVal ? -1 : aVal > bVal ? 1 : 0
+      }
+      
+      // Apply sort direction
+      return sortDirection === 'asc' ? comparison : -comparison
+    })
+  }
+
+  const handleSort = (column) => {
+    if (sortColumn === column) {
+      // Toggle direction if same column
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
+    } else {
+      // New column, default to ascending
+      setSortColumn(column)
+      setSortDirection('asc')
+    }
+  }
 
   const getStatusColors = (status) => {
     switch(status) {
@@ -128,18 +190,90 @@ function Suppliers() {
                 background: '#000080',
                 color: 'white'
               }}>
-                <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>ID</th>
-                <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Company Name</th>
-                <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Address</th>
-                <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Phone</th>
-                <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Contact Person</th>
-                <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Email</th>
+                <th 
+                  onClick={() => handleSort('supplier_id')}
+                  style={{ 
+                    padding: '0.5rem', 
+                    textAlign: 'left', 
+                    fontWeight: 'bold', 
+                    borderRight: '1px solid #808080',
+                    cursor: 'pointer',
+                    userSelect: 'none'
+                  }}
+                >
+                  ID {sortColumn === 'supplier_id' && (sortDirection === 'asc' ? '▲' : '▼')}
+                </th>
+                <th 
+                  onClick={() => handleSort('company_name')}
+                  style={{ 
+                    padding: '0.5rem', 
+                    textAlign: 'left', 
+                    fontWeight: 'bold', 
+                    borderRight: '1px solid #808080',
+                    cursor: 'pointer',
+                    userSelect: 'none'
+                  }}
+                >
+                  Company Name {sortColumn === 'company_name' && (sortDirection === 'asc' ? '▲' : '▼')}
+                </th>
+                <th 
+                  onClick={() => handleSort('address_city')}
+                  style={{ 
+                    padding: '0.5rem', 
+                    textAlign: 'left', 
+                    fontWeight: 'bold', 
+                    borderRight: '1px solid #808080',
+                    cursor: 'pointer',
+                    userSelect: 'none'
+                  }}
+                >
+                  Address {sortColumn === 'address_city' && (sortDirection === 'asc' ? '▲' : '▼')}
+                </th>
+                <th 
+                  onClick={() => handleSort('phone')}
+                  style={{ 
+                    padding: '0.5rem', 
+                    textAlign: 'left', 
+                    fontWeight: 'bold', 
+                    borderRight: '1px solid #808080',
+                    cursor: 'pointer',
+                    userSelect: 'none'
+                  }}
+                >
+                  Phone {sortColumn === 'phone' && (sortDirection === 'asc' ? '▲' : '▼')}
+                </th>
+                <th 
+                  onClick={() => handleSort('contact_person')}
+                  style={{ 
+                    padding: '0.5rem', 
+                    textAlign: 'left', 
+                    fontWeight: 'bold', 
+                    borderRight: '1px solid #808080',
+                    cursor: 'pointer',
+                    userSelect: 'none'
+                  }}
+                >
+                  Contact Person {sortColumn === 'contact_person' && (sortDirection === 'asc' ? '▲' : '▼')}
+                </th>
+                <th 
+                  onClick={() => handleSort('email')}
+                  style={{ 
+                    padding: '0.5rem', 
+                    textAlign: 'left', 
+                    fontWeight: 'bold', 
+                    borderRight: '1px solid #808080',
+                    cursor: 'pointer',
+                    userSelect: 'none'
+                  }}
+                >
+                  Email {sortColumn === 'email' && (sortDirection === 'asc' ? '▲' : '▼')}
+                </th>
                 <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Status</th>
                 <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold' }}>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {filteredSuppliers.length === 0 ? (
+              {sortedSuppliers.length === 0 ? (
                 <tr>
                   <td colSpan="8" style={{ 
                     padding: '2rem', 
@@ -150,7 +284,7 @@ function Suppliers() {
                   </td>
                 </tr>
               ) : (
-                filteredSuppliers.map((supplier, index) => {
+                sortedSuppliers.map((supplier, index) => {
                   const isEvenRow = index % 2 === 0
                   const statusColors = getStatusColors(supplier.status)
                   
@@ -260,7 +394,7 @@ function Suppliers() {
           border: '2px solid',
           borderColor: '#ffffff #808080 #808080 #ffffff'
         }}>
-          Showing {filteredSuppliers.length} of {suppliers.length} suppliers
+          Showing {sortedSuppliers.length} of {suppliers.length} suppliers
         </div>
       )}
     </div>
