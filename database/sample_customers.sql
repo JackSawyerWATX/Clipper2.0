@@ -27,3 +27,4 @@ INSERT INTO customers (company_name, contact_name, email, phone, address_street,
 
 -- Display confirmation
 SELECT COUNT(*) as 'Total Customers Added' FROM customers;
+
