@@ -12,6 +12,8 @@ function Inventory() {
   const itemsPerPage = 25
   const [showEditModal, setShowEditModal] = useState(false)
   const [editingItem, setEditingItem] = useState(null)
+  const [showCancelConfirm, setShowCancelConfirm] = useState(false)
+  const [showSaveConfirm, setShowSaveConfirm] = useState(false)
 
   useEffect(() => {
     fetchInventory()
@@ -45,7 +47,13 @@ function Inventory() {
     }))
   }
 
-  const handleSaveEdit = async () => {
+  const handleSaveEdit = () => {
+    setShowSaveConfirm(true)
+  }
+
+  const confirmSaveEdit = async () => {
+    setShowSaveConfirm(false)
+
     try {
       const response = await fetch(`http://localhost:5000/api/inventory/${editingItem.item_id}`, {
         method: 'PUT',
@@ -64,9 +72,22 @@ function Inventory() {
     }
   }
 
+  const declineSaveEdit = () => {
+    setShowSaveConfirm(false)
+  }
+
   const handleCancelEdit = () => {
+    setShowCancelConfirm(true)
+  }
+
+  const confirmCancelEdit = () => {
+    setShowCancelConfirm(false)
     setShowEditModal(false)
     setEditingItem(null)
+  }
+
+  const declineCancelEdit = () => {
+    setShowCancelConfirm(false)
   }
 
   // Filter and sort items
@@ -851,6 +872,170 @@ function Inventory() {
                     fontWeight: 'bold',
                     fontFamily: 'MS Sans Serif, sans-serif',
                     fontSize: '0.875rem'
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Cancel Confirmation Modal */}
+      {showCancelConfirm && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0, 0, 0, 0.5)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 1001
+        }}>
+          <div style={{
+            background: '#c0c0c0',
+            border: '3px solid',
+            borderColor: '#ffffff #000000 #000000 #ffffff',
+            width: '400px',
+            fontFamily: 'MS Sans Serif, sans-serif'
+          }}>
+            {/* Modal Title Bar */}
+            <div style={{
+              background: 'linear-gradient(90deg, #000080, #1084d0)',
+              color: 'white',
+              padding: '0.25rem 0.5rem',
+              fontWeight: 'bold',
+              fontSize: '0.875rem'
+            }}>
+              Confirm Cancel
+            </div>
+
+            {/* Modal Content */}
+            <div style={{ padding: '1.5rem' }}>
+              <div style={{ marginBottom: '1.5rem', fontSize: '0.875rem' }}>
+                Are you sure you want to cancel? All new entries will be lost!
+              </div>
+
+              {/* Action Buttons */}
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem' }}>
+                <button
+                  onClick={confirmCancelEdit}
+                  onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
+                  onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
+                  style={{
+                    padding: '0.5rem 1.5rem',
+                    background: '#c0c0c0',
+                    border: '2px solid',
+                    borderColor: '#ffffff #000000 #000000 #ffffff',
+                    cursor: 'pointer',
+                    fontWeight: 'bold',
+                    fontFamily: 'MS Sans Serif, sans-serif',
+                    fontSize: '0.875rem',
+                    minWidth: '80px'
+                  }}
+                >
+                  OK
+                </button>
+                <button
+                  onClick={declineCancelEdit}
+                  onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
+                  onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
+                  style={{
+                    padding: '0.5rem 1.5rem',
+                    background: '#c0c0c0',
+                    border: '2px solid',
+                    borderColor: '#ffffff #000000 #000000 #ffffff',
+                    cursor: 'pointer',
+                    fontWeight: 'bold',
+                    fontFamily: 'MS Sans Serif, sans-serif',
+                    fontSize: '0.875rem',
+                    minWidth: '80px'
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Save Confirmation Modal */}
+      {showSaveConfirm && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0, 0, 0, 0.5)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 1001
+        }}>
+          <div style={{
+            background: '#c0c0c0',
+            border: '3px solid',
+            borderColor: '#ffffff #000000 #000000 #ffffff',
+            width: '400px',
+            fontFamily: 'MS Sans Serif, sans-serif'
+          }}>
+            {/* Modal Title Bar */}
+            <div style={{
+              background: 'linear-gradient(90deg, #000080, #1084d0)',
+              color: 'white',
+              padding: '0.25rem 0.5rem',
+              fontWeight: 'bold',
+              fontSize: '0.875rem'
+            }}>
+              Confirm Save
+            </div>
+
+            {/* Modal Content */}
+            <div style={{ padding: '1.5rem' }}>
+              <div style={{ marginBottom: '1.5rem', fontSize: '0.875rem' }}>
+                Are you sure you are ready to save?
+              </div>
+
+              {/* Action Buttons */}
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem' }}>
+                <button
+                  onClick={confirmSaveEdit}
+                  onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
+                  onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
+                  style={{
+                    padding: '0.5rem 1.5rem',
+                    background: '#c0c0c0',
+                    border: '2px solid',
+                    borderColor: '#ffffff #000000 #000000 #ffffff',
+                    cursor: 'pointer',
+                    fontWeight: 'bold',
+                    fontFamily: 'MS Sans Serif, sans-serif',
+                    fontSize: '0.875rem',
+                    minWidth: '80px'
+                  }}
+                >
+                  OK
+                </button>
+                <button
+                  onClick={declineSaveEdit}
+                  onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
+                  onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
+                  style={{
+                    padding: '0.5rem 1.5rem',
+                    background: '#c0c0c0',
+                    border: '2px solid',
+                    borderColor: '#ffffff #000000 #000000 #ffffff',
+                    cursor: 'pointer',
+                    fontWeight: 'bold',
+                    fontFamily: 'MS Sans Serif, sans-serif',
+                    fontSize: '0.875rem',
+                    minWidth: '80px'
                   }}
                 >
                   Cancel
