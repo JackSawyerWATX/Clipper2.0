@@ -443,23 +443,6 @@ function Inventory() {
                     >
                       Edit
                     </button>
-                    <button 
-                      onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
-                      onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
-                      style={{ 
-                        padding: '0.25rem 0.75rem',
-                        background: '#c0c0c0',
-                        border: '2px solid',
-                        borderColor: '#ffffff #000000 #000000 #ffffff',
-                        cursor: 'pointer',
-                        fontSize: '0.75rem',
-                        fontFamily: 'MS Sans Serif, sans-serif',
-                        display: 'block',
-                        width: '100%'
-                      }}
-                    >
-                      Adjust Stock
-                    </button>
                   </td>
                 </tr>
               )
