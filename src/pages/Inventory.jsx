@@ -14,6 +14,9 @@ function Inventory() {
   const [editingItem, setEditingItem] = useState(null)
   const [showCancelConfirm, setShowCancelConfirm] = useState(false)
   const [showSaveConfirm, setShowSaveConfirm] = useState(false)
+  const [isAddMode, setIsAddMode] = useState(false)
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [showValidationError, setShowValidationError] = useState(false)
 
   useEffect(() => {
     fetchInventory()
@@ -36,7 +39,25 @@ function Inventory() {
   }
 
   const handleEditClick = (item) => {
-    setEditingItem({...item})
+    setEditingItem({ ...item })
+    setIsAddMode(false)
+    setShowEditModal(true)
+  }
+
+  const handleAddClick = () => {
+    setEditingItem({
+      part_number: '',
+      name: '',
+      description: '',
+      manufacturer: '',
+      category: '',
+      quantity: 0,
+      min_quantity: 0,
+      price_per_unit: 0,
+      supplier_id: null,
+      photo_url: ''
+    })
+    setIsAddMode(true)
     setShowEditModal(true)
   }
 
@@ -48,6 +69,11 @@ function Inventory() {
   }
 
   const handleSaveEdit = () => {
+    // Validate quantity is not zero
+    if (editingItem.quantity === 0 || editingItem.quantity === '0') {
+      setShowValidationError(true)
+      return
+    }
     setShowSaveConfirm(true)
   }
 
@@ -55,20 +81,27 @@ function Inventory() {
     setShowSaveConfirm(false)
 
     try {
-      const response = await fetch(`http://localhost:5000/api/inventory/${editingItem.item_id}`, {
-        method: 'PUT',
+      const url = isAddMode
+        ? 'http://localhost:5000/api/inventory'
+        : `http://localhost:5000/api/inventory/${editingItem.item_id}`
+
+      const method = isAddMode ? 'POST' : 'PUT'
+
+      const response = await fetch(url, {
+        method: method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(editingItem)
       })
 
-      if (!response.ok) throw new Error('Failed to update item')
+      if (!response.ok) throw new Error(`Failed to ${isAddMode ? 'create' : 'update'} item`)
 
       // Refresh inventory list
       await fetchInventory()
       setShowEditModal(false)
       setEditingItem(null)
+      setIsAddMode(false)
     } catch (err) {
-      alert('Error updating item: ' + err.message)
+      alert(`Error ${isAddMode ? 'creating' : 'updating'} item: ` + err.message)
     }
   }
 
@@ -84,10 +117,39 @@ function Inventory() {
     setShowCancelConfirm(false)
     setShowEditModal(false)
     setEditingItem(null)
+    setIsAddMode(false)
   }
 
   const declineCancelEdit = () => {
     setShowCancelConfirm(false)
+  }
+
+  const handleDeleteItem = () => {
+    setShowDeleteConfirm(true)
+  }
+
+  const confirmDeleteItem = async () => {
+    setShowDeleteConfirm(false)
+
+    try {
+      const response = await fetch(`http://localhost:5000/api/inventory/${editingItem.item_id}`, {
+        method: 'DELETE'
+      })
+
+      if (!response.ok) throw new Error('Failed to delete item')
+
+      // Refresh inventory list
+      await fetchInventory()
+      setShowEditModal(false)
+      setEditingItem(null)
+      setIsAddMode(false)
+    } catch (err) {
+      alert('Error deleting item: ' + err.message)
+    }
+  }
+
+  const declineDeleteItem = () => {
+    setShowDeleteConfirm(false)
   }
 
   // Filter and sort items
@@ -98,7 +160,7 @@ function Inventory() {
     if (searchTerm) {
       filtered = filtered.filter(item => {
         const term = searchTerm.toLowerCase()
-        
+
         switch (searchBy) {
           case 'name':
             return item.name?.toLowerCase().includes(term)
@@ -111,7 +173,7 @@ function Inventory() {
             if (!item.description) return false
             const descWords = item.description.toLowerCase().split(/\s+/)
             const searchWords = term.split(/\s+/)
-            return searchWords.some(searchWord => 
+            return searchWords.some(searchWord =>
               descWords.some(descWord => descWord.includes(searchWord))
             )
           default: // 'all'
@@ -178,7 +240,7 @@ function Inventory() {
   }, [searchTerm, searchBy, sortOrder, stockFilter])
 
   const getStockStatus = (status) => {
-    switch(status) {
+    switch (status) {
       case 'Out of Stock':
         return { color: '#ff0000', text: '#ffffff' }
       case 'Low Stock':
@@ -194,12 +256,13 @@ function Inventory() {
     <div className="page">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
         <h1>Inventory</h1>
-        <button 
+        <button
+          onClick={handleAddClick}
           onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
           onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
-          style={{ 
-            padding: '0.5rem 1.5rem', 
-            background: '#c0c0c0', 
+          style={{
+            padding: '0.5rem 1.5rem',
+            background: '#c0c0c0',
             border: '2px solid',
             borderColor: '#ffffff #000000 #000000 #ffffff',
             cursor: 'pointer',
@@ -219,10 +282,10 @@ function Inventory() {
       )}
 
       {error && (
-        <div style={{ 
-          padding: '1rem', 
-          background: '#ff0000', 
-          color: '#ffffff', 
+        <div style={{
+          padding: '1rem',
+          background: '#ff0000',
+          color: '#ffffff',
           border: '2px solid',
           borderColor: '#ffffff #000000 #000000 #ffffff',
           marginBottom: '1rem',
@@ -233,346 +296,346 @@ function Inventory() {
       )}
 
       {!loading && !error && (
-      <>
-      <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
-        <div style={{ flex: '1', minWidth: '300px' }}>
-          <input 
-            type="text" 
-            placeholder="Search inventory..." 
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            style={{ 
-              padding: '0.5rem', 
+        <>
+          <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
+            <div style={{ flex: '1', minWidth: '300px' }}>
+              <input
+                type="text"
+                placeholder="Search inventory..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                style={{
+                  padding: '0.5rem',
+                  width: '100%',
+                  border: '2px solid',
+                  borderColor: '#808080 #ebebeb #ebebeb #808080',
+                  fontSize: '0.875rem',
+                  fontFamily: 'MS Sans Serif, sans-serif'
+                }}
+              />
+            </div>
+            <select
+              value={searchBy}
+              onChange={(e) => setSearchBy(e.target.value)}
+              style={{
+                padding: '0.5rem',
+                border: '2px solid',
+                borderColor: '#808080 #ebebeb #ebebeb #808080',
+                fontSize: '0.875rem',
+                cursor: 'pointer',
+                minWidth: '180px',
+                fontFamily: 'MS Sans Serif, sans-serif'
+              }}
+            >
+              <option value="all">Search All Fields</option>
+              <option value="name">Search by Name</option>
+              <option value="partNumber">Search by Part Number</option>
+              <option value="manufacturer">Search by Manufacturer</option>
+              <option value="description">Search by Description</option>
+            </select>
+            <select
+              value={sortOrder}
+              onChange={(e) => setSortOrder(e.target.value)}
+              style={{
+                padding: '0.5rem',
+                border: '2px solid',
+                borderColor: '#808080 #ebebeb #ebebeb #808080',
+                fontSize: '0.875rem',
+                cursor: 'pointer',
+                minWidth: '180px',
+                fontFamily: 'MS Sans Serif, sans-serif'
+              }}
+            >
+              <option value="name-asc">Name (A-Z)</option>
+              <option value="name-desc">Name (Z-A)</option>
+              <option value="partNumber-asc">Part Number (A-Z)</option>
+              <option value="partNumber-desc">Part Number (Z-A)</option>
+              <option value="manufacturer-asc">Manufacturer (A-Z)</option>
+              <option value="manufacturer-desc">Manufacturer (Z-A)</option>
+              <option value="quantity-asc">Quantity (Low-High)</option>
+              <option value="quantity-desc">Quantity (High-Low)</option>
+              <option value="price-asc">Price (Low-High)</option>
+              <option value="price-desc">Price (High-Low)</option>
+            </select>
+            <select
+              value={stockFilter}
+              onChange={(e) => setStockFilter(e.target.value)}
+              style={{
+                padding: '0.5rem',
+                border: '2px solid',
+                borderColor: '#808080 #ebebeb #ebebeb #808080',
+                fontSize: '0.875rem',
+                cursor: 'pointer',
+                minWidth: '150px',
+                fontFamily: 'MS Sans Serif, sans-serif'
+              }}
+            >
+              <option value="">All Stock Levels</option>
+              <option value="in-stock">In Stock</option>
+              <option value="low-stock">Low Stock</option>
+              <option value="out-of-stock">Out of Stock</option>
+            </select>
+          </div>
+
+          <div style={{
+            overflowX: 'auto',
+            border: '2px solid',
+            borderColor: '#808080 #ebebeb #ebebeb #808080',
+            background: 'white'
+          }}>
+            <table style={{
               width: '100%',
+              borderCollapse: 'collapse',
+              background: 'white',
+              fontFamily: 'MS Sans Serif, sans-serif',
+              fontSize: '0.875rem'
+            }}>
+              <thead>
+                <tr style={{
+                  background: '#000080',
+                  color: 'white'
+                }}>
+                  <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Photo</th>
+                  <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Name</th>
+                  <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Part Number</th>
+                  <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Manufacturer</th>
+                  <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Description</th>
+                  <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Quantity</th>
+                  <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Price/Unit</th>
+                  <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold' }}>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentItems.length === 0 ? (
+                  <tr>
+                    <td colSpan="8" style={{
+                      padding: '2rem',
+                      textAlign: 'center',
+                      color: '#808080'
+                    }}>
+                      No items found
+                    </td>
+                  </tr>
+                ) : (
+                  currentItems.map((item, index) => {
+                    const stockStatus = getStockStatus(item.status)
+                    const isEvenRow = index % 2 === 0
+                    return (
+                      <tr key={item.item_id} style={{
+                        background: isEvenRow ? 'white' : '#f0f0f0',
+                        borderBottom: '1px solid #c0c0c0'
+                      }}>
+                        <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>
+                          {item.photo_url ? (
+                            <img
+                              src={item.photo_url}
+                              alt={item.name}
+                              style={{
+                                width: '60px',
+                                height: '60px',
+                                objectFit: 'cover',
+                                border: '2px solid',
+                                borderColor: '#808080 #ebebeb #ebebeb #808080'
+                              }}
+                            />
+                          ) : (
+                            <div style={{
+                              width: '60px',
+                              height: '60px',
+                              background: '#c0c0c0',
+                              border: '2px solid',
+                              borderColor: '#808080 #ebebeb #ebebeb #808080',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              fontSize: '0.625rem',
+                              color: '#808080'
+                            }}>
+                              No Image
+                            </div>
+                          )}
+                        </td>
+                        <td style={{ padding: '0.5rem', fontWeight: 'bold', borderRight: '1px solid #c0c0c0' }}>{item.name}</td>
+                        <td style={{ padding: '0.5rem', fontFamily: 'Courier New, monospace', fontSize: '0.75rem', borderRight: '1px solid #c0c0c0' }}>
+                          {item.part_number}
+                        </td>
+                        <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>{item.manufacturer}</td>
+                        <td style={{ padding: '0.5rem', maxWidth: '250px', borderRight: '1px solid #c0c0c0' }}>
+                          <div style={{ fontSize: '0.75rem', color: '#000000' }}>
+                            {item.description}
+                          </div>
+                        </td>
+                        <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>
+                          <div style={{ fontWeight: 'bold', marginBottom: '0.25rem' }}>
+                            {item.quantity}
+                          </div>
+                          <span style={{
+                            display: 'inline-block',
+                            padding: '0.2rem 0.5rem',
+                            fontSize: '0.75rem',
+                            fontWeight: 'bold',
+                            background: stockStatus.color,
+                            color: stockStatus.text,
+                            border: '1px solid',
+                            borderColor: stockStatus.text
+                          }}>
+                            {item.status}
+                          </span>
+                        </td>
+                        <td style={{ padding: '0.5rem', fontWeight: 'bold', borderRight: '1px solid #c0c0c0' }}>
+                          ${item.price_per_unit ? parseFloat(item.price_per_unit).toFixed(2) : '0.00'}
+                        </td>
+                        <td style={{ padding: '0.5rem' }}>
+                          <button
+                            onClick={() => handleEditClick(item)}
+                            onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
+                            onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
+                            style={{
+                              padding: '0.25rem 0.75rem',
+                              marginRight: '0.25rem',
+                              marginBottom: '0.25rem',
+                              background: '#c0c0c0',
+                              border: '2px solid',
+                              borderColor: '#ffffff #000000 #000000 #ffffff',
+                              cursor: 'pointer',
+                              fontSize: '0.75rem',
+                              fontFamily: 'MS Sans Serif, sans-serif',
+                              display: 'block',
+                              width: '100%'
+                            }}
+                          >
+                            Edit
+                          </button>
+                        </td>
+                      </tr>
+                    )
+                  })
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Pagination Controls */}
+          <div style={{
+            marginTop: '1rem',
+            padding: '0.5rem',
+            background: '#c0c0c0',
+            border: '2px solid',
+            borderColor: '#ffffff #808080 #808080 #ffffff',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: '0.5rem',
+            fontFamily: 'MS Sans Serif, sans-serif',
+            fontSize: '0.875rem'
+          }}>
+            <button
+              onClick={() => setCurrentPage(1)}
+              disabled={currentPage === 1}
+              onMouseDown={(e) => currentPage !== 1 && (e.target.style.borderColor = '#000000 #ffffff #ffffff #000000')}
+              onMouseUp={(e) => currentPage !== 1 && (e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff')}
+              style={{
+                padding: '0.25rem 0.75rem',
+                background: currentPage === 1 ? '#808080' : '#c0c0c0',
+                border: '2px solid',
+                borderColor: '#ffffff #000000 #000000 #ffffff',
+                cursor: currentPage === 1 ? 'not-allowed' : 'pointer',
+                fontWeight: 'bold',
+                fontFamily: 'MS Sans Serif, sans-serif',
+                fontSize: '0.875rem'
+              }}
+            >
+              « First
+            </button>
+            <button
+              onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+              disabled={currentPage === 1}
+              onMouseDown={(e) => currentPage !== 1 && (e.target.style.borderColor = '#000000 #ffffff #ffffff #000000')}
+              onMouseUp={(e) => currentPage !== 1 && (e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff')}
+              style={{
+                padding: '0.25rem 0.75rem',
+                background: currentPage === 1 ? '#808080' : '#c0c0c0',
+                border: '2px solid',
+                borderColor: '#ffffff #000000 #000000 #ffffff',
+                cursor: currentPage === 1 ? 'not-allowed' : 'pointer',
+                fontWeight: 'bold',
+                fontFamily: 'MS Sans Serif, sans-serif',
+                fontSize: '0.875rem'
+              }}
+            >
+              ← Prev
+            </button>
+            <span style={{
+              padding: '0.25rem 1rem',
+              background: '#ffffff',
               border: '2px solid',
               borderColor: '#808080 #ebebeb #ebebeb #808080',
-              fontSize: '0.875rem',
-              fontFamily: 'MS Sans Serif, sans-serif'
-            }}
-          />
-        </div>
-        <select 
-          value={searchBy}
-          onChange={(e) => setSearchBy(e.target.value)}
-          style={{ 
-            padding: '0.5rem',
-            border: '2px solid',
-            borderColor: '#808080 #ebebeb #ebebeb #808080',
-            fontSize: '0.875rem',
-            cursor: 'pointer',
-            minWidth: '180px',
-            fontFamily: 'MS Sans Serif, sans-serif'
-          }}
-        >
-          <option value="all">Search All Fields</option>
-          <option value="name">Search by Name</option>
-          <option value="partNumber">Search by Part Number</option>
-          <option value="manufacturer">Search by Manufacturer</option>
-          <option value="description">Search by Description</option>
-        </select>
-        <select 
-          value={sortOrder}
-          onChange={(e) => setSortOrder(e.target.value)}
-          style={{ 
-            padding: '0.5rem',
-            border: '2px solid',
-            borderColor: '#808080 #ebebeb #ebebeb #808080',
-            fontSize: '0.875rem',
-            cursor: 'pointer',
-            minWidth: '180px',
-            fontFamily: 'MS Sans Serif, sans-serif'
-          }}
-        >
-          <option value="name-asc">Name (A-Z)</option>
-          <option value="name-desc">Name (Z-A)</option>
-          <option value="partNumber-asc">Part Number (A-Z)</option>
-          <option value="partNumber-desc">Part Number (Z-A)</option>
-          <option value="manufacturer-asc">Manufacturer (A-Z)</option>
-          <option value="manufacturer-desc">Manufacturer (Z-A)</option>
-          <option value="quantity-asc">Quantity (Low-High)</option>
-          <option value="quantity-desc">Quantity (High-Low)</option>
-          <option value="price-asc">Price (Low-High)</option>
-          <option value="price-desc">Price (High-Low)</option>
-        </select>
-        <select 
-          value={stockFilter}
-          onChange={(e) => setStockFilter(e.target.value)}
-          style={{ 
-            padding: '0.5rem',
-            border: '2px solid',
-            borderColor: '#808080 #ebebeb #ebebeb #808080',
-            fontSize: '0.875rem',
-            cursor: 'pointer',
-            minWidth: '150px',
-            fontFamily: 'MS Sans Serif, sans-serif'
-          }}
-        >
-          <option value="">All Stock Levels</option>
-          <option value="in-stock">In Stock</option>
-          <option value="low-stock">Low Stock</option>
-          <option value="out-of-stock">Out of Stock</option>
-        </select>
-      </div>
-
-      <div style={{ 
-        overflowX: 'auto',
-        border: '2px solid',
-        borderColor: '#808080 #ebebeb #ebebeb #808080',
-        background: 'white'
-      }}>
-        <table style={{ 
-          width: '100%', 
-          borderCollapse: 'collapse',
-          background: 'white',
-          fontFamily: 'MS Sans Serif, sans-serif',
-          fontSize: '0.875rem'
-        }}>
-          <thead>
-            <tr style={{ 
-              background: '#000080',
-              color: 'white'
+              fontWeight: 'bold'
             }}>
-              <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Photo</th>
-              <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Name</th>
-              <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Part Number</th>
-              <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Manufacturer</th>
-              <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Description</th>
-              <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Quantity</th>
-              <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Price/Unit</th>
-              <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold' }}>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentItems.length === 0 ? (
-              <tr>
-                <td colSpan="8" style={{ 
-                  padding: '2rem', 
-                  textAlign: 'center',
-                  color: '#808080'
-                }}>
-                  No items found
-                </td>
-              </tr>
-            ) : (
-              currentItems.map((item, index) => {
-                const stockStatus = getStockStatus(item.status)
-                const isEvenRow = index % 2 === 0
-                return (
-                  <tr key={item.item_id} style={{ 
-                  background: isEvenRow ? 'white' : '#f0f0f0',
-                  borderBottom: '1px solid #c0c0c0'
-                }}>
-                  <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>
-                    {item.photo_url ? (
-                      <img 
-                        src={item.photo_url} 
-                        alt={item.name}
-                        style={{ 
-                          width: '60px', 
-                          height: '60px', 
-                          objectFit: 'cover',
-                          border: '2px solid',
-                          borderColor: '#808080 #ebebeb #ebebeb #808080'
-                        }}
-                      />
-                    ) : (
-                      <div style={{ 
-                        width: '60px', 
-                        height: '60px', 
-                        background: '#c0c0c0',
-                        border: '2px solid',
-                        borderColor: '#808080 #ebebeb #ebebeb #808080',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '0.625rem',
-                        color: '#808080'
-                      }}>
-                        No Image
-                      </div>
-                    )}
-                  </td>
-                  <td style={{ padding: '0.5rem', fontWeight: 'bold', borderRight: '1px solid #c0c0c0' }}>{item.name}</td>
-                  <td style={{ padding: '0.5rem', fontFamily: 'Courier New, monospace', fontSize: '0.75rem', borderRight: '1px solid #c0c0c0' }}>
-                    {item.part_number}
-                  </td>
-                  <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>{item.manufacturer}</td>
-                  <td style={{ padding: '0.5rem', maxWidth: '250px', borderRight: '1px solid #c0c0c0' }}>
-                    <div style={{ fontSize: '0.75rem', color: '#000000' }}>
-                      {item.description}
-                    </div>
-                  </td>
-                  <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>
-                    <div style={{ fontWeight: 'bold', marginBottom: '0.25rem' }}>
-                      {item.quantity}
-                    </div>
-                    <span style={{ 
-                      display: 'inline-block',
-                      padding: '0.2rem 0.5rem',
-                      fontSize: '0.75rem',
-                      fontWeight: 'bold',
-                      background: stockStatus.color,
-                      color: stockStatus.text,
-                      border: '1px solid',
-                      borderColor: stockStatus.text
-                    }}>
-                      {item.status}
-                    </span>
-                  </td>
-                  <td style={{ padding: '0.5rem', fontWeight: 'bold', borderRight: '1px solid #c0c0c0' }}>
-                    ${item.price_per_unit ? parseFloat(item.price_per_unit).toFixed(2) : '0.00'}
-                  </td>
-                  <td style={{ padding: '0.5rem' }}>
-                    <button 
-                      onClick={() => handleEditClick(item)}
-                      onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
-                      onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
-                      style={{ 
-                        padding: '0.25rem 0.75rem', 
-                        marginRight: '0.25rem',
-                        marginBottom: '0.25rem',
-                        background: '#c0c0c0',
-                        border: '2px solid',
-                        borderColor: '#ffffff #000000 #000000 #ffffff',
-                        cursor: 'pointer',
-                        fontSize: '0.75rem',
-                        fontFamily: 'MS Sans Serif, sans-serif',
-                        display: 'block',
-                        width: '100%'
-                      }}
-                    >
-                      Edit
-                    </button>
-                  </td>
-                </tr>
-              )
-            })
-            )}
-          </tbody>
-        </table>
-      </div>
+              Page {currentPage} of {totalPages || 1}
+            </span>
+            <button
+              onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+              disabled={currentPage === totalPages || totalPages === 0}
+              onMouseDown={(e) => currentPage !== totalPages && totalPages !== 0 && (e.target.style.borderColor = '#000000 #ffffff #ffffff #000000')}
+              onMouseUp={(e) => currentPage !== totalPages && totalPages !== 0 && (e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff')}
+              style={{
+                padding: '0.25rem 0.75rem',
+                background: (currentPage === totalPages || totalPages === 0) ? '#808080' : '#c0c0c0',
+                border: '2px solid',
+                borderColor: '#ffffff #000000 #000000 #ffffff',
+                cursor: (currentPage === totalPages || totalPages === 0) ? 'not-allowed' : 'pointer',
+                fontWeight: 'bold',
+                fontFamily: 'MS Sans Serif, sans-serif',
+                fontSize: '0.875rem'
+              }}
+            >
+              Next →
+            </button>
+            <button
+              onClick={() => setCurrentPage(totalPages)}
+              disabled={currentPage === totalPages || totalPages === 0}
+              onMouseDown={(e) => currentPage !== totalPages && totalPages !== 0 && (e.target.style.borderColor = '#000000 #ffffff #ffffff #000000')}
+              onMouseUp={(e) => currentPage !== totalPages && totalPages !== 0 && (e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff')}
+              style={{
+                padding: '0.25rem 0.75rem',
+                background: (currentPage === totalPages || totalPages === 0) ? '#808080' : '#c0c0c0',
+                border: '2px solid',
+                borderColor: '#ffffff #000000 #000000 #ffffff',
+                cursor: (currentPage === totalPages || totalPages === 0) ? 'not-allowed' : 'pointer',
+                fontWeight: 'bold',
+                fontFamily: 'MS Sans Serif, sans-serif',
+                fontSize: '0.875rem'
+              }}
+            >
+              Last »
+            </button>
+          </div>
 
-      {/* Pagination Controls */}
-      <div style={{ 
-        marginTop: '1rem',
-        padding: '0.5rem',
-        background: '#c0c0c0',
-        border: '2px solid',
-        borderColor: '#ffffff #808080 #808080 #ffffff',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        gap: '0.5rem',
-        fontFamily: 'MS Sans Serif, sans-serif',
-        fontSize: '0.875rem'
-      }}>
-        <button
-          onClick={() => setCurrentPage(1)}
-          disabled={currentPage === 1}
-          onMouseDown={(e) => currentPage !== 1 && (e.target.style.borderColor = '#000000 #ffffff #ffffff #000000')}
-          onMouseUp={(e) => currentPage !== 1 && (e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff')}
-          style={{
-            padding: '0.25rem 0.75rem',
-            background: currentPage === 1 ? '#808080' : '#c0c0c0',
-            border: '2px solid',
-            borderColor: '#ffffff #000000 #000000 #ffffff',
-            cursor: currentPage === 1 ? 'not-allowed' : 'pointer',
-            fontWeight: 'bold',
+          <div style={{
+            marginTop: '1rem',
+            padding: '0.5rem',
+            color: '#000000',
+            fontSize: '0.875rem',
             fontFamily: 'MS Sans Serif, sans-serif',
-            fontSize: '0.875rem'
-          }}
-        >
-          « First
-        </button>
-        <button
-          onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-          disabled={currentPage === 1}
-          onMouseDown={(e) => currentPage !== 1 && (e.target.style.borderColor = '#000000 #ffffff #ffffff #000000')}
-          onMouseUp={(e) => currentPage !== 1 && (e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff')}
-          style={{
-            padding: '0.25rem 0.75rem',
-            background: currentPage === 1 ? '#808080' : '#c0c0c0',
+            background: '#c0c0c0',
             border: '2px solid',
-            borderColor: '#ffffff #000000 #000000 #ffffff',
-            cursor: currentPage === 1 ? 'not-allowed' : 'pointer',
-            fontWeight: 'bold',
-            fontFamily: 'MS Sans Serif, sans-serif',
-            fontSize: '0.875rem'
-          }}
-        >
-          ← Prev
-        </button>
-        <span style={{ 
-          padding: '0.25rem 1rem',
-          background: '#ffffff',
-          border: '2px solid',
-          borderColor: '#808080 #ebebeb #ebebeb #808080',
-          fontWeight: 'bold'
-        }}>
-          Page {currentPage} of {totalPages || 1}
-        </span>
-        <button
-          onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-          disabled={currentPage === totalPages || totalPages === 0}
-          onMouseDown={(e) => currentPage !== totalPages && totalPages !== 0 && (e.target.style.borderColor = '#000000 #ffffff #ffffff #000000')}
-          onMouseUp={(e) => currentPage !== totalPages && totalPages !== 0 && (e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff')}
-          style={{
-            padding: '0.25rem 0.75rem',
-            background: (currentPage === totalPages || totalPages === 0) ? '#808080' : '#c0c0c0',
-            border: '2px solid',
-            borderColor: '#ffffff #000000 #000000 #ffffff',
-            cursor: (currentPage === totalPages || totalPages === 0) ? 'not-allowed' : 'pointer',
-            fontWeight: 'bold',
-            fontFamily: 'MS Sans Serif, sans-serif',
-            fontSize: '0.875rem'
-          }}
-        >
-          Next →
-        </button>
-        <button
-          onClick={() => setCurrentPage(totalPages)}
-          disabled={currentPage === totalPages || totalPages === 0}
-          onMouseDown={(e) => currentPage !== totalPages && totalPages !== 0 && (e.target.style.borderColor = '#000000 #ffffff #ffffff #000000')}
-          onMouseUp={(e) => currentPage !== totalPages && totalPages !== 0 && (e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff')}
-          style={{
-            padding: '0.25rem 0.75rem',
-            background: (currentPage === totalPages || totalPages === 0) ? '#808080' : '#c0c0c0',
-            border: '2px solid',
-            borderColor: '#ffffff #000000 #000000 #ffffff',
-            cursor: (currentPage === totalPages || totalPages === 0) ? 'not-allowed' : 'pointer',
-            fontWeight: 'bold',
-            fontFamily: 'MS Sans Serif, sans-serif',
-            fontSize: '0.875rem'
-          }}
-        >
-          Last »
-        </button>
-      </div>
-
-      <div style={{ 
-        marginTop: '1rem',
-        padding: '0.5rem',
-        color: '#000000',
-        fontSize: '0.875rem',
-        fontFamily: 'MS Sans Serif, sans-serif',
-        background: '#c0c0c0',
-        border: '2px solid',
-        borderColor: '#ffffff #808080 #808080 #ffffff',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        flexWrap: 'wrap',
-        gap: '0.5rem'
-      }}>
-        <div>
-          Showing {startIndex + 1}-{Math.min(endIndex, filteredAndSortedItems.length)} of {filteredAndSortedItems.length} items
-          {filteredAndSortedItems.length !== inventoryItems.length && ` (filtered from ${inventoryItems.length} total)`}
-        </div>
-        <div>
-          Total Inventory Value: ${filteredAndSortedItems.reduce((sum, item) => sum + (item.quantity * parseFloat(item.price_per_unit || 0)), 0).toFixed(2)}
-        </div>
-      </div>
-      </>
+            borderColor: '#ffffff #808080 #808080 #ffffff',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '0.5rem'
+          }}>
+            <div>
+              Showing {startIndex + 1}-{Math.min(endIndex, filteredAndSortedItems.length)} of {filteredAndSortedItems.length} items
+              {filteredAndSortedItems.length !== inventoryItems.length && ` (filtered from ${inventoryItems.length} total)`}
+            </div>
+            <div>
+              Total Inventory Value: ${filteredAndSortedItems.reduce((sum, item) => sum + (item.quantity * parseFloat(item.price_per_unit || 0)), 0).toFixed(2)}
+            </div>
+          </div>
+        </>
       )}
 
       {/* Edit Item Modal */}
@@ -610,7 +673,7 @@ function Inventory() {
               alignItems: 'center',
               fontSize: '0.875rem'
             }}>
-              <span>Edit Inventory Item</span>
+              <span>{isAddMode ? 'Add New Inventory Item' : 'Edit Inventory Item'}</span>
               <button
                 onClick={handleCancelEdit}
                 style={{
@@ -824,41 +887,64 @@ function Inventory() {
               </div>
 
               {/* Action Buttons */}
-              <div style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }}>
-                <button
-                  onClick={handleSaveEdit}
-                  onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
-                  onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
-                  style={{
-                    padding: '0.5rem 1.5rem',
-                    background: '#c0c0c0',
-                    border: '2px solid',
-                    borderColor: '#ffffff #000000 #000000 #ffffff',
-                    cursor: 'pointer',
-                    fontWeight: 'bold',
-                    fontFamily: 'MS Sans Serif, sans-serif',
-                    fontSize: '0.875rem'
-                  }}
-                >
-                  Save
-                </button>
-                <button
-                  onClick={handleCancelEdit}
-                  onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
-                  onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
-                  style={{
-                    padding: '0.5rem 1.5rem',
-                    background: '#c0c0c0',
-                    border: '2px solid',
-                    borderColor: '#ffffff #000000 #000000 #ffffff',
-                    cursor: 'pointer',
-                    fontWeight: 'bold',
-                    fontFamily: 'MS Sans Serif, sans-serif',
-                    fontSize: '0.875rem'
-                  }}
-                >
-                  Cancel
-                </button>
+              <div style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'space-between', gap: '0.5rem' }}>
+                <div>
+                  {!isAddMode && (
+                    <button
+                      onClick={handleDeleteItem}
+                      onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
+                      onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
+                      style={{
+                        padding: '0.5rem 1.5rem',
+                        background: '#c0c0c0',
+                        border: '2px solid',
+                        borderColor: '#ffffff #000000 #000000 #ffffff',
+                        cursor: 'pointer',
+                        fontWeight: 'bold',
+                        fontFamily: 'MS Sans Serif, sans-serif',
+                        fontSize: '0.875rem'
+                      }}
+                    >
+                      Delete Item
+                    </button>
+                  )}
+                </div>
+                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                  <button
+                    onClick={handleSaveEdit}
+                    onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
+                    onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
+                    style={{
+                      padding: '0.5rem 1.5rem',
+                      background: '#c0c0c0',
+                      border: '2px solid',
+                      borderColor: '#ffffff #000000 #000000 #ffffff',
+                      cursor: 'pointer',
+                      fontWeight: 'bold',
+                      fontFamily: 'MS Sans Serif, sans-serif',
+                      fontSize: '0.875rem'
+                    }}
+                  >
+                    Save
+                  </button>
+                  <button
+                    onClick={handleCancelEdit}
+                    onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
+                    onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
+                    style={{
+                      padding: '0.5rem 1.5rem',
+                      background: '#c0c0c0',
+                      border: '2px solid',
+                      borderColor: '#ffffff #000000 #000000 #ffffff',
+                      cursor: 'pointer',
+                      fontWeight: 'bold',
+                      fontFamily: 'MS Sans Serif, sans-serif',
+                      fontSize: '0.875rem'
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -965,6 +1051,124 @@ function Inventory() {
             background: '#c0c0c0',
             border: '3px solid',
             borderColor: '#ffffff #000000 #000000 #ffffff',
+            width: '450px',
+            fontFamily: 'MS Sans Serif, sans-serif'
+          }}>
+            {/* Modal Title Bar */}
+            <div style={{
+              padding: '0.4rem 0.6rem',
+              background: 'linear-gradient(to bottom, #000080 0%, #0000aa 100%)',
+              color: 'white',
+              borderBottom: '2px solid #000000',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              boxShadow: 'inset 1px 1px 0 rgba(255,255,255,0.3)'
+            }}>
+              <h2 style={{
+                margin: 0,
+                fontSize: '0.9rem',
+                fontWeight: 'bold',
+                textShadow: '1px 1px 0 rgba(0,0,0,0.5)'
+              }}>
+                Confirm Save
+              </h2>
+            </div>
+
+            {/* Modal Content */}
+            <div style={{ padding: '1rem' }}>
+              <div style={{ marginBottom: '1rem' }}>
+                <p style={{ margin: '0 0 0.75rem 0', fontSize: '0.9rem', lineHeight: '1.5' }}>
+                  Are you sure you want to save {isAddMode ? 'this new item' : 'the changes to this item'}?
+                </p>
+              </div>
+
+              {/* Action Buttons */}
+              <div style={{ display: 'flex', gap: '1rem' }}>
+                <button
+                  onClick={confirmSaveEdit}
+                  onMouseDown={(e) => {
+                    e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'
+                    e.target.style.boxShadow = 'inset 1px 1px 2px rgba(0,0,0,0.5)'
+                    e.target.style.transform = 'translate(2px, 2px)'
+                  }}
+                  onMouseUp={(e) => {
+                    e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'
+                    e.target.style.boxShadow = '2px 2px 4px rgba(0,0,0,0.4)'
+                    e.target.style.transform = 'translate(0, 0)'
+                  }}
+                  style={{
+                    flex: 1,
+                    padding: '0.5rem 1rem',
+                    background: '#c0c0c0',
+                    border: '2px solid',
+                    borderColor: '#ffffff #000000 #000000 #ffffff',
+                    cursor: 'pointer',
+                    fontWeight: 'bold',
+                    fontFamily: 'MS Sans Serif, sans-serif',
+                    fontSize: '0.9rem',
+                    boxShadow: '2px 2px 4px rgba(0,0,0,0.4)',
+                    color: '#000',
+                    textShadow: '1px 1px 0 rgba(255,255,255,0.5)',
+                    transition: 'all 0.15s'
+                  }}
+                >
+                  Save
+                </button>
+                <button
+                  onClick={declineSaveEdit}
+                  onMouseDown={(e) => {
+                    e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'
+                    e.target.style.boxShadow = 'inset 1px 1px 2px rgba(0,0,0,0.5)'
+                    e.target.style.transform = 'translate(2px, 2px)'
+                  }}
+                  onMouseUp={(e) => {
+                    e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'
+                    e.target.style.boxShadow = '2px 2px 4px rgba(0,0,0,0.4)'
+                    e.target.style.transform = 'translate(0, 0)'
+                  }}
+                  style={{
+                    flex: 1,
+                    padding: '0.5rem 1rem',
+                    background: '#c0c0c0',
+                    border: '2px solid',
+                    borderColor: '#ffffff #000000 #000000 #ffffff',
+                    cursor: 'pointer',
+                    fontWeight: 'bold',
+                    fontFamily: 'MS Sans Serif, sans-serif',
+                    fontSize: '0.9rem',
+                    boxShadow: '2px 2px 4px rgba(0,0,0,0.4)',
+                    color: '#000',
+                    textShadow: '1px 1px 0 rgba(255,255,255,0.5)',
+                    transition: 'all 0.15s'
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0, 0, 0, 0.5)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 1002
+        }}>
+          <div style={{
+            background: '#c0c0c0',
+            border: '3px solid',
+            borderColor: '#ffffff #000000 #000000 #ffffff',
             width: '400px',
             fontFamily: 'MS Sans Serif, sans-serif'
           }}>
@@ -976,19 +1180,19 @@ function Inventory() {
               fontWeight: 'bold',
               fontSize: '0.875rem'
             }}>
-              Confirm Save
+              Confirm Delete
             </div>
 
             {/* Modal Content */}
             <div style={{ padding: '1.5rem' }}>
               <div style={{ marginBottom: '1.5rem', fontSize: '0.875rem' }}>
-                Are you sure you are ready to save?
+                Are you sure you want to delete this item? This action cannot be undone.
               </div>
 
               {/* Action Buttons */}
               <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem' }}>
                 <button
-                  onClick={confirmSaveEdit}
+                  onClick={confirmDeleteItem}
                   onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
                   onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
                   style={{
@@ -1006,7 +1210,7 @@ function Inventory() {
                   OK
                 </button>
                 <button
-                  onClick={declineSaveEdit}
+                  onClick={declineDeleteItem}
                   onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
                   onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
                   style={{
@@ -1022,6 +1226,100 @@ function Inventory() {
                   }}
                 >
                   Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Validation Error Modal */}
+      {showValidationError && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0, 0, 0, 0.5)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 1003
+        }}>
+          <div style={{
+            background: '#c0c0c0',
+            border: '3px solid',
+            borderColor: '#ffffff #000000 #000000 #ffffff',
+            width: '450px',
+            fontFamily: 'MS Sans Serif, sans-serif'
+          }}>
+            {/* Modal Title Bar */}
+            <div style={{
+              padding: '0.4rem 0.6rem',
+              background: 'linear-gradient(to bottom, #000080 0%, #0000aa 100%)',
+              color: 'white',
+              borderBottom: '2px solid #000000',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              boxShadow: 'inset 1px 1px 0 rgba(255,255,255,0.3)'
+            }}>
+              <h2 style={{
+                margin: 0,
+                fontSize: '0.9rem',
+                fontWeight: 'bold',
+                textShadow: '1px 1px 0 rgba(0,0,0,0.5)'
+              }}>
+                Validation Error
+              </h2>
+            </div>
+
+            {/* Modal Content */}
+            <div style={{ padding: '1.5rem' }}>
+              <div style={{ 
+                marginBottom: '1.5rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.75rem'
+              }}>
+                <span style={{ fontSize: '2rem' }}>⚠️</span>
+                <p style={{ margin: 0, fontSize: '0.9rem', lineHeight: '1.5' }}>
+                  Cannot save item with 0 quantity. Please enter a quantity greater than 0.
+                </p>
+              </div>
+
+              {/* Action Button */}
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <button
+                  onClick={() => setShowValidationError(false)}
+                  onMouseDown={(e) => {
+                    e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'
+                    e.target.style.boxShadow = 'inset 1px 1px 2px rgba(0,0,0,0.5)'
+                    e.target.style.transform = 'translate(2px, 2px)'
+                  }}
+                  onMouseUp={(e) => {
+                    e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'
+                    e.target.style.boxShadow = '2px 2px 4px rgba(0,0,0,0.4)'
+                    e.target.style.transform = 'translate(0, 0)'
+                  }}
+                  style={{
+                    padding: '0.5rem 2rem',
+                    background: '#c0c0c0',
+                    border: '2px solid',
+                    borderColor: '#ffffff #000000 #000000 #ffffff',
+                    cursor: 'pointer',
+                    fontWeight: 'bold',
+                    fontFamily: 'MS Sans Serif, sans-serif',
+                    fontSize: '0.9rem',
+                    boxShadow: '2px 2px 4px rgba(0,0,0,0.4)',
+                    color: '#000',
+                    textShadow: '1px 1px 0 rgba(255,255,255,0.5)',
+                    transition: 'all 0.15s',
+                    minWidth: '100px'
+                  }}
+                >
+                  OK
                 </button>
               </div>
             </div>
