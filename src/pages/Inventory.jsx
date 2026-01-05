@@ -10,6 +10,8 @@ function Inventory() {
   const [stockFilter, setStockFilter] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 25
+  const [showEditModal, setShowEditModal] = useState(false)
+  const [editingItem, setEditingItem] = useState(null)
 
   useEffect(() => {
     fetchInventory()
@@ -29,6 +31,42 @@ function Inventory() {
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleEditClick = (item) => {
+    setEditingItem({...item})
+    setShowEditModal(true)
+  }
+
+  const handleEditChange = (field, value) => {
+    setEditingItem(prev => ({
+      ...prev,
+      [field]: value
+    }))
+  }
+
+  const handleSaveEdit = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/inventory/${editingItem.item_id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editingItem)
+      })
+
+      if (!response.ok) throw new Error('Failed to update item')
+
+      // Refresh inventory list
+      await fetchInventory()
+      setShowEditModal(false)
+      setEditingItem(null)
+    } catch (err) {
+      alert('Error updating item: ' + err.message)
+    }
+  }
+
+  const handleCancelEdit = () => {
+    setShowEditModal(false)
+    setEditingItem(null)
   }
 
   // Filter and sort items
@@ -365,6 +403,7 @@ function Inventory() {
                   </td>
                   <td style={{ padding: '0.5rem' }}>
                     <button 
+                      onClick={() => handleEditClick(item)}
                       onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
                       onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
                       style={{ 
@@ -530,6 +569,296 @@ function Inventory() {
         </div>
       </div>
       </>
+      )}
+
+      {/* Edit Item Modal */}
+      {showEditModal && editingItem && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0, 0, 0, 0.5)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 1000
+        }}>
+          <div style={{
+            background: '#c0c0c0',
+            border: '3px solid',
+            borderColor: '#ffffff #000000 #000000 #ffffff',
+            minWidth: '600px',
+            maxWidth: '800px',
+            maxHeight: '90vh',
+            overflow: 'auto',
+            fontFamily: 'MS Sans Serif, sans-serif'
+          }}>
+            {/* Modal Title Bar */}
+            <div style={{
+              background: 'linear-gradient(90deg, #000080, #1084d0)',
+              color: 'white',
+              padding: '0.25rem 0.5rem',
+              fontWeight: 'bold',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              fontSize: '0.875rem'
+            }}>
+              <span>Edit Inventory Item</span>
+              <button
+                onClick={handleCancelEdit}
+                style={{
+                  background: '#c0c0c0',
+                  border: '2px solid',
+                  borderColor: '#ffffff #000000 #000000 #ffffff',
+                  padding: '0 0.5rem',
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
+                  fontFamily: 'MS Sans Serif, sans-serif'
+                }}
+              >
+                ×
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div style={{ padding: '1rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.25rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
+                    Part Number:
+                  </label>
+                  <input
+                    type="text"
+                    value={editingItem.part_number || ''}
+                    onChange={(e) => handleEditChange('part_number', e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '0.375rem',
+                      border: '2px solid',
+                      borderColor: '#808080 #ebebeb #ebebeb #808080',
+                      fontFamily: 'MS Sans Serif, sans-serif',
+                      fontSize: '0.875rem'
+                    }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.25rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
+                    Name:
+                  </label>
+                  <input
+                    type="text"
+                    value={editingItem.name || ''}
+                    onChange={(e) => handleEditChange('name', e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '0.375rem',
+                      border: '2px solid',
+                      borderColor: '#808080 #ebebeb #ebebeb #808080',
+                      fontFamily: 'MS Sans Serif, sans-serif',
+                      fontSize: '0.875rem'
+                    }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.25rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
+                    Manufacturer:
+                  </label>
+                  <input
+                    type="text"
+                    value={editingItem.manufacturer || ''}
+                    onChange={(e) => handleEditChange('manufacturer', e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '0.375rem',
+                      border: '2px solid',
+                      borderColor: '#808080 #ebebeb #ebebeb #808080',
+                      fontFamily: 'MS Sans Serif, sans-serif',
+                      fontSize: '0.875rem'
+                    }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.25rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
+                    Category:
+                  </label>
+                  <input
+                    type="text"
+                    value={editingItem.category || ''}
+                    onChange={(e) => handleEditChange('category', e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '0.375rem',
+                      border: '2px solid',
+                      borderColor: '#808080 #ebebeb #ebebeb #808080',
+                      fontFamily: 'MS Sans Serif, sans-serif',
+                      fontSize: '0.875rem'
+                    }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.25rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
+                    Quantity:
+                  </label>
+                  <input
+                    type="number"
+                    value={editingItem.quantity || 0}
+                    onChange={(e) => handleEditChange('quantity', parseInt(e.target.value) || 0)}
+                    style={{
+                      width: '100%',
+                      padding: '0.375rem',
+                      border: '2px solid',
+                      borderColor: '#808080 #ebebeb #ebebeb #808080',
+                      fontFamily: 'MS Sans Serif, sans-serif',
+                      fontSize: '0.875rem'
+                    }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.25rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
+                    Min Quantity:
+                  </label>
+                  <input
+                    type="number"
+                    value={editingItem.min_quantity || 0}
+                    onChange={(e) => handleEditChange('min_quantity', parseInt(e.target.value) || 0)}
+                    style={{
+                      width: '100%',
+                      padding: '0.375rem',
+                      border: '2px solid',
+                      borderColor: '#808080 #ebebeb #ebebeb #808080',
+                      fontFamily: 'MS Sans Serif, sans-serif',
+                      fontSize: '0.875rem'
+                    }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.25rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
+                    Price Per Unit:
+                  </label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={editingItem.price_per_unit || 0}
+                    onChange={(e) => handleEditChange('price_per_unit', parseFloat(e.target.value) || 0)}
+                    style={{
+                      width: '100%',
+                      padding: '0.375rem',
+                      border: '2px solid',
+                      borderColor: '#808080 #ebebeb #ebebeb #808080',
+                      fontFamily: 'MS Sans Serif, sans-serif',
+                      fontSize: '0.875rem'
+                    }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.25rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
+                    Supplier ID:
+                  </label>
+                  <input
+                    type="number"
+                    value={editingItem.supplier_id || ''}
+                    onChange={(e) => handleEditChange('supplier_id', parseInt(e.target.value) || null)}
+                    style={{
+                      width: '100%',
+                      padding: '0.375rem',
+                      border: '2px solid',
+                      borderColor: '#808080 #ebebeb #ebebeb #808080',
+                      fontFamily: 'MS Sans Serif, sans-serif',
+                      fontSize: '0.875rem'
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div style={{ marginTop: '1rem' }}>
+                <label style={{ display: 'block', marginBottom: '0.25rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
+                  Description:
+                </label>
+                <textarea
+                  value={editingItem.description || ''}
+                  onChange={(e) => handleEditChange('description', e.target.value)}
+                  rows={3}
+                  style={{
+                    width: '100%',
+                    padding: '0.375rem',
+                    border: '2px solid',
+                    borderColor: '#808080 #ebebeb #ebebeb #808080',
+                    fontFamily: 'MS Sans Serif, sans-serif',
+                    fontSize: '0.875rem',
+                    resize: 'vertical'
+                  }}
+                />
+              </div>
+
+              <div style={{ marginTop: '1rem' }}>
+                <label style={{ display: 'block', marginBottom: '0.25rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
+                  Photo URL:
+                </label>
+                <input
+                  type="text"
+                  value={editingItem.photo_url || ''}
+                  onChange={(e) => handleEditChange('photo_url', e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: '0.375rem',
+                    border: '2px solid',
+                    borderColor: '#808080 #ebebeb #ebebeb #808080',
+                    fontFamily: 'MS Sans Serif, sans-serif',
+                    fontSize: '0.875rem'
+                  }}
+                />
+              </div>
+
+              {/* Action Buttons */}
+              <div style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }}>
+                <button
+                  onClick={handleSaveEdit}
+                  onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
+                  onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
+                  style={{
+                    padding: '0.5rem 1.5rem',
+                    background: '#c0c0c0',
+                    border: '2px solid',
+                    borderColor: '#ffffff #000000 #000000 #ffffff',
+                    cursor: 'pointer',
+                    fontWeight: 'bold',
+                    fontFamily: 'MS Sans Serif, sans-serif',
+                    fontSize: '0.875rem'
+                  }}
+                >
+                  Save
+                </button>
+                <button
+                  onClick={handleCancelEdit}
+                  onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
+                  onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
+                  style={{
+                    padding: '0.5rem 1.5rem',
+                    background: '#c0c0c0',
+                    border: '2px solid',
+                    borderColor: '#ffffff #000000 #000000 #ffffff',
+                    cursor: 'pointer',
+                    fontWeight: 'bold',
+                    fontFamily: 'MS Sans Serif, sans-serif',
+                    fontSize: '0.875rem'
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   )
