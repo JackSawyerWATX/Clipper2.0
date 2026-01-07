@@ -12,6 +12,7 @@ npm install
 2. Start the development server:
 ```bash
 npm run dev
+cd server; npm run dev
 ```
 
 3. Build for production:
