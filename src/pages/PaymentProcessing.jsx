@@ -80,18 +80,32 @@ function PaymentProcessing() {
   const years = Array.from({ length: 15 }, (_, i) => currentYear + i)
 
   return (
-    <div className="page">
-      <h1>Payment Processing</h1>
-      <p style={{ color: '#6c757d', marginBottom: '2rem' }}>Secure credit card payment processing via Stripe</p>
+    <div className="page" style={{ 
+      background: '#ffffff',
+      fontFamily: "'MS Sans Serif', 'Microsoft Sans Serif', sans-serif"
+    }}>
+      <div style={{
+        marginBottom: '1.5rem',
+        paddingBottom: '1rem',
+        borderBottom: '3px solid #000080'
+      }}>
+        <h1 style={{ margin: '0 0 0.5rem 0', fontSize: '2rem', color: '#000080', textShadow: '2px 2px 0 rgba(0,0,0,0.1)' }}>
+          Payment Processing
+        </h1>
+        <p style={{ margin: 0, color: '#000', fontSize: '1rem', fontWeight: 'normal' }}>
+          Secure credit card payment processing via Stripe
+        </p>
+      </div>
 
       {paymentStatus && (
         <div style={{ 
           padding: '1rem',
           marginBottom: '2rem',
-          borderRadius: '8px',
           background: paymentStatus.success ? '#d4edda' : '#f8d7da',
           color: paymentStatus.success ? '#155724' : '#721c24',
-          border: `1px solid ${paymentStatus.success ? '#c3e6cb' : '#f5c6cb'}`
+          border: '3px solid',
+          borderColor: paymentStatus.success ? '#c3e6cb #006000 #006000 #c3e6cb' : '#f5c6cb #600000 #600000 #f5c6cb',
+          boxShadow: '3px 3px 0 rgba(0,0,0,0.2)'
         }}>
           <strong>{paymentStatus.success ? '✓' : '✗'} {paymentStatus.message}</strong>
           {paymentStatus.transactionId && (
@@ -106,12 +120,22 @@ function PaymentProcessing() {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
           {/* Payment Information */}
           <div>
-            <h2 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', borderBottom: '2px solid #dee2e6', paddingBottom: '0.5rem' }}>
+            <h2 style={{
+              margin: '0 0 1rem 0',
+              fontSize: '1.2rem',
+              fontWeight: 'bold',
+              color: '#000',
+              padding: '0.5rem',
+              background: '#c0c0c0',
+              border: '2px solid',
+              borderColor: '#ebebeb #000000 #000000 #ebebeb',
+              textShadow: '1px 1px 0 rgba(255,255,255,0.8)'
+            }}>
               Payment Information
             </h2>
 
             <div style={{ marginBottom: '1rem' }}>
-              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
+              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
                 Order ID / Reference
               </label>
               <input 
@@ -123,16 +147,17 @@ function PaymentProcessing() {
                 required
                 style={{ 
                   width: '100%',
-                  padding: '0.75rem',
-                  border: '1px solid #ddd',
-                  borderRadius: '4px',
-                  fontSize: '1rem'
+                  padding: '0.5rem',
+                  border: '2px solid',
+                  borderColor: '#808080 #ebebeb #ebebeb #808080',
+                  fontSize: '0.875rem',
+                  fontFamily: "'MS Sans Serif', sans-serif"
                 }}
               />
             </div>
 
             <div style={{ marginBottom: '1rem' }}>
-              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
+              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
                 Amount (USD)
               </label>
               <input 
@@ -146,16 +171,17 @@ function PaymentProcessing() {
                 required
                 style={{ 
                   width: '100%',
-                  padding: '0.75rem',
-                  border: '1px solid #ddd',
-                  borderRadius: '4px',
-                  fontSize: '1rem'
+                  padding: '0.5rem',
+                  border: '2px solid',
+                  borderColor: '#808080 #ebebeb #ebebeb #808080',
+                  fontSize: '0.875rem',
+                  fontFamily: "'MS Sans Serif', sans-serif"
                 }}
               />
             </div>
 
             <div style={{ marginBottom: '1rem' }}>
-              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
+              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
                 Email Address
               </label>
               <input 
@@ -167,16 +193,17 @@ function PaymentProcessing() {
                 required
                 style={{ 
                   width: '100%',
-                  padding: '0.75rem',
-                  border: '1px solid #ddd',
-                  borderRadius: '4px',
-                  fontSize: '1rem'
+                  padding: '0.5rem',
+                  border: '2px solid',
+                  borderColor: '#808080 #ebebeb #ebebeb #808080',
+                  fontSize: '0.875rem',
+                  fontFamily: "'MS Sans Serif', sans-serif"
                 }}
               />
             </div>
 
             <div style={{ marginBottom: '1rem' }}>
-              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
+              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
                 Cardholder Name
               </label>
               <input 
@@ -188,16 +215,17 @@ function PaymentProcessing() {
                 required
                 style={{ 
                   width: '100%',
-                  padding: '0.75rem',
-                  border: '1px solid #ddd',
-                  borderRadius: '4px',
-                  fontSize: '1rem'
+                  padding: '0.5rem',
+                  border: '2px solid',
+                  borderColor: '#808080 #ebebeb #ebebeb #808080',
+                  fontSize: '0.875rem',
+                  fontFamily: "'MS Sans Serif', sans-serif"
                 }}
               />
             </div>
 
             <div style={{ marginBottom: '1rem' }}>
-              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
+              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
                 Card Number
               </label>
               <input 
@@ -210,10 +238,10 @@ function PaymentProcessing() {
                 required
                 style={{ 
                   width: '100%',
-                  padding: '0.75rem',
-                  border: '1px solid #ddd',
-                  borderRadius: '4px',
-                  fontSize: '1rem',
+                  padding: '0.5rem',
+                  border: '2px solid',
+                  borderColor: '#808080 #ebebeb #ebebeb #808080',
+                  fontSize: '0.875rem',
                   fontFamily: 'monospace'
                 }}
               />
@@ -221,7 +249,7 @@ function PaymentProcessing() {
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
               <div>
-                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
+                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
                   Exp. Month
                 </label>
                 <select 
@@ -231,10 +259,11 @@ function PaymentProcessing() {
                   required
                   style={{ 
                     width: '100%',
-                    padding: '0.75rem',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
-                    fontSize: '1rem',
+                    padding: '0.5rem',
+                    border: '2px solid',
+                    borderColor: '#808080 #ebebeb #ebebeb #808080',
+                    fontSize: '0.875rem',
+                    fontFamily: "'MS Sans Serif', sans-serif",
                     cursor: 'pointer'
                   }}
                 >
@@ -248,7 +277,7 @@ function PaymentProcessing() {
               </div>
 
               <div>
-                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
+                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
                   Exp. Year
                 </label>
                 <select 
@@ -258,10 +287,11 @@ function PaymentProcessing() {
                   required
                   style={{ 
                     width: '100%',
-                    padding: '0.75rem',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
-                    fontSize: '1rem',
+                    padding: '0.5rem',
+                    border: '2px solid',
+                    borderColor: '#808080 #ebebeb #ebebeb #808080',
+                    fontSize: '0.875rem',
+                    fontFamily: "'MS Sans Serif', sans-serif",
                     cursor: 'pointer'
                   }}
                 >
@@ -273,7 +303,7 @@ function PaymentProcessing() {
               </div>
 
               <div>
-                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
+                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
                   CVV
                 </label>
                 <input 
@@ -286,10 +316,10 @@ function PaymentProcessing() {
                   required
                   style={{ 
                     width: '100%',
-                    padding: '0.75rem',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
-                    fontSize: '1rem',
+                    padding: '0.5rem',
+                    border: '2px solid',
+                    borderColor: '#808080 #ebebeb #ebebeb #808080',
+                    fontSize: '0.875rem',
                     fontFamily: 'monospace'
                   }}
                 />
@@ -299,12 +329,22 @@ function PaymentProcessing() {
 
           {/* Billing Information */}
           <div>
-            <h2 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', borderBottom: '2px solid #dee2e6', paddingBottom: '0.5rem' }}>
+            <h2 style={{
+              margin: '0 0 1rem 0',
+              fontSize: '1.2rem',
+              fontWeight: 'bold',
+              color: '#000',
+              padding: '0.5rem',
+              background: '#c0c0c0',
+              border: '2px solid',
+              borderColor: '#ebebeb #000000 #000000 #ebebeb',
+              textShadow: '1px 1px 0 rgba(255,255,255,0.8)'
+            }}>
               Billing Address
             </h2>
 
             <div style={{ marginBottom: '1rem' }}>
-              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
+              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
                 Street Address
               </label>
               <input 
@@ -316,16 +356,17 @@ function PaymentProcessing() {
                 required
                 style={{ 
                   width: '100%',
-                  padding: '0.75rem',
-                  border: '1px solid #ddd',
-                  borderRadius: '4px',
-                  fontSize: '1rem'
+                  padding: '0.5rem',
+                  border: '2px solid',
+                  borderColor: '#808080 #ebebeb #ebebeb #808080',
+                  fontSize: '0.875rem',
+                  fontFamily: "'MS Sans Serif', sans-serif"
                 }}
               />
             </div>
 
             <div style={{ marginBottom: '1rem' }}>
-              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
+              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
                 City
               </label>
               <input 
@@ -337,17 +378,18 @@ function PaymentProcessing() {
                 required
                 style={{ 
                   width: '100%',
-                  padding: '0.75rem',
-                  border: '1px solid #ddd',
-                  borderRadius: '4px',
-                  fontSize: '1rem'
+                  padding: '0.5rem',
+                  border: '2px solid',
+                  borderColor: '#808080 #ebebeb #ebebeb #808080',
+                  fontSize: '0.875rem',
+                  fontFamily: "'MS Sans Serif', sans-serif"
                 }}
               />
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
               <div>
-                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
+                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
                   State
                 </label>
                 <input 
@@ -359,16 +401,17 @@ function PaymentProcessing() {
                   required
                   style={{ 
                     width: '100%',
-                    padding: '0.75rem',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
-                    fontSize: '1rem'
+                    padding: '0.5rem',
+                    border: '2px solid',
+                    borderColor: '#808080 #ebebeb #ebebeb #808080',
+                    fontSize: '0.875rem',
+                    fontFamily: "'MS Sans Serif', sans-serif"
                   }}
                 />
               </div>
 
               <div>
-                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
+                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
                   ZIP Code
                 </label>
                 <input 
@@ -380,17 +423,18 @@ function PaymentProcessing() {
                   required
                   style={{ 
                     width: '100%',
-                    padding: '0.75rem',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
-                    fontSize: '1rem'
+                    padding: '0.5rem',
+                    border: '2px solid',
+                    borderColor: '#808080 #ebebeb #ebebeb #808080',
+                    fontSize: '0.875rem',
+                    fontFamily: "'MS Sans Serif', sans-serif"
                   }}
                 />
               </div>
             </div>
 
             <div style={{ marginBottom: '1.5rem' }}>
-              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
+              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
                 Country
               </label>
               <select 
@@ -400,10 +444,11 @@ function PaymentProcessing() {
                 required
                 style={{ 
                   width: '100%',
-                  padding: '0.75rem',
-                  border: '1px solid #ddd',
-                  borderRadius: '4px',
-                  fontSize: '1rem',
+                  padding: '0.5rem',
+                  border: '2px solid',
+                  borderColor: '#808080 #ebebeb #ebebeb #808080',
+                  fontSize: '0.875rem',
+                  fontFamily: "'MS Sans Serif', sans-serif",
                   cursor: 'pointer'
                 }}
               >
@@ -415,15 +460,18 @@ function PaymentProcessing() {
             </div>
 
             <div style={{ 
-              padding: '1rem',
-              background: '#f8f9fa',
-              borderRadius: '4px',
+              padding: '1.2rem',
+              background: 'linear-gradient(to bottom, #008080 0%, #006060 100%)',
+              color: '#ffffff',
+              border: '3px solid',
+              borderColor: '#ebebeb #000000 #000000 #ebebeb',
+              boxShadow: '3px 3px 0 rgba(0,0,0,0.3)',
               marginBottom: '1rem'
             }}>
-              <div style={{ fontSize: '0.875rem', color: '#6c757d', marginBottom: '0.5rem' }}>
+              <div style={{ fontSize: '0.85rem', marginBottom: '0.5rem', fontWeight: 'normal', textShadow: '1px 1px 0 rgba(0,0,0,0.3)' }}>
                 Payment Summary
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.5rem', fontWeight: 'bold' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.75rem', fontWeight: 'bold', textShadow: '2px 2px 0 rgba(0,0,0,0.3)' }}>
                 <span>Total:</span>
                 <span>${paymentData.amount || '0.00'}</span>
               </div>
@@ -435,23 +483,36 @@ function PaymentProcessing() {
               style={{ 
                 width: '100%',
                 padding: '1rem',
-                background: processing ? '#6c757d' : '#28a745',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
+                background: processing ? '#808080' : '#c0c0c0',
+                color: '#000',
+                border: '3px solid',
+                borderColor: processing ? '#808080 #c0c0c0 #c0c0c0 #808080' : '#ebebeb #000000 #000000 #ebebeb',
                 cursor: processing ? 'not-allowed' : 'pointer',
                 fontWeight: 'bold',
-                fontSize: '1.1rem'
+                fontSize: '1rem',
+                fontFamily: "'MS Sans Serif', sans-serif",
+                textShadow: processing ? 'none' : '1px 1px 0 rgba(255,255,255,0.8)',
+                boxShadow: processing ? 'none' : '3px 3px 0 rgba(0,0,0,0.2)'
               }}
+              onMouseDown={(e) => !processing && (e.target.style.borderColor = '#000000 #ebebeb #ebebeb #000000')}
+              onMouseUp={(e) => !processing && (e.target.style.borderColor = '#ebebeb #000000 #000000 #ebebeb')}
             >
-              {processing ? 'Processing Payment...' : 'Process Payment'}
+              {processing ? 'Processing Payment...' : '💳 Process Payment'}
             </button>
           </div>
         </div>
       </form>
 
-      <div style={{ marginTop: '2rem', padding: '1rem', background: '#d1ecf1', borderRadius: '4px', color: '#0c5460' }}>
-        <strong>🔒 Secure Payment:</strong> This page will integrate with Stripe for secure payment processing. 
+      <div style={{
+        marginTop: '2rem',
+        padding: '1rem',
+        background: '#ffffe0',
+        border: '2px solid',
+        borderColor: '#000000 #ebebeb #ebebeb #000000',
+        boxShadow: '3px 3px 0 rgba(0,0,0,0.2)',
+        color: '#000'
+      }}>
+        <strong style={{ fontWeight: 'bold', color: '#000080' }}>🔒 Secure Payment:</strong> This page will integrate with Stripe for secure payment processing. 
         Stripe API keys and proper integration will be configured later.
       </div>
     </div>
