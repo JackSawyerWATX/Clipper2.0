@@ -137,9 +137,27 @@ function Reports() {
 
     return (
       <div>
-        <div style={{ marginBottom: '2rem', padding: '1.5rem', background: '#f8f9fa', borderRadius: '4px' }}>
-          <h3 style={{ margin: '0 0 1rem 0' }}>{reportData.customer.company_name}</h3>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', fontSize: '0.875rem' }}>
+        <div style={{ 
+          marginBottom: '2rem', 
+          padding: '1.5rem', 
+          background: '#c0c0c0', 
+          border: '3px solid',
+          borderColor: '#ebebeb #000000 #000000 #ebebeb',
+          boxShadow: '3px 3px 0 rgba(0,0,0,0.2)'
+        }}>
+          <h3 style={{ 
+            margin: '0 0 1rem 0',
+            color: '#000080',
+            textShadow: '1px 1px 0 rgba(255,255,255,0.8)',
+            fontFamily: "'MS Sans Serif', sans-serif"
+          }}>{reportData.customer.company_name}</h3>
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: '1fr 1fr', 
+            gap: '1rem', 
+            fontSize: '0.875rem',
+            fontFamily: "'MS Sans Serif', sans-serif"
+          }}>
             <div><strong>Contact:</strong> {reportData.customer.contact_name}</div>
             <div><strong>Email:</strong> {reportData.customer.email}</div>
             <div><strong>Phone:</strong> {reportData.customer.phone}</div>
@@ -148,46 +166,123 @@ function Reports() {
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem', marginBottom: '2rem' }}>
-          <div style={{ padding: '1rem', background: '#e7f3ff', borderRadius: '4px' }}>
-            <div style={{ fontSize: '0.875rem', color: '#6c757d', marginBottom: '0.5rem' }}>Total Orders</div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{reportData.summary.total_orders}</div>
+          <div style={{ 
+            padding: '1rem', 
+            background: '#ffffff', 
+            border: '2px solid',
+            borderColor: '#000000 #ebebeb #ebebeb #000000',
+            boxShadow: '2px 2px 0 rgba(0,0,0,0.2)',
+            fontFamily: "'MS Sans Serif', sans-serif"
+          }}>
+            <div style={{ fontSize: '0.75rem', color: '#000', marginBottom: '0.5rem', fontWeight: 'bold' }}>Total Orders</div>
+            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#000080' }}>{reportData.summary.total_orders}</div>
           </div>
-          <div style={{ padding: '1rem', background: '#d4edda', borderRadius: '4px' }}>
-            <div style={{ fontSize: '0.875rem', color: '#6c757d', marginBottom: '0.5rem' }}>Total Spent</div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>${parseFloat(reportData.summary.total_spent).toFixed(2)}</div>
+          <div style={{ 
+            padding: '1rem', 
+            background: '#ffffff', 
+            border: '2px solid',
+            borderColor: '#000000 #ebebeb #ebebeb #000000',
+            boxShadow: '2px 2px 0 rgba(0,0,0,0.2)',
+            fontFamily: "'MS Sans Serif', sans-serif"
+          }}>
+            <div style={{ fontSize: '0.75rem', color: '#000', marginBottom: '0.5rem', fontWeight: 'bold' }}>Total Spent</div>
+            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#008000' }}>${parseFloat(reportData.summary.total_spent).toFixed(2)}</div>
           </div>
-          <div style={{ padding: '1rem', background: '#fff3cd', borderRadius: '4px' }}>
-            <div style={{ fontSize: '0.875rem', color: '#6c757d', marginBottom: '0.5rem' }}>Avg Order</div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>${parseFloat(reportData.summary.avg_order).toFixed(2)}</div>
+          <div style={{ 
+            padding: '1rem', 
+            background: '#ffffff', 
+            border: '2px solid',
+            borderColor: '#000000 #ebebeb #ebebeb #000000',
+            boxShadow: '2px 2px 0 rgba(0,0,0,0.2)',
+            fontFamily: "'MS Sans Serif', sans-serif"
+          }}>
+            <div style={{ fontSize: '0.75rem', color: '#000', marginBottom: '0.5rem', fontWeight: 'bold' }}>Avg Order</div>
+            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#808000' }}>${parseFloat(reportData.summary.avg_order).toFixed(2)}</div>
           </div>
-          <div style={{ padding: '1rem', background: '#f8d7da', borderRadius: '4px' }}>
-            <div style={{ fontSize: '0.875rem', color: '#6c757d', marginBottom: '0.5rem' }}>First Order</div>
-            <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>{new Date(reportData.summary.first_order).toLocaleDateString()}</div>
+          <div style={{ 
+            padding: '1rem', 
+            background: '#ffffff', 
+            border: '2px solid',
+            borderColor: '#000000 #ebebeb #ebebeb #000000',
+            boxShadow: '2px 2px 0 rgba(0,0,0,0.2)',
+            fontFamily: "'MS Sans Serif', sans-serif"
+          }}>
+            <div style={{ fontSize: '0.75rem', color: '#000', marginBottom: '0.5rem', fontWeight: 'bold' }}>First Order</div>
+            <div style={{ fontSize: '1rem', fontWeight: 'bold', color: '#800000' }}>{new Date(reportData.summary.first_order).toLocaleDateString()}</div>
           </div>
         </div>
 
-        <h4 style={{ marginBottom: '1rem' }}>Order History</h4>
+        <h4 style={{ 
+          marginBottom: '1rem',
+          padding: '0.5rem',
+          background: '#000080',
+          color: '#ffffff',
+          fontFamily: "'MS Sans Serif', sans-serif",
+          textShadow: '1px 1px 0 rgba(0,0,0,0.5)'
+        }}>Order History</h4>
         <div style={{ overflowX: 'auto', marginBottom: '2rem' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
+          <table style={{ 
+            width: '100%', 
+            borderCollapse: 'collapse', 
+            fontSize: '0.875rem',
+            border: '2px solid #000000',
+            fontFamily: "'MS Sans Serif', sans-serif"
+          }}>
             <thead>
-              <tr style={{ background: '#f8f9fa' }}>
-                <th style={{ padding: '0.75rem', textAlign: 'left', borderBottom: '2px solid #dee2e6' }}>Order #</th>
-                <th style={{ padding: '0.75rem', textAlign: 'left', borderBottom: '2px solid #dee2e6' }}>Date</th>
-                <th style={{ padding: '0.75rem', textAlign: 'left', borderBottom: '2px solid #dee2e6' }}>Status</th>
-                <th style={{ padding: '0.75rem', textAlign: 'right', borderBottom: '2px solid #dee2e6' }}>Items</th>
-                <th style={{ padding: '0.75rem', textAlign: 'right', borderBottom: '2px solid #dee2e6' }}>Total</th>
-                <th style={{ padding: '0.75rem', textAlign: 'left', borderBottom: '2px solid #dee2e6' }}>Payment</th>
+              <tr style={{ background: '#c0c0c0' }}>
+                <th style={{ 
+                  padding: '0.5rem', 
+                  textAlign: 'left', 
+                  border: '2px solid',
+                  borderColor: '#ebebeb #000000 #000000 #ebebeb',
+                  fontWeight: 'bold'
+                }}>Order #</th>
+                <th style={{ 
+                  padding: '0.5rem', 
+                  textAlign: 'left', 
+                  border: '2px solid',
+                  borderColor: '#ebebeb #000000 #000000 #ebebeb',
+                  fontWeight: 'bold'
+                }}>Date</th>
+                <th style={{ 
+                  padding: '0.5rem', 
+                  textAlign: 'left', 
+                  border: '2px solid',
+                  borderColor: '#ebebeb #000000 #000000 #ebebeb',
+                  fontWeight: 'bold'
+                }}>Status</th>
+                <th style={{ 
+                  padding: '0.5rem', 
+                  textAlign: 'right', 
+                  border: '2px solid',
+                  borderColor: '#ebebeb #000000 #000000 #ebebeb',
+                  fontWeight: 'bold'
+                }}>Items</th>
+                <th style={{ 
+                  padding: '0.5rem', 
+                  textAlign: 'right', 
+                  border: '2px solid',
+                  borderColor: '#ebebeb #000000 #000000 #ebebeb',
+                  fontWeight: 'bold'
+                }}>Total</th>
+                <th style={{ 
+                  padding: '0.5rem', 
+                  textAlign: 'left', 
+                  border: '2px solid',
+                  borderColor: '#ebebeb #000000 #000000 #ebebeb',
+                  fontWeight: 'bold'
+                }}>Payment</th>
               </tr>
             </thead>
             <tbody>
               {reportData.orders.map((order, index) => (
-                <tr key={order.order_id} style={{ background: index % 2 === 0 ? 'white' : '#f8f9fa' }}>
-                  <td style={{ padding: '0.75rem', borderBottom: '1px solid #dee2e6' }}>{order.order_number}</td>
-                  <td style={{ padding: '0.75rem', borderBottom: '1px solid #dee2e6' }}>{new Date(order.order_date).toLocaleDateString()}</td>
-                  <td style={{ padding: '0.75rem', borderBottom: '1px solid #dee2e6' }}>{order.status}</td>
-                  <td style={{ padding: '0.75rem', textAlign: 'right', borderBottom: '1px solid #dee2e6' }}>{order.item_count}</td>
-                  <td style={{ padding: '0.75rem', textAlign: 'right', borderBottom: '1px solid #dee2e6' }}>${parseFloat(order.grand_total).toFixed(2)}</td>
-                  <td style={{ padding: '0.75rem', borderBottom: '1px solid #dee2e6' }}>{order.payment_method}</td>
+                <tr key={order.order_id} style={{ background: index % 2 === 0 ? '#ffffff' : '#c0c0c0' }}>
+                  <td style={{ padding: '0.5rem', border: '1px solid #808080' }}>{order.order_number}</td>
+                  <td style={{ padding: '0.5rem', border: '1px solid #808080' }}>{new Date(order.order_date).toLocaleDateString()}</td>
+                  <td style={{ padding: '0.5rem', border: '1px solid #808080' }}>{order.status}</td>
+                  <td style={{ padding: '0.5rem', textAlign: 'right', border: '1px solid #808080' }}>{order.item_count}</td>
+                  <td style={{ padding: '0.5rem', textAlign: 'right', border: '1px solid #808080' }}>${parseFloat(order.grand_total).toFixed(2)}</td>
+                  <td style={{ padding: '0.5rem', border: '1px solid #808080' }}>{order.payment_method}</td>
                 </tr>
               ))}
             </tbody>
@@ -196,15 +291,29 @@ function Reports() {
 
         {reportData.categories && reportData.categories.length > 0 && (
           <>
-            <h4 style={{ marginBottom: '1rem' }}>Category Breakdown</h4>
+            <h4 style={{ 
+              marginBottom: '1rem',
+              padding: '0.5rem',
+              background: '#000080',
+              color: '#ffffff',
+              fontFamily: "'MS Sans Serif', sans-serif",
+              textShadow: '1px 1px 0 rgba(0,0,0,0.5)'
+            }}>Category Breakdown</h4>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem' }}>
               {reportData.categories.map(cat => (
-                <div key={cat.category} style={{ padding: '1rem', background: '#f8f9fa', borderRadius: '4px', border: '1px solid #dee2e6' }}>
-                  <div style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>{cat.category || 'Uncategorized'}</div>
-                  <div style={{ fontSize: '0.875rem', color: '#6c757d' }}>
+                <div key={cat.category} style={{ 
+                  padding: '1rem', 
+                  background: '#c0c0c0', 
+                  border: '3px solid',
+                  borderColor: '#ebebeb #000000 #000000 #ebebeb',
+                  boxShadow: '2px 2px 0 rgba(0,0,0,0.2)',
+                  fontFamily: "'MS Sans Serif', sans-serif"
+                }}>
+                  <div style={{ fontWeight: 'bold', marginBottom: '0.5rem', color: '#000080' }}>{cat.category || 'Uncategorized'}</div>
+                  <div style={{ fontSize: '0.875rem', color: '#000' }}>
                     {cat.order_count} orders • {cat.total_quantity} items
                   </div>
-                  <div style={{ fontSize: '1.25rem', fontWeight: 'bold', marginTop: '0.5rem' }}>
+                  <div style={{ fontSize: '1.25rem', fontWeight: 'bold', marginTop: '0.5rem', color: '#008000' }}>
                     ${parseFloat(cat.category_revenue).toFixed(2)}
                   </div>
                 </div>
@@ -222,44 +331,78 @@ function Reports() {
     return (
       <div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginBottom: '2rem' }}>
-          <div style={{ padding: '1rem', background: '#e7f3ff', borderRadius: '4px' }}>
-            <div style={{ fontSize: '0.875rem', color: '#6c757d', marginBottom: '0.5rem' }}>Total Revenue</div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>${reportData.summary.totalRevenue.toFixed(2)}</div>
+          <div style={{ 
+            padding: '1rem', 
+            background: '#ffffff', 
+            border: '2px solid',
+            borderColor: '#000000 #ebebeb #ebebeb #000000',
+            boxShadow: '2px 2px 0 rgba(0,0,0,0.2)',
+            fontFamily: "'MS Sans Serif', sans-serif"
+          }}>
+            <div style={{ fontSize: '0.75rem', color: '#000', marginBottom: '0.5rem', fontWeight: 'bold' }}>Total Revenue</div>
+            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#008000' }}>${reportData.summary.totalRevenue.toFixed(2)}</div>
           </div>
-          <div style={{ padding: '1rem', background: '#d4edda', borderRadius: '4px' }}>
-            <div style={{ fontSize: '0.875rem', color: '#6c757d', marginBottom: '0.5rem' }}>Units Sold</div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{reportData.summary.totalSold}</div>
+          <div style={{ 
+            padding: '1rem', 
+            background: '#ffffff', 
+            border: '2px solid',
+            borderColor: '#000000 #ebebeb #ebebeb #000000',
+            boxShadow: '2px 2px 0 rgba(0,0,0,0.2)',
+            fontFamily: "'MS Sans Serif', sans-serif"
+          }}>
+            <div style={{ fontSize: '0.75rem', color: '#000', marginBottom: '0.5rem', fontWeight: 'bold' }}>Units Sold</div>
+            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#000080' }}>{reportData.summary.totalSold}</div>
           </div>
-          <div style={{ padding: '1rem', background: '#fff3cd', borderRadius: '4px' }}>
-            <div style={{ fontSize: '0.875rem', color: '#6c757d', marginBottom: '0.5rem' }}>Total Orders</div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{reportData.summary.totalOrders}</div>
+          <div style={{ 
+            padding: '1rem', 
+            background: '#ffffff', 
+            border: '2px solid',
+            borderColor: '#000000 #ebebeb #ebebeb #000000',
+            boxShadow: '2px 2px 0 rgba(0,0,0,0.2)',
+            fontFamily: "'MS Sans Serif', sans-serif"
+          }}>
+            <div style={{ fontSize: '0.75rem', color: '#000', marginBottom: '0.5rem', fontWeight: 'bold' }}>Total Orders</div>
+            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#808000' }}>{reportData.summary.totalOrders}</div>
           </div>
         </div>
 
-        <h4 style={{ marginBottom: '1rem' }}>Inventory Performance</h4>
+        <h4 style={{ 
+          marginBottom: '1rem',
+          padding: '0.5rem',
+          background: '#000080',
+          color: '#ffffff',
+          fontFamily: "'MS Sans Serif', sans-serif",
+          textShadow: '1px 1px 0 rgba(0,0,0,0.5)'
+        }}>Inventory Performance</h4>
         <div style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
+          <table style={{ 
+            width: '100%', 
+            borderCollapse: 'collapse', 
+            fontSize: '0.875rem',
+            border: '2px solid #000000',
+            fontFamily: "'MS Sans Serif', sans-serif"
+          }}>
             <thead>
-              <tr style={{ background: '#f8f9fa' }}>
-                <th style={{ padding: '0.75rem', textAlign: 'left', borderBottom: '2px solid #dee2e6' }}>Part #</th>
-                <th style={{ padding: '0.75rem', textAlign: 'left', borderBottom: '2px solid #dee2e6' }}>Item Name</th>
-                <th style={{ padding: '0.75rem', textAlign: 'left', borderBottom: '2px solid #dee2e6' }}>Category</th>
-                <th style={{ padding: '0.75rem', textAlign: 'right', borderBottom: '2px solid #dee2e6' }}>Sold</th>
-                <th style={{ padding: '0.75rem', textAlign: 'right', borderBottom: '2px solid #dee2e6' }}>Stock</th>
-                <th style={{ padding: '0.75rem', textAlign: 'right', borderBottom: '2px solid #dee2e6' }}>Revenue</th>
-                <th style={{ padding: '0.75rem', textAlign: 'right', borderBottom: '2px solid #dee2e6' }}>Avg Price</th>
+              <tr style={{ background: '#c0c0c0' }}>
+                <th style={{ padding: '0.5rem', textAlign: 'left', border: '2px solid', borderColor: '#ebebeb #000000 #000000 #ebebeb', fontWeight: 'bold' }}>Part #</th>
+                <th style={{ padding: '0.5rem', textAlign: 'left', border: '2px solid', borderColor: '#ebebeb #000000 #000000 #ebebeb', fontWeight: 'bold' }}>Item Name</th>
+                <th style={{ padding: '0.5rem', textAlign: 'left', border: '2px solid', borderColor: '#ebebeb #000000 #000000 #ebebeb', fontWeight: 'bold' }}>Category</th>
+                <th style={{ padding: '0.5rem', textAlign: 'right', border: '2px solid', borderColor: '#ebebeb #000000 #000000 #ebebeb', fontWeight: 'bold' }}>Sold</th>
+                <th style={{ padding: '0.5rem', textAlign: 'right', border: '2px solid', borderColor: '#ebebeb #000000 #000000 #ebebeb', fontWeight: 'bold' }}>Stock</th>
+                <th style={{ padding: '0.5rem', textAlign: 'right', border: '2px solid', borderColor: '#ebebeb #000000 #000000 #ebebeb', fontWeight: 'bold' }}>Revenue</th>
+                <th style={{ padding: '0.5rem', textAlign: 'right', border: '2px solid', borderColor: '#ebebeb #000000 #000000 #ebebeb', fontWeight: 'bold' }}>Avg Price</th>
               </tr>
             </thead>
             <tbody>
               {reportData.inventory.map((item, index) => (
-                <tr key={item.item_id} style={{ background: index % 2 === 0 ? 'white' : '#f8f9fa' }}>
-                  <td style={{ padding: '0.75rem', borderBottom: '1px solid #dee2e6' }}>{item.part_number}</td>
-                  <td style={{ padding: '0.75rem', borderBottom: '1px solid #dee2e6' }}>{item.item_name}</td>
-                  <td style={{ padding: '0.75rem', borderBottom: '1px solid #dee2e6' }}>{item.category}</td>
-                  <td style={{ padding: '0.75rem', textAlign: 'right', borderBottom: '1px solid #dee2e6' }}>{item.total_sold}</td>
-                  <td style={{ padding: '0.75rem', textAlign: 'right', borderBottom: '1px solid #dee2e6' }}>{item.current_stock}</td>
-                  <td style={{ padding: '0.75rem', textAlign: 'right', borderBottom: '1px solid #dee2e6' }}>${parseFloat(item.total_revenue).toFixed(2)}</td>
-                  <td style={{ padding: '0.75rem', textAlign: 'right', borderBottom: '1px solid #dee2e6' }}>${parseFloat(item.avg_price).toFixed(2)}</td>
+                <tr key={item.item_id} style={{ background: index % 2 === 0 ? '#ffffff' : '#c0c0c0' }}>
+                  <td style={{ padding: '0.5rem', border: '1px solid #808080' }}>{item.part_number}</td>
+                  <td style={{ padding: '0.5rem', border: '1px solid #808080' }}>{item.item_name}</td>
+                  <td style={{ padding: '0.5rem', border: '1px solid #808080' }}>{item.category}</td>
+                  <td style={{ padding: '0.5rem', textAlign: 'right', border: '1px solid #808080' }}>{item.total_sold}</td>
+                  <td style={{ padding: '0.5rem', textAlign: 'right', border: '1px solid #808080' }}>{item.current_stock}</td>
+                  <td style={{ padding: '0.5rem', textAlign: 'right', border: '1px solid #808080' }}>${parseFloat(item.total_revenue).toFixed(2)}</td>
+                  <td style={{ padding: '0.5rem', textAlign: 'right', border: '1px solid #808080' }}>${parseFloat(item.avg_price).toFixed(2)}</td>
                 </tr>
               ))}
             </tbody>
@@ -275,40 +418,81 @@ function Reports() {
     return (
       <div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem', marginBottom: '2rem' }}>
-          <div style={{ padding: '1rem', background: '#e7f3ff', borderRadius: '4px' }}>
-            <div style={{ fontSize: '0.875rem', color: '#6c757d', marginBottom: '0.5rem' }}>Total Orders</div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{reportData.summary.total_orders}</div>
+          <div style={{ 
+            padding: '1rem', 
+            background: '#ffffff', 
+            border: '2px solid',
+            borderColor: '#000000 #ebebeb #ebebeb #000000',
+            boxShadow: '2px 2px 0 rgba(0,0,0,0.2)',
+            fontFamily: "'MS Sans Serif', sans-serif"
+          }}>
+            <div style={{ fontSize: '0.75rem', color: '#000', marginBottom: '0.5rem', fontWeight: 'bold' }}>Total Orders</div>
+            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#000080' }}>{reportData.summary.total_orders}</div>
           </div>
-          <div style={{ padding: '1rem', background: '#d4edda', borderRadius: '4px' }}>
-            <div style={{ fontSize: '0.875rem', color: '#6c757d', marginBottom: '0.5rem' }}>Total Revenue</div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>${parseFloat(reportData.summary.total_revenue).toFixed(2)}</div>
+          <div style={{ 
+            padding: '1rem', 
+            background: '#ffffff', 
+            border: '2px solid',
+            borderColor: '#000000 #ebebeb #ebebeb #000000',
+            boxShadow: '2px 2px 0 rgba(0,0,0,0.2)',
+            fontFamily: "'MS Sans Serif', sans-serif"
+          }}>
+            <div style={{ fontSize: '0.75rem', color: '#000', marginBottom: '0.5rem', fontWeight: 'bold' }}>Total Revenue</div>
+            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#008000' }}>${parseFloat(reportData.summary.total_revenue).toFixed(2)}</div>
           </div>
-          <div style={{ padding: '1rem', background: '#fff3cd', borderRadius: '4px' }}>
-            <div style={{ fontSize: '0.875rem', color: '#6c757d', marginBottom: '0.5rem' }}>Avg Order</div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>${parseFloat(reportData.summary.avg_order).toFixed(2)}</div>
+          <div style={{ 
+            padding: '1rem', 
+            background: '#ffffff', 
+            border: '2px solid',
+            borderColor: '#000000 #ebebeb #ebebeb #000000',
+            boxShadow: '2px 2px 0 rgba(0,0,0,0.2)',
+            fontFamily: "'MS Sans Serif', sans-serif"
+          }}>
+            <div style={{ fontSize: '0.75rem', color: '#000', marginBottom: '0.5rem', fontWeight: 'bold' }}>Avg Order</div>
+            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#808000' }}>${parseFloat(reportData.summary.avg_order).toFixed(2)}</div>
           </div>
-          <div style={{ padding: '1rem', background: '#f8d7da', borderRadius: '4px' }}>
-            <div style={{ fontSize: '0.875rem', color: '#6c757d', marginBottom: '0.5rem' }}>Total Tax</div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>${parseFloat(reportData.summary.total_tax).toFixed(2)}</div>
+          <div style={{ 
+            padding: '1rem', 
+            background: '#ffffff', 
+            border: '2px solid',
+            borderColor: '#000000 #ebebeb #ebebeb #000000',
+            boxShadow: '2px 2px 0 rgba(0,0,0,0.2)',
+            fontFamily: "'MS Sans Serif', sans-serif"
+          }}>
+            <div style={{ fontSize: '0.75rem', color: '#000', marginBottom: '0.5rem', fontWeight: 'bold' }}>Total Tax</div>
+            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#800000' }}>${parseFloat(reportData.summary.total_tax).toFixed(2)}</div>
           </div>
         </div>
 
-        <h4 style={{ marginBottom: '1rem' }}>Monthly Performance</h4>
+        <h4 style={{ 
+          marginBottom: '1rem',
+          padding: '0.5rem',
+          background: '#000080',
+          color: '#ffffff',
+          fontFamily: "'MS Sans Serif', sans-serif",
+          textShadow: '1px 1px 0 rgba(0,0,0,0.5)'
+        }}>Monthly Performance</h4>
         <div style={{ overflowX: 'auto', marginBottom: '2rem' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
+          <table style={{ 
+            width: '100%', 
+            borderCollapse: 'collapse', 
+            fontSize: '0.875rem',
+            border: '2px solid #000000',
+            fontFamily: "'MS Sans Serif', sans-serif"
+          }}>
             <thead>
-              <tr style={{ background: '#f8f9fa' }}>
-                <th style={{ padding: '0.75rem', textAlign: 'left', borderBottom: '2px solid #dee2e6' }}>Month</th>
-                <th style={{ padding: '0.75rem', textAlign: 'right', borderBottom: '2px solid #dee2e6' }}>Orders</th>
-                <th style={{ padding: '0.75rem', textAlign: 'right', borderBottom: '2px solid #dee2e6' }}>Revenue</th>
+              <tr style={{ background: '#c0c0c0' }}>
+                <th style={{ padding: '0.5rem', textAlign: 'left', border: '2px solid', borderColor: '#ebebeb #000000 #000000 #ebebeb', fontWeight: 'bold' }}>Month</th>
+                <th style={{ padding: '0.5rem', textAlign: 'right', border: '2px solid', borderColor: '#ebebeb #000000 #000000 #ebebeb', fontWeight: 'bold' }}>Orders</th>
+                <th style={{ padding: '0.5rem', textAlign: 'right', border: '2px solid', borderColor: '#ebebeb #000000 #000000 #ebebeb', fontWeight: 'bold' }}>Revenue</th>
               </tr>
             </thead>
             <tbody>
               {reportData.monthly.map((month, index) => (
-                <tr key={`${month.year}-${month.month}`} style={{ background: index % 2 === 0 ? 'white' : '#f8f9fa' }}>
-                  <td style={{ padding: '0.75rem', borderBottom: '1px solid #dee2e6' }}>{month.month_name} {month.year}</td>
-                  <td style={{ padding: '0.75rem', textAlign: 'right', borderBottom: '1px solid #dee2e6' }}>{month.orders}</td>
-                  <td style={{ padding: '0.75rem', textAlign: 'right', borderBottom: '1px solid #dee2e6' }}>${parseFloat(month.revenue).toFixed(2)}</td>
+                <tr key={`${month.year}-${month.month}`} style={{ background: index % 2 === 0 ? '#ffffff' : '#c0c0c0' }}>
+                  <td style={{ padding: '0.5rem', border: '1px solid #808080' }}>{month.month_name} {month.year}</td>
+                  <td style={{ padding: '0.5rem', textAlign: 'right', border: '1px solid #808080' }}>{month.orders}</td>
+                  <td style={{ padding: '0.5rem', textAlign: 'right', border: '1px solid #808080' }}>${parseFloat(month.revenue).toFixed(2)}</td>
                 </tr>
               ))}
             </tbody>
@@ -317,19 +501,51 @@ function Reports() {
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
           <div>
-            <h4 style={{ marginBottom: '1rem' }}>Status Breakdown</h4>
+            <h4 style={{ 
+              marginBottom: '1rem',
+              padding: '0.5rem',
+              background: '#000080',
+              color: '#ffffff',
+              fontFamily: "'MS Sans Serif', sans-serif",
+              textShadow: '1px 1px 0 rgba(0,0,0,0.5)'
+            }}>Status Breakdown</h4>
             {reportData.statusBreakdown.map(status => (
-              <div key={status.status} style={{ padding: '0.75rem', background: '#f8f9fa', borderRadius: '4px', marginBottom: '0.5rem', display: 'flex', justifyContent: 'space-between' }}>
-                <span>{status.status}</span>
+              <div key={status.status} style={{ 
+                padding: '0.75rem', 
+                background: '#c0c0c0', 
+                border: '2px solid',
+                borderColor: '#ebebeb #000000 #000000 #ebebeb',
+                marginBottom: '0.5rem', 
+                display: 'flex', 
+                justifyContent: 'space-between',
+                fontFamily: "'MS Sans Serif', sans-serif"
+              }}>
+                <span style={{ fontWeight: 'bold' }}>{status.status}</span>
                 <span><strong>{status.count}</strong> orders • ${parseFloat(status.revenue).toFixed(2)}</span>
               </div>
             ))}
           </div>
           <div>
-            <h4 style={{ marginBottom: '1rem' }}>Payment Methods</h4>
+            <h4 style={{ 
+              marginBottom: '1rem',
+              padding: '0.5rem',
+              background: '#000080',
+              color: '#ffffff',
+              fontFamily: "'MS Sans Serif', sans-serif",
+              textShadow: '1px 1px 0 rgba(0,0,0,0.5)'
+            }}>Payment Methods</h4>
             {reportData.paymentMethods.map(method => (
-              <div key={method.payment_method} style={{ padding: '0.75rem', background: '#f8f9fa', borderRadius: '4px', marginBottom: '0.5rem', display: 'flex', justifyContent: 'space-between' }}>
-                <span>{method.payment_method}</span>
+              <div key={method.payment_method} style={{ 
+                padding: '0.75rem', 
+                background: '#c0c0c0', 
+                border: '2px solid',
+                borderColor: '#ebebeb #000000 #000000 #ebebeb',
+                marginBottom: '0.5rem', 
+                display: 'flex', 
+                justifyContent: 'space-between',
+                fontFamily: "'MS Sans Serif', sans-serif"
+              }}>
+                <span style={{ fontWeight: 'bold' }}>{method.payment_method}</span>
                 <span><strong>{method.count}</strong> • ${parseFloat(method.revenue).toFixed(2)}</span>
               </div>
             ))}
@@ -1197,9 +1413,27 @@ function Reports() {
 
     return (
       <div>
-        <div style={{ marginBottom: '2rem', padding: '1.5rem', background: '#f8f9fa', borderRadius: '4px' }}>
-          <h3 style={{ margin: '0 0 1rem 0' }}>{reportData.vendor.company_name}</h3>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', fontSize: '0.875rem' }}>
+        <div style={{ 
+          marginBottom: '2rem', 
+          padding: '1.5rem', 
+          background: '#c0c0c0', 
+          border: '3px solid',
+          borderColor: '#ebebeb #000000 #000000 #ebebeb',
+          boxShadow: '3px 3px 0 rgba(0,0,0,0.2)'
+        }}>
+          <h3 style={{ 
+            margin: '0 0 1rem 0',
+            color: '#000080',
+            textShadow: '1px 1px 0 rgba(255,255,255,0.8)',
+            fontFamily: "'MS Sans Serif', sans-serif"
+          }}>{reportData.vendor.company_name}</h3>
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: '1fr 1fr', 
+            gap: '1rem', 
+            fontSize: '0.875rem',
+            fontFamily: "'MS Sans Serif', sans-serif"
+          }}>
             <div><strong>Contact:</strong> {reportData.vendor.contact_person}</div>
             <div><strong>Email:</strong> {reportData.vendor.email}</div>
             <div><strong>Phone:</strong> {reportData.vendor.phone}</div>
@@ -1208,53 +1442,96 @@ function Reports() {
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem', marginBottom: '2rem' }}>
-          <div style={{ padding: '1rem', background: '#e7f3ff', borderRadius: '4px' }}>
-            <div style={{ fontSize: '0.875rem', color: '#6c757d', marginBottom: '0.5rem' }}>Total Items</div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{reportData.summary.total_items}</div>
+          <div style={{ 
+            padding: '1rem', 
+            background: '#ffffff', 
+            border: '2px solid',
+            borderColor: '#000000 #ebebeb #ebebeb #000000',
+            boxShadow: '2px 2px 0 rgba(0,0,0,0.2)',
+            fontFamily: "'MS Sans Serif', sans-serif"
+          }}>
+            <div style={{ fontSize: '0.75rem', color: '#000', marginBottom: '0.5rem', fontWeight: 'bold' }}>Total Items</div>
+            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#000080' }}>{reportData.summary.total_items}</div>
           </div>
-          <div style={{ padding: '1rem', background: '#d4edda', borderRadius: '4px' }}>
-            <div style={{ fontSize: '0.875rem', color: '#6c757d', marginBottom: '0.5rem' }}>In Stock</div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{reportData.summary.in_stock}</div>
+          <div style={{ 
+            padding: '1rem', 
+            background: '#ffffff', 
+            border: '2px solid',
+            borderColor: '#000000 #ebebeb #ebebeb #000000',
+            boxShadow: '2px 2px 0 rgba(0,0,0,0.2)',
+            fontFamily: "'MS Sans Serif', sans-serif"
+          }}>
+            <div style={{ fontSize: '0.75rem', color: '#000', marginBottom: '0.5rem', fontWeight: 'bold' }}>In Stock</div>
+            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#008000' }}>{reportData.summary.in_stock}</div>
           </div>
-          <div style={{ padding: '1rem', background: '#fff3cd', borderRadius: '4px' }}>
-            <div style={{ fontSize: '0.875rem', color: '#6c757d', marginBottom: '0.5rem' }}>Low Stock</div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{reportData.summary.low_stock}</div>
+          <div style={{ 
+            padding: '1rem', 
+            background: '#ffffff', 
+            border: '2px solid',
+            borderColor: '#000000 #ebebeb #ebebeb #000000',
+            boxShadow: '2px 2px 0 rgba(0,0,0,0.2)',
+            fontFamily: "'MS Sans Serif', sans-serif"
+          }}>
+            <div style={{ fontSize: '0.75rem', color: '#000', marginBottom: '0.5rem', fontWeight: 'bold' }}>Low Stock</div>
+            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#808000' }}>{reportData.summary.low_stock}</div>
           </div>
-          <div style={{ padding: '1rem', background: '#f8d7da', borderRadius: '4px' }}>
-            <div style={{ fontSize: '0.875rem', color: '#6c757d', marginBottom: '0.5rem' }}>Out of Stock</div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{reportData.summary.out_of_stock}</div>
+          <div style={{ 
+            padding: '1rem', 
+            background: '#ffffff', 
+            border: '2px solid',
+            borderColor: '#000000 #ebebeb #ebebeb #000000',
+            boxShadow: '2px 2px 0 rgba(0,0,0,0.2)',
+            fontFamily: "'MS Sans Serif', sans-serif"
+          }}>
+            <div style={{ fontSize: '0.75rem', color: '#000', marginBottom: '0.5rem', fontWeight: 'bold' }}>Out of Stock</div>
+            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#800000' }}>{reportData.summary.out_of_stock}</div>
           </div>
         </div>
 
-        <h4 style={{ marginBottom: '1rem' }}>Inventory List</h4>
+        <h4 style={{ 
+          marginBottom: '1rem',
+          padding: '0.5rem',
+          background: '#000080',
+          color: '#ffffff',
+          fontFamily: "'MS Sans Serif', sans-serif",
+          textShadow: '1px 1px 0 rgba(0,0,0,0.5)'
+        }}>Inventory List</h4>
         <div style={{ overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }}>
+          <table style={{ 
+            width: '100%', 
+            borderCollapse: 'collapse', 
+            fontSize: '0.875rem',
+            border: '2px solid #000000',
+            fontFamily: "'MS Sans Serif', sans-serif"
+          }}>
             <thead>
-              <tr style={{ background: '#f8f9fa' }}>
-                <th style={{ padding: '0.75rem', textAlign: 'left', borderBottom: '2px solid #dee2e6' }}>Part #</th>
-                <th style={{ padding: '0.75rem', textAlign: 'left', borderBottom: '2px solid #dee2e6' }}>Item Name</th>
-                <th style={{ padding: '0.75rem', textAlign: 'left', borderBottom: '2px solid #dee2e6' }}>Category</th>
-                <th style={{ padding: '0.75rem', textAlign: 'right', borderBottom: '2px solid #dee2e6' }}>Stock</th>
-                <th style={{ padding: '0.75rem', textAlign: 'right', borderBottom: '2px solid #dee2e6' }}>Min Qty</th>
-                <th style={{ padding: '0.75rem', textAlign: 'right', borderBottom: '2px solid #dee2e6' }}>Price</th>
-                <th style={{ padding: '0.75rem', textAlign: 'left', borderBottom: '2px solid #dee2e6' }}>Status</th>
+              <tr style={{ background: '#c0c0c0' }}>
+                <th style={{ padding: '0.5rem', textAlign: 'left', border: '2px solid', borderColor: '#ebebeb #000000 #000000 #ebebeb', fontWeight: 'bold' }}>Part #</th>
+                <th style={{ padding: '0.5rem', textAlign: 'left', border: '2px solid', borderColor: '#ebebeb #000000 #000000 #ebebeb', fontWeight: 'bold' }}>Item Name</th>
+                <th style={{ padding: '0.5rem', textAlign: 'left', border: '2px solid', borderColor: '#ebebeb #000000 #000000 #ebebeb', fontWeight: 'bold' }}>Category</th>
+                <th style={{ padding: '0.5rem', textAlign: 'right', border: '2px solid', borderColor: '#ebebeb #000000 #000000 #ebebeb', fontWeight: 'bold' }}>Stock</th>
+                <th style={{ padding: '0.5rem', textAlign: 'right', border: '2px solid', borderColor: '#ebebeb #000000 #000000 #ebebeb', fontWeight: 'bold' }}>Min Qty</th>
+                <th style={{ padding: '0.5rem', textAlign: 'right', border: '2px solid', borderColor: '#ebebeb #000000 #000000 #ebebeb', fontWeight: 'bold' }}>Price</th>
+                <th style={{ padding: '0.5rem', textAlign: 'left', border: '2px solid', borderColor: '#ebebeb #000000 #000000 #ebebeb', fontWeight: 'bold' }}>Status</th>
               </tr>
             </thead>
             <tbody>
               {reportData.inventory.map((item, index) => (
-                <tr key={item.item_id} style={{ background: index % 2 === 0 ? 'white' : '#f8f9fa' }}>
-                  <td style={{ padding: '0.75rem', borderBottom: '1px solid #dee2e6' }}>{item.part_number}</td>
-                  <td style={{ padding: '0.75rem', borderBottom: '1px solid #dee2e6' }}>{item.name}</td>
-                  <td style={{ padding: '0.75rem', borderBottom: '1px solid #dee2e6' }}>{item.category}</td>
-                  <td style={{ padding: '0.75rem', textAlign: 'right', borderBottom: '1px solid #dee2e6' }}>{item.stock_level}</td>
-                  <td style={{ padding: '0.75rem', textAlign: 'right', borderBottom: '1px solid #dee2e6' }}>{item.min_quantity}</td>
-                  <td style={{ padding: '0.75rem', textAlign: 'right', borderBottom: '1px solid #dee2e6' }}>${parseFloat(item.price_per_unit).toFixed(2)}</td>
-                  <td style={{ padding: '0.75rem', borderBottom: '1px solid #dee2e6' }}>
+                <tr key={item.item_id} style={{ background: index % 2 === 0 ? '#ffffff' : '#c0c0c0' }}>
+                  <td style={{ padding: '0.5rem', border: '1px solid #808080' }}>{item.part_number}</td>
+                  <td style={{ padding: '0.5rem', border: '1px solid #808080' }}>{item.name}</td>
+                  <td style={{ padding: '0.5rem', border: '1px solid #808080' }}>{item.category}</td>
+                  <td style={{ padding: '0.5rem', textAlign: 'right', border: '1px solid #808080' }}>{item.stock_level}</td>
+                  <td style={{ padding: '0.5rem', textAlign: 'right', border: '1px solid #808080' }}>{item.min_quantity}</td>
+                  <td style={{ padding: '0.5rem', textAlign: 'right', border: '1px solid #808080' }}>${parseFloat(item.price_per_unit).toFixed(2)}</td>
+                  <td style={{ padding: '0.5rem', border: '1px solid #808080' }}>
                     <span style={{ 
                       padding: '0.25rem 0.5rem', 
-                      borderRadius: '4px',
-                      background: item.stock_status === 'In Stock' ? '#d4edda' : item.stock_status === 'Low Stock' ? '#fff3cd' : '#f8d7da',
-                      fontSize: '0.75rem'
+                      border: '1px solid #000',
+                      background: item.stock_status === 'In Stock' ? '#00ff00' : item.stock_status === 'Low Stock' ? '#ffff00' : '#ff0000',
+                      fontSize: '0.75rem',
+                      fontWeight: 'bold',
+                      color: '#000'
                     }}>
                       {item.stock_status}
                     </span>
