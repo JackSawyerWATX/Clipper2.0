@@ -32,6 +32,7 @@ const analyticsRoutes = require('./routes/analytics');
 const usersRoutes = require('./routes/users');
 const shipmentsRoutes = require('./routes/shipments');
 const paymentsRoutes = require('./routes/payments');
+const reportsRoutes = require('./routes/reports');
 
 // API Routes
 app.use('/api/customers', customersRoutes);
@@ -43,6 +44,7 @@ app.use('/api/analytics', analyticsRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/shipments', shipmentsRoutes);
 app.use('/api/payments', paymentsRoutes);
+app.use('/api/reports', reportsRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
