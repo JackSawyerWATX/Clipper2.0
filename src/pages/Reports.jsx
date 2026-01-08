@@ -1269,29 +1269,55 @@ function Reports() {
   }
 
   return (
-    <div className="page">
-      <h1>Reports</h1>
-      <p style={{ color: '#6c757d', marginBottom: '2rem' }}>
-        Generate, view, and export reports in PDF format for printing and emailing
-      </p>
+    <div className="page" style={{ 
+      background: '#ffffff',
+      fontFamily: "'MS Sans Serif', 'Microsoft Sans Serif', sans-serif"
+    }}>
+      <div style={{
+        marginBottom: '1.5rem',
+        paddingBottom: '1rem',
+        borderBottom: '3px solid #000080'
+      }}>
+        <h1 style={{ margin: '0 0 0.5rem 0', fontSize: '2rem', color: '#000080', textShadow: '2px 2px 0 rgba(0,0,0,0.1)' }}>
+          Reports
+        </h1>
+        <p style={{ margin: 0, color: '#000', fontSize: '1rem', fontWeight: 'normal' }}>
+          Generate, view, and export reports in PDF format for printing and emailing
+        </p>
+      </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '2rem' }}>
         {/* Report Selection Panel */}
         <div>
-          <div style={{ background: '#f8f9fa', padding: '1.5rem', borderRadius: '8px', marginBottom: '1.5rem' }}>
-            <h2 style={{ fontSize: '1.1rem', marginBottom: '1rem' }}>Select Report Type</h2>
+          <div style={{ 
+            background: '#c0c0c0', 
+            padding: '1.5rem', 
+            border: '3px solid',
+            borderColor: '#ebebeb #000000 #000000 #ebebeb',
+            boxShadow: '3px 3px 0 rgba(0,0,0,0.2)',
+            marginBottom: '1.5rem' 
+          }}>
+            <h2 style={{ 
+              fontSize: '1.1rem', 
+              marginBottom: '1rem',
+              fontWeight: 'bold',
+              color: '#000',
+              textShadow: '1px 1px 0 rgba(255,255,255,0.8)'
+            }}>Select Report Type</h2>
             
             <select 
               value={selectedReport}
               onChange={(e) => setSelectedReport(e.target.value)}
               style={{ 
                 width: '100%',
-                padding: '0.75rem',
-                border: '1px solid #ddd',
-                borderRadius: '4px',
-                fontSize: '1rem',
+                padding: '0.5rem',
+                border: '2px solid',
+                borderColor: '#808080 #ebebeb #ebebeb #808080',
+                fontSize: '0.875rem',
                 marginBottom: '1rem',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                fontFamily: "'MS Sans Serif', sans-serif",
+                background: '#ffffff'
               }}
             >
               <option value="">-- Choose a report --</option>
@@ -1313,10 +1339,12 @@ function Reports() {
               <div style={{ 
                 padding: '0.75rem',
                 background: '#e7f3ff',
-                borderRadius: '4px',
+                border: '2px solid',
+                borderColor: '#000000 #ebebeb #ebebeb #000000',
                 fontSize: '0.875rem',
                 color: '#004085',
-                marginBottom: '1rem'
+                marginBottom: '1rem',
+                boxShadow: '2px 2px 0 rgba(0,0,0,0.1)'
               }}>
                 {getReportDescription(selectedReport)}
               </div>
@@ -1324,7 +1352,7 @@ function Reports() {
 
             {selectedReport === 'customer-purchases' && (
               <div style={{ marginBottom: '1rem' }}>
-                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
+                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
                   Purchase Period
                 </label>
                 <select 
@@ -1332,11 +1360,13 @@ function Reports() {
                   onChange={(e) => setDateRange(e.target.value)}
                   style={{ 
                     width: '100%',
-                    padding: '0.75rem',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
-                    fontSize: '1rem',
-                    cursor: 'pointer'
+                    padding: '0.5rem',
+                    border: '2px solid',
+                    borderColor: '#808080 #ebebeb #ebebeb #808080',
+                    fontSize: '0.875rem',
+                    cursor: 'pointer',
+                    fontFamily: "'MS Sans Serif', sans-serif",
+                    background: '#ffffff'
                   }}
                 >
                   <option value="monthly">Monthly Purchases</option>
@@ -1348,7 +1378,7 @@ function Reports() {
             )}
 
             <div style={{ marginBottom: '1rem' }}>
-              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
+              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
                 Date Range
               </label>
               <input 
@@ -1357,11 +1387,12 @@ function Reports() {
                 onChange={(e) => setStartDate(e.target.value)}
                 style={{ 
                   width: '100%',
-                  padding: '0.75rem',
-                  border: '1px solid #ddd',
-                  borderRadius: '4px',
-                  fontSize: '1rem',
-                  marginBottom: '0.5rem'
+                  padding: '0.5rem',
+                  border: '2px solid',
+                  borderColor: '#808080 #ebebeb #ebebeb #808080',
+                  fontSize: '0.875rem',
+                  marginBottom: '0.5rem',
+                  fontFamily: "'MS Sans Serif', sans-serif"
                 }}
                 placeholder="Start Date"
               />
@@ -1371,10 +1402,11 @@ function Reports() {
                 onChange={(e) => setEndDate(e.target.value)}
                 style={{ 
                   width: '100%',
-                  padding: '0.75rem',
-                  border: '1px solid #ddd',
-                  borderRadius: '4px',
-                  fontSize: '1rem'
+                  padding: '0.5rem',
+                  border: '2px solid',
+                  borderColor: '#808080 #ebebeb #ebebeb #808080',
+                  fontSize: '0.875rem',
+                  fontFamily: "'MS Sans Serif', sans-serif"
                 }}
                 placeholder="End Date"
               />
@@ -1384,7 +1416,7 @@ function Reports() {
               selectedReport === 'customer-purchases' || selectedReport === 'vendor-sales' || 
               selectedReport === 'vendor-inventory') && (
               <div style={{ marginBottom: '1rem' }}>
-                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
+                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
                   {selectedReport.includes('vendor') ? 'Select Vendor' : 
                    selectedReport.includes('customer') ? 'Select Customer' : 'Select Agent'}
                 </label>
@@ -1393,11 +1425,13 @@ function Reports() {
                   onChange={(e) => setSelectedEntity(e.target.value)}
                   style={{ 
                     width: '100%',
-                    padding: '0.75rem',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
-                    fontSize: '1rem',
-                    cursor: 'pointer'
+                    padding: '0.5rem',
+                    border: '2px solid',
+                    borderColor: '#808080 #ebebeb #ebebeb #808080',
+                    fontSize: '0.875rem',
+                    cursor: 'pointer',
+                    fontFamily: "'MS Sans Serif', sans-serif",
+                    background: '#ffffff'
                   }}
                 >
                   <option value="">-- Select {selectedReport.includes('vendor') ? 'Vendor' : selectedReport.includes('customer') ? 'Customer' : 'Agent'} --</option>
@@ -1421,11 +1455,12 @@ function Reports() {
 
             <div style={{ 
               padding: '1rem',
-              background: 'white',
-              borderRadius: '4px',
-              border: '1px solid #dee2e6'
+              background: '#c0c0c0',
+              border: '2px solid',
+              borderColor: '#000000 #ebebeb #ebebeb #000000',
+              boxShadow: '2px 2px 0 rgba(0,0,0,0.2)'
             }}>
-              <div style={{ fontSize: '0.875rem', color: '#6c757d', marginBottom: '1rem' }}>
+              <div style={{ fontSize: '0.875rem', color: '#000', marginBottom: '1rem', fontWeight: 'bold' }}>
                 Export Options
               </div>
               <button 
@@ -1435,13 +1470,26 @@ function Reports() {
                   width: '100%',
                   padding: '0.75rem',
                   marginBottom: '0.5rem',
-                  background: selectedReport && isReportImplemented && !generating ? '#28a745' : '#6c757d',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
+                  background: selectedReport && isReportImplemented && !generating ? '#28a745' : '#808080',
+                  color: selectedReport && isReportImplemented && !generating ? '#fff' : '#c0c0c0',
+                  border: '3px solid',
+                  borderColor: selectedReport && isReportImplemented && !generating ? '#32d154 #1a6b2e #1a6b2e #32d154' : '#808080 #c0c0c0 #c0c0c0 #808080',
                   cursor: selectedReport && isReportImplemented && !generating ? 'pointer' : 'not-allowed',
-                  fontWeight: '500',
-                  fontSize: '0.95rem'
+                  fontWeight: 'bold',
+                  fontSize: '0.95rem',
+                  fontFamily: "'MS Sans Serif', sans-serif",
+                  textShadow: selectedReport && isReportImplemented && !generating ? '1px 1px 0 rgba(0,0,0,0.3)' : 'none',
+                  boxShadow: selectedReport && isReportImplemented && !generating ? '3px 3px 0 rgba(0,0,0,0.2)' : 'none'
+                }}
+                onMouseDown={(e) => {
+                  if (selectedReport && isReportImplemented && !generating) {
+                    e.target.style.borderColor = '#1a6b2e #32d154 #32d154 #1a6b2e'
+                  }
+                }}
+                onMouseUp={(e) => {
+                  if (selectedReport && isReportImplemented && !generating) {
+                    e.target.style.borderColor = '#32d154 #1a6b2e #1a6b2e #32d154'
+                  }
                 }}
               >
                 {generating ? 'Generating...' : '📊 Generate Report'}
@@ -1449,12 +1497,13 @@ function Reports() {
               {selectedReport && !isReportImplemented && (
                 <div style={{
                   padding: '0.75rem',
-                  background: '#fff3cd',
-                  border: '1px solid #ffc107',
-                  borderRadius: '4px',
+                  background: '#ffffe0',
+                  border: '2px solid',
+                  borderColor: '#000000 #ebebeb #ebebeb #000000',
                   fontSize: '0.875rem',
-                  color: '#856404',
-                  marginBottom: '0.5rem'
+                  color: '#000',
+                  marginBottom: '0.5rem',
+                  boxShadow: '2px 2px 0 rgba(0,0,0,0.2)'
                 }}>
                   <strong>⚠️ Coming Soon</strong><br />
                   This report is not yet available. Try one of these:<br />
@@ -1470,24 +1519,30 @@ function Reports() {
                 style={{ 
                   width: '100%',
                   padding: '0.75rem',
-                  background: (!reportData || loading) ? '#6c757d' : '#17a2b8',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
+                  background: (!reportData || loading) ? '#808080' : '#17a2b8',
+                  color: (!reportData || loading) ? '#c0c0c0' : '#fff',
+                  border: '3px solid',
+                  borderColor: (!reportData || loading) ? '#808080 #c0c0c0 #c0c0c0 #808080' : '#1fc8df #0c7489 #0c7489 #1fc8df',
                   cursor: (!reportData || loading) ? 'not-allowed' : 'pointer',
-                  fontWeight: '500',
+                  fontWeight: 'bold',
                   fontSize: '0.95rem',
-                  opacity: (!reportData || loading) ? 0.6 : 1,
-                  transition: 'all 0.2s ease'
+                  fontFamily: "'MS Sans Serif', sans-serif",
+                  textShadow: (!reportData || loading) ? 'none' : '1px 1px 0 rgba(0,0,0,0.3)',
+                  boxShadow: (!reportData || loading) ? 'none' : '3px 3px 0 rgba(0,0,0,0.2)'
                 }}
-                onMouseEnter={(e) => {
+                onMouseDown={(e) => {
                   if (!(!reportData || loading)) {
-                    e.target.style.background = '#138496'
+                    e.target.style.borderColor = '#0c7489 #1fc8df #1fc8df #0c7489'
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (!(!reportData || loading)) {
-                    e.target.style.background = '#17a2b8'
+                    e.target.style.borderColor = '#1fc8df #0c7489 #0c7489 #1fc8df'
+                  }
+                }}
+                onMouseUp={(e) => {
+                  if (!(!reportData || loading)) {
+                    e.target.style.borderColor = '#1fc8df #0c7489 #0c7489 #1fc8df'
                   }
                 }}
               >
@@ -1498,13 +1553,14 @@ function Reports() {
 
           <div style={{ 
             padding: '1rem',
-            background: '#d1ecf1',
-            borderRadius: '4px',
-            border: '1px solid #bee5eb',
-            color: '#0c5460',
+            background: 'linear-gradient(to bottom, #008080 0%, #006060 100%)',
+            border: '3px solid',
+            borderColor: '#ebebeb #000000 #000000 #ebebeb',
+            boxShadow: '3px 3px 0 rgba(0,0,0,0.3)',
+            color: '#ffffff',
             fontSize: '0.875rem'
           }}>
-            <strong>✅ Database Connected:</strong> Reports are now generated from live database data. Select options and click "Generate Report" to view results.
+            <strong style={{ textShadow: '1px 1px 0 rgba(0,0,0,0.3)' }}>✅ Database Connected:</strong> Reports are now generated from live database data. Select options and click "Generate Report" to view results.
           </div>
         </div>
 
@@ -1513,8 +1569,9 @@ function Reports() {
           <div style={{ 
             background: 'white',
             padding: '2rem',
-            borderRadius: '8px',
-            border: '1px solid #dee2e6',
+            border: '3px solid',
+            borderColor: '#000000 #ebebeb #ebebeb #000000',
+            boxShadow: '3px 3px 0 rgba(0,0,0,0.2)',
             minHeight: '600px'
           }}>
             {!selectedReport ? (
@@ -1529,8 +1586,17 @@ function Reports() {
               </div>
             ) : (
               <>
-                <div style={{ borderBottom: '2px solid #dee2e6', paddingBottom: '1rem', marginBottom: '2rem' }}>
-                  <h2 style={{ margin: 0, fontSize: '1.5rem' }}>
+                <div style={{ 
+                  borderBottom: '3px solid #000080', 
+                  paddingBottom: '1rem', 
+                  marginBottom: '2rem' 
+                }}>
+                  <h2 style={{ 
+                    margin: 0, 
+                    fontSize: '1.5rem',
+                    color: '#000080',
+                    textShadow: '1px 1px 0 rgba(0,0,0,0.1)'
+                  }}>
                     {reportTypes.find(r => r.id === selectedReport)?.name}
                   </h2>
                   {startDate && endDate && (
@@ -1556,10 +1622,11 @@ function Reports() {
                       alignItems: 'center', 
                       justifyContent: 'center', 
                       minHeight: '400px', 
-                      color: '#6c757d',
-                      background: '#f8f9fa',
-                      borderRadius: '8px',
-                      border: '2px dashed #dee2e6'
+                      color: '#000',
+                      background: '#c0c0c0',
+                      border: '2px solid',
+                      borderColor: '#000000 #ebebeb #ebebeb #000000',
+                      boxShadow: '2px 2px 0 rgba(0,0,0,0.2)'
                     }}>
                       <div style={{ textAlign: 'center' }}>
                         <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>⏳</div>
@@ -1575,15 +1642,16 @@ function Reports() {
                     </div>
                   ) : (
                     <div style={{ 
-                      background: '#f8f9fa',
+                      background: '#c0c0c0',
                       padding: '3rem',
-                      borderRadius: '8px',
-                      border: '2px dashed #dee2e6',
+                      border: '2px solid',
+                      borderColor: '#000000 #ebebeb #ebebeb #000000',
                       textAlign: 'center',
                       minHeight: '400px',
                       display: 'flex',
                       flexDirection: 'column',
-                      justifyContent: 'center'
+                      justifyContent: 'center',
+                      boxShadow: '2px 2px 0 rgba(0,0,0,0.2)'
                     }}>
                       <div style={{ fontSize: '2rem', marginBottom: '1rem' }}>📄</div>
                       <h3 style={{ color: '#6c757d', marginBottom: '1rem' }}>Report Preview Area</h3>
@@ -1601,13 +1669,26 @@ function Reports() {
                     style={{ 
                       padding: '0.75rem 2rem',
                       marginRight: '1rem',
-                      background: (!reportData || loading) ? '#6c757d' : '#28a745',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '4px',
+                      background: (!reportData || loading) ? '#808080' : '#28a745',
+                      color: (!reportData || loading) ? '#c0c0c0' : '#fff',
+                      border: '3px solid',
+                      borderColor: (!reportData || loading) ? '#808080 #c0c0c0 #c0c0c0 #808080' : '#32d154 #1a6b2e #1a6b2e #32d154',
                       cursor: (!reportData || loading) ? 'not-allowed' : 'pointer',
-                      fontWeight: '500',
-                      fontSize: '1rem'
+                      fontWeight: 'bold',
+                      fontSize: '1rem',
+                      fontFamily: "'MS Sans Serif', sans-serif",
+                      textShadow: (!reportData || loading) ? 'none' : '1px 1px 0 rgba(0,0,0,0.3)',
+                      boxShadow: (!reportData || loading) ? 'none' : '3px 3px 0 rgba(0,0,0,0.2)'
+                    }}
+                    onMouseDown={(e) => {
+                      if (reportData && !loading) {
+                        e.target.style.borderColor = '#1a6b2e #32d154 #32d154 #1a6b2e'
+                      }
+                    }}
+                    onMouseUp={(e) => {
+                      if (reportData && !loading) {
+                        e.target.style.borderColor = '#32d154 #1a6b2e #1a6b2e #32d154'
+                      }
                     }}
                   >
                     📥 Download PDF
@@ -1617,13 +1698,26 @@ function Reports() {
                     disabled={!reportData || loading}
                     style={{ 
                       padding: '0.75rem 2rem',
-                      background: (!reportData || loading) ? '#6c757d' : '#0d6efd',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '4px',
+                      background: (!reportData || loading) ? '#808080' : '#0d6efd',
+                      color: (!reportData || loading) ? '#c0c0c0' : '#fff',
+                      border: '3px solid',
+                      borderColor: (!reportData || loading) ? '#808080 #c0c0c0 #c0c0c0 #808080' : '#4a8fff #084298 #084298 #4a8fff',
                       cursor: (!reportData || loading) ? 'not-allowed' : 'pointer',
-                      fontWeight: '500',
-                      fontSize: '1rem'
+                      fontWeight: 'bold',
+                      fontSize: '1rem',
+                      fontFamily: "'MS Sans Serif', sans-serif",
+                      textShadow: (!reportData || loading) ? 'none' : '1px 1px 0 rgba(0,0,0,0.3)',
+                      boxShadow: (!reportData || loading) ? 'none' : '3px 3px 0 rgba(0,0,0,0.2)'
+                    }}
+                    onMouseDown={(e) => {
+                      if (reportData && !loading) {
+                        e.target.style.borderColor = '#084298 #4a8fff #4a8fff #084298'
+                      }
+                    }}
+                    onMouseUp={(e) => {
+                      if (reportData && !loading) {
+                        e.target.style.borderColor = '#4a8fff #084298 #084298 #4a8fff'
+                      }
                     }}
                   >
                     🖨️ Print Report
