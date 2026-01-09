@@ -1,6 +1,63 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 function Dashboard() {
+  const [dashboardData, setDashboardData] = useState({
+    totalItems: 0,
+    totalOrders: 0,
+    totalCustomers: 0,
+    revenue: 0
+  })
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    fetchDashboardData()
+  }, [])
+
+  const fetchDashboardData = async () => {
+    try {
+      setLoading(true)
+      
+      // Fetch data from multiple endpoints
+      const [inventoryRes, ordersRes, customersRes, analyticsRes] = await Promise.all([
+        fetch('http://localhost:5000/api/inventory'),
+        fetch('http://localhost:5000/api/orders'),
+        fetch('http://localhost:5000/api/customers'),
+        fetch('http://localhost:5000/api/analytics/dashboard/summary')
+      ])
+
+      if (!inventoryRes.ok || !ordersRes.ok || !customersRes.ok || !analyticsRes.ok) {
+        throw new Error('Failed to fetch dashboard data')
+      }
+
+      const inventory = await inventoryRes.json()
+      const orders = await ordersRes.json()
+      const customers = await customersRes.json()
+      const analytics = await analyticsRes.json()
+
+      setDashboardData({
+        totalItems: inventory.length || 0,
+        totalOrders: orders.length || 0,
+        totalCustomers: customers.length || 0,
+        revenue: analytics.revenue || 0
+      })
+      
+      setError(null)
+    } catch (err) {
+      console.error('Error fetching dashboard data:', err)
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    }).format(value)
+  }
+
   const styles = {
     dashboardPage: {
       background: '#008080',
@@ -83,6 +140,32 @@ function Dashboard() {
     }
   }
 
+  if (loading) {
+    return (
+      <div className="page" style={styles.dashboardPage}>
+        <div style={styles.windowHeader}>
+          <span style={styles.windowTitle}>Dashboard</span>
+        </div>
+        <div style={styles.windowContent}>
+          <p style={styles.subtitle}>Loading dashboard data...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="page" style={styles.dashboardPage}>
+        <div style={styles.windowHeader}>
+          <span style={styles.windowTitle}>Dashboard</span>
+        </div>
+        <div style={styles.windowContent}>
+          <p style={{...styles.subtitle, color: '#800000'}}>Error: {error}</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="page" style={styles.dashboardPage}>
       <div style={styles.windowHeader}>
@@ -94,30 +177,32 @@ function Dashboard() {
         
         <div style={styles.dashboardGrid}>
           <div style={styles.panel}>
-            <div style={styles.panelTitle}>Total Items</div>
+            <div style={styles.panelTitle}>Inventory Items</div>
             <div style={styles.panelContent}>
-              <div style={styles.displayValue}>0</div>
+              <div style={styles.displayValue}>{dashboardData.totalItems}</div>
             </div>
           </div>
           
           <div style={styles.panel}>
-            <div style={styles.panelTitle}>Recent Activity</div>
+            <div style={styles.panelTitle}>Total Orders</div>
             <div style={styles.panelContent}>
-              <div style={styles.displayValue}>0</div>
+              <div style={styles.displayValue}>{dashboardData.totalOrders}</div>
             </div>
           </div>
           
           <div style={styles.panel}>
-            <div style={styles.panelTitle}>Status</div>
+            <div style={styles.panelTitle}>Total Customers</div>
             <div style={styles.panelContent}>
-              <div style={styles.statusActive}>Active</div>
+              <div style={styles.displayValue}>{dashboardData.totalCustomers}</div>
             </div>
           </div>
           
           <div style={styles.panel}>
-            <div style={styles.panelTitle}>Quick Stats</div>
+            <div style={styles.panelTitle}>YTD Revenue</div>
             <div style={styles.panelContent}>
-              <div style={styles.displayValue}>--</div>
+              <div style={{...styles.displayValue, fontSize: '1.8rem'}}>
+                {formatCurrency(dashboardData.revenue)}
+              </div>
             </div>
           </div>
         </div>
