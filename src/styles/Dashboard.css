@@ -1,0 +1,137 @@
+/* Windows 3.0 Dashboard Styles */
+
+.dashboard-page {
+  background: #008080;
+  padding: 1rem;
+  min-height: calc(100vh - 100px);
+}
+
+/* Windows 3.0 Window Chrome */
+.win3-window-header {
+  background: linear-gradient(to bottom, #000080 0%, #0000aa 100%);
+  color: white;
+  padding: 0.4rem 0.6rem;
+  font-weight: bold;
+  border: 2px solid;
+  border-color: #ffffff #000000 #000000 #ffffff;
+  box-shadow: 
+    inset 1px 1px 0 rgba(255,255,255,0.5),
+    2px 2px 4px rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  margin-bottom: 0;
+}
+
+.win3-window-title {
+  font-size: 0.9rem;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
+  letter-spacing: 0.5px;
+}
+
+.win3-window-content {
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #808080 #ffffff #ffffff #808080;
+  padding: 1.5rem;
+  box-shadow: 
+    inset -1px -1px 0 #dfdfdf,
+    inset 1px 1px 0 #000000,
+    inset -2px -2px 0 #ffffff,
+    inset 2px 2px 0 #808080;
+}
+
+.win3-subtitle {
+  font-size: 0.9rem;
+  color: #000000;
+  margin: 0 0 1.5rem 0;
+  padding: 0.5rem;
+  background: #c0c0c0;
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Windows 3.0 Panel Styles */
+.win3-panel {
+  background: #c0c0c0;
+  border: 3px solid;
+  border-color: #808080 #ffffff #ffffff #808080;
+  box-shadow: 
+    inset -1px -1px 0 #dfdfdf,
+    inset 1px 1px 0 #000000,
+    inset -2px -2px 0 #ffffff,
+    inset 2px 2px 0 #808080,
+    4px 4px 8px rgba(0,0,0,0.3);
+}
+
+.win3-panel-title {
+  background: linear-gradient(to bottom, #000080 0%, #0000aa 100%);
+  color: white;
+  padding: 0.4rem 0.8rem;
+  font-weight: bold;
+  font-size: 0.85rem;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
+  border-bottom: 2px solid;
+  border-color: #000000 #ffffff;
+}
+
+.win3-panel-content {
+  padding: 2rem 1rem;
+  background: #c0c0c0;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.win3-display-value {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #000000;
+  text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.5);
+  font-family: 'MS Sans Serif', 'Microsoft Sans Serif', monospace;
+}
+
+.win3-status-active {
+  color: #000080;
+  font-size: 1.8rem;
+}
+
+/* Sunken Display Effect */
+.win3-panel-content::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Hover Effects */
+.win3-panel:hover {
+  border-color: #ffffff #808080 #808080 #ffffff;
+  box-shadow: 
+    inset 1px 1px 0 #000000,
+    inset -1px -1px 0 #dfdfdf,
+    inset 2px 2px 0 #808080,
+    inset -2px -2px 0 #ffffff,
+    4px 4px 10px rgba(0,0,0,0.4);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .win3-window-content {
+    padding: 1rem;
+  }
+  
+  .win3-display-value {
+    font-size: 2rem;
+  }
+}
