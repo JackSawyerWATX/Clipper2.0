@@ -193,11 +193,11 @@ const timeZones = [
   const menuItems = [
     { path: '/', label: 'Dashboard', icon: '📊' },
     { path: '/customers', label: 'Customers', icon: '👥' },
+    { path: '/place-order', label: 'Place Order', icon: '🛒' },
     { path: '/orders', label: 'Orders', icon: '📦' },
     { path: '/shipment-tracking', label: 'Shipment Tracking', icon: '🚚' },
     { path: '/suppliers', label: 'Suppliers', icon: '🏭' },
     { path: '/inventory', label: 'Inventory', icon: '📋' },
-    { path: '/place-order', label: 'Place Order', icon: '🛒' },
     { path: '/payment-processing', label: 'Payment Processing', icon: '💳' },
     { path: '/analytics', label: 'Analytics', icon: '📈' },
     { path: '/reports', label: 'Reports', icon: '📄' },
