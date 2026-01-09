@@ -7,48 +7,110 @@ function PlaceOrder() {
   const [selectedCustomer, setSelectedCustomer] = useState('')
   const [showNewCustomerForm, setShowNewCustomerForm] = useState(false)
   const [orderItems, setOrderItems] = useState([])
-  const [paymentMethod, setPaymentMethod] = useState('credit_card')
+
+  // Payment states
+  const [paymentMethods, setPaymentMethods] = useState([
+    { id: 1, type: 'Credit Card', last4: '4242', default: true },
+    { id: 2, type: 'Debit Card', last4: '5555', default: false }
+  ])
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('1')
+  const [showNewPaymentForm, setShowNewPaymentForm] = useState(false)
+
+  // Inventory search
+  const [searchTerm, setSearchTerm] = useState('')
+  const [selectedItem, setSelectedItem] = useState('')
+
+  // Shipping states
+  const [shippingCarrier, setShippingCarrier] = useState('')
+  const [shippingService, setShippingService] = useState('')
+  const [shippingRate, setShippingRate] = useState(0)
+
+  const shippingOptions = {
+    fedex: [
+      { service: 'FedEx Ground', rate: 12.50 },
+      { service: 'FedEx 2Day', rate: 25.00 },
+      { service: 'FedEx Overnight', rate: 45.00 }
+    ],
+    ups: [
+      { service: 'UPS Ground', rate: 11.00 },
+      { service: 'UPS 3-Day Select', rate: 22.00 },
+      { service: 'UPS Next Day Air', rate: 42.00 }
+    ],
+    usps: [
+      { service: 'USPS Priority Mail', rate: 8.50 },
+      { service: 'USPS Priority Mail Express', rate: 28.00 },
+      { service: 'USPS First-Class Package', rate: 5.00 }
+    ],
+    dhl: [
+      { service: 'DHL Express Worldwide', rate: 35.00 },
+      { service: 'DHL Express 12:00', rate: 48.00 },
+      { service: 'DHL Economy Select', rate: 18.00 }
+    ]
+  }
 
   useEffect(() => {
-    fetchCustomers()
-    fetchInventory()
+    // Simulate data loading
+    setTimeout(() => {
+      setExistingCustomers([
+        { customer_id: 1, company_name: 'Acme Corp' },
+        { customer_id: 2, company_name: 'TechCo' },
+        { customer_id: 3, company_name: 'Global Industries' }
+      ])
+      setAvailableItems([
+        { item_id: 1, item_name: 'Widget A', unit_price: '15.99', quantity_in_stock: 50 },
+        { item_id: 2, item_name: 'Widget B', unit_price: '24.99', quantity_in_stock: 30 },
+        { item_id: 3, item_name: 'Gadget X', unit_price: '49.99', quantity_in_stock: 15 },
+        { item_id: 4, item_name: 'Gadget Y', unit_price: '39.99', quantity_in_stock: 8 },
+        { item_id: 5, item_name: 'Component Z', unit_price: '9.99', quantity_in_stock: 0 }
+      ])
+      setLoading(false)
+    }, 500)
   }, [])
-
-  const fetchCustomers = async () => {
-    try {
-      const response = await fetch('http://localhost:5000/api/customers')
-      const data = await response.json()
-      setExistingCustomers(data)
-    } catch (error) {
-      console.error('Error fetching customers:', error)
-    }
-  }
-
-  const fetchInventory = async () => {
-    try {
-      const response = await fetch('http://localhost:5000/api/inventory')
-      const data = await response.json()
-      setAvailableItems(data)
-      setLoading(false)
-    } catch (error) {
-      console.error('Error fetching inventory:', error)
-      setLoading(false)
-    }
-  }
 
   const addItemToOrder = (item) => {
     const existing = orderItems.find(i => i.item_id === item.item_id)
     if (existing) {
-      setOrderItems(orderItems.map(i => 
+      setOrderItems(orderItems.map(i =>
         i.item_id === item.item_id ? { ...i, quantity: i.quantity + 1 } : i
       ))
     } else {
-      setOrderItems([...orderItems, { 
-        ...item, 
+      setOrderItems([...orderItems, {
+        ...item,
         quantity: 1,
         price: parseFloat(item.unit_price)
       }])
     }
+  }
+
+  const handleCarrierChange = (carrier) => {
+    setShippingCarrier(carrier)
+    setShippingService('')
+    setShippingRate(0)
+  }
+
+  const handleServiceChange = (service) => {
+    setShippingService(service)
+    const carrier = shippingOptions[shippingCarrier]
+    const selectedService = carrier?.find(s => s.service === service)
+    if (selectedService) {
+      setShippingRate(selectedService.rate)
+    }
+  }
+
+  const filteredItems = availableItems.filter(item =>
+    item.item_name?.toLowerCase().includes(searchTerm.toLowerCase())
+  )
+
+  const calculateSubtotal = () => {
+    return orderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+  }
+
+  const calculateTax = () => {
+    return calculateSubtotal() * 0.08
+  }
+
+  const calculateTotal = () => {
+    return (calculateSubtotal() + calculateTax() + shippingRate).toFixed(2)
   }
 
   const removeItemFromOrder = (itemId) => {
@@ -59,460 +121,329 @@ function PlaceOrder() {
     if (newQuantity <= 0) {
       removeItemFromOrder(itemId)
     } else {
-      setOrderItems(orderItems.map(i => 
+      setOrderItems(orderItems.map(i =>
         i.item_id === itemId ? { ...i, quantity: newQuantity } : i
       ))
     }
   }
 
-  const calculateTotal = () => {
-    return orderItems.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2)
+  const sectionStyle = {
+    background: '#c0c0c0',
+    border: '2px solid',
+    borderColor: '#ebebeb #000000 #000000 #ebebeb',
+    marginBottom: '1rem'
+  }
+
+  const headerStyle = {
+    background: 'linear-gradient(to right, #000080, #0000aa)',
+    color: 'white',
+    padding: '0.25rem 0.5rem',
+    fontWeight: 'bold',
+    fontSize: '0.875rem'
+  }
+
+  const contentStyle = {
+    padding: '0.75rem',
+    background: 'white'
+  }
+
+  const inputStyle = {
+    padding: '0.4rem',
+    border: '2px solid',
+    borderColor: '#808080 #ebebeb #ebebeb #808080',
+    fontSize: '0.75rem',
+    fontFamily: 'MS Sans Serif, sans-serif'
+  }
+
+  const buttonStyle = {
+    padding: '0.4rem 0.75rem',
+    background: '#c0c0c0',
+    border: '2px solid',
+    borderColor: '#ebebeb #000000 #000000 #ebebeb',
+    cursor: 'pointer',
+    fontWeight: 'bold',
+    fontSize: '0.75rem',
+    fontFamily: 'MS Sans Serif, sans-serif'
   }
 
   return (
-    <div className="page" style={{ fontFamily: 'MS Sans Serif, sans-serif' }}>
-      <h1 style={{ 
-        color: '#000080', 
+    <div className="page" style={{ fontFamily: 'MS Sans Serif, sans-serif', padding: '1rem' }}>
+      <h1 style={{
+        color: '#000080',
         marginBottom: '0.5rem',
         fontSize: '1.5rem',
         fontWeight: 'bold'
       }}>
         Place Order
       </h1>
-      <p style={{ color: '#808080', marginBottom: '2rem', fontSize: '0.875rem' }}>
+      <p style={{ color: '#808080', marginBottom: '1rem', fontSize: '0.875rem' }}>
         Create and manage orders for customers
       </p>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', marginBottom: '2rem' }}>
-        {/* Customer Selection Section */}
-        <div style={{ width: '100%' }}>
-          <div style={{
-            background: '#c0c0c0',
-            border: '2px solid',
-            borderColor: '#ebebeb #000000 #000000 #ebebeb',
-            marginBottom: '1rem'
-          }}>
-            <div style={{
-              background: 'linear-gradient(to right, #000080, #0000aa)',
-              color: 'white',
-              padding: '0.25rem 0.5rem',
-              fontWeight: 'bold',
-              fontSize: '0.875rem'
-            }}>
-              1. Select or Add Customer
-            </div>
-            <div style={{ padding: '1rem', background: 'white' }}>
-              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
-                Existing Customer:
+      {/* 1. Customer Selection */}
+      <div style={sectionStyle}>
+        <div style={headerStyle}>1. Select Customer</div>
+        <div style={contentStyle}>
+          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
+            <div style={{ flex: 1 }}>
+              <label style={{ display: 'block', marginBottom: '0.35rem', fontWeight: 'bold', fontSize: '0.75rem' }}>
+                Customer:
               </label>
-              <select 
+              <select
                 value={selectedCustomer}
                 onChange={(e) => setSelectedCustomer(e.target.value)}
                 disabled={loading}
-                style={{ 
-                  width: '100%',
-                  padding: '0.5rem',
-                  border: '2px solid',
-                  borderColor: '#808080 #ebebeb #ebebeb #808080',
-                  fontSize: '0.875rem',
-                  marginBottom: '1rem',
-                  fontFamily: 'MS Sans Serif, sans-serif',
-                  opacity: loading ? 0.6 : 1
-                }}
+                style={{ ...inputStyle, width: '100%', opacity: loading ? 0.6 : 1 }}
               >
-                <option value="">{loading ? '-- Loading customers... --' : '-- Select a customer --'}</option>
+                <option value="">{loading ? '-- Loading... --' : '-- Select customer --'}</option>
                 {existingCustomers.map(customer => (
                   <option key={customer.customer_id} value={customer.customer_id}>
-                    {customer.company_name} ({customer.email})
+                    {customer.company_name}
                   </option>
                 ))}
               </select>
-
-              <button 
-                onClick={() => setShowNewCustomerForm(!showNewCustomerForm)}
-                style={{ 
-                  width: '100%',
-                  padding: '0.5rem 1rem',
-                  background: '#c0c0c0',
-                  border: '2px solid',
-                  borderColor: '#ebebeb #000000 #000000 #ebebeb',
-                  cursor: 'pointer',
-                  fontWeight: 'bold',
-                  fontSize: '0.875rem',
-                  fontFamily: 'MS Sans Serif, sans-serif'
-                }}
-                onMouseDown={(e) => e.target.style.borderColor = '#000000 #ebebeb #ebebeb #000000'}
-                onMouseUp={(e) => e.target.style.borderColor = '#ebebeb #000000 #000000 #ebebeb'}
-              >
-                {showNewCustomerForm ? 'Cancel' : '+ Add New Customer'}
-              </button>
-
-              {showNewCustomerForm && (
-                <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '2px solid #c0c0c0' }}>
-                  <input 
-                    type="text" 
-                    placeholder="Company Name"
-                    style={{ 
-                      width: '100%',
-                      padding: '0.5rem',
-                      border: '2px solid',
-                      borderColor: '#808080 #ebebeb #ebebeb #808080',
-                      marginBottom: '0.5rem',
-                      fontFamily: 'MS Sans Serif, sans-serif',
-                      fontSize: '0.875rem'
-                    }}
-                  />
-                  <input 
-                    type="email" 
-                    placeholder="Email"
-                    style={{ 
-                      width: '100%',
-                      padding: '0.5rem',
-                      border: '2px solid',
-                      borderColor: '#808080 #ebebeb #ebebeb #808080',
-                      marginBottom: '0.5rem',
-                      fontFamily: 'MS Sans Serif, sans-serif',
-                      fontSize: '0.875rem'
-                    }}
-                  />
-                  <input 
-                    type="tel" 
-                    placeholder="Phone"
-                    style={{ 
-                      width: '100%',
-                      padding: '0.5rem',
-                      border: '2px solid',
-                      borderColor: '#808080 #ebebeb #ebebeb #808080',
-                      marginBottom: '0.5rem',
-                      fontFamily: 'MS Sans Serif, sans-serif',
-                      fontSize: '0.875rem'
-                    }}
-                  />
-                  <button 
-                    style={{ 
-                      width: '100%',
-                      padding: '0.5rem 1rem',
-                      background: '#c0c0c0',
-                      border: '2px solid',
-                      borderColor: '#ebebeb #000000 #000000 #ebebeb',
-                      cursor: 'pointer',
-                      fontWeight: 'bold',
-                      fontFamily: 'MS Sans Serif, sans-serif',
-                      fontSize: '0.875rem'
-                    }}
-                    onMouseDown={(e) => e.target.style.borderColor = '#000000 #ebebeb #ebebeb #000000'}
-                    onMouseUp={(e) => e.target.style.borderColor = '#ebebeb #000000 #000000 #ebebeb'}
-                  >
-                    Save Customer
-                  </button>
-                </div>
-              )}
             </div>
+            <button
+              onClick={() => setShowNewCustomerForm(!showNewCustomerForm)}
+              style={{ ...buttonStyle, marginTop: '1.35rem', whiteSpace: 'nowrap' }}
+              onMouseDown={(e) => e.target.style.borderColor = '#000000 #ebebeb #ebebeb #000000'}
+              onMouseUp={(e) => e.target.style.borderColor = '#ebebeb #000000 #000000 #ebebeb'}
+            >
+              {showNewCustomerForm ? 'Cancel' : '+ New'}
+            </button>
           </div>
-        </div>
-
-        {/* Payment Section */}
-        <div style={{ width: '100%' }}>
-          <div style={{
-            background: '#c0c0c0',
-            border: '2px solid',
-            borderColor: '#ebebeb #000000 #000000 #ebebeb'
-          }}>
-            <div style={{
-              background: 'linear-gradient(to right, #000080, #0000aa)',
-              color: 'white',
-              padding: '0.25rem 0.5rem',
-              fontWeight: 'bold',
-              fontSize: '0.875rem'
-            }}>
-              2. Payment Information
-            </div>
-            <div style={{ padding: '1rem', background: 'white' }}>
-              <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
-                Payment Method:
-              </label>
-              <select 
-                value={paymentMethod}
-                onChange={(e) => setPaymentMethod(e.target.value)}
-                style={{ 
-                  width: '100%',
-                  padding: '0.5rem',
-                  border: '2px solid',
-                  borderColor: '#808080 #ebebeb #ebebeb #808080',
-                  fontSize: '0.875rem',
-                  marginBottom: '1rem',
-                  fontFamily: 'MS Sans Serif, sans-serif'
-                }}
-              >
-                <option value="credit_card">Credit Card</option>
-                <option value="debit_card">Debit Card</option>
-                <option value="cash">Cash</option>
-                <option value="check">Check</option>
-                <option value="bank_transfer">Bank Transfer</option>
-              </select>
-
-              <div style={{ 
-                padding: '1rem',
-                background: '#f0f0f0',
-                border: '2px solid',
-                borderColor: '#808080 #ebebeb #ebebeb #808080',
-                marginBottom: '1rem',
-                fontSize: '0.875rem'
-              }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                  <span>Subtotal:</span>
-                  <span style={{ fontWeight: 'bold' }}>${calculateTotal()}</span>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                  <span>Tax (8%):</span>
-                  <span style={{ fontWeight: 'bold' }}>${(calculateTotal() * 0.08).toFixed(2)}</span>
-                </div>
-                <div style={{ 
-                  display: 'flex', 
-                  justifyContent: 'space-between',
-                  paddingTop: '0.5rem',
-                  marginTop: '0.5rem',
-                  borderTop: '2px solid #000080',
-                  fontSize: '1rem',
-                  fontWeight: 'bold',
-                  color: '#000080'
-                }}>
-                  <span>Total:</span>
-                  <span>${(parseFloat(calculateTotal()) * 1.08).toFixed(2)}</span>
-                </div>
+          {showNewCustomerForm && (
+            <div style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '2px solid #808080' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+                <input type="text" placeholder="Company Name" style={inputStyle} />
+                <input type="email" placeholder="Email" style={inputStyle} />
+                <input type="tel" placeholder="Phone" style={inputStyle} />
+                <button style={buttonStyle} onMouseDown={(e) => e.target.style.borderColor = '#000000 #ebebeb #ebebeb #000000'} onMouseUp={(e) => e.target.style.borderColor = '#ebebeb #000000 #000000 #ebebeb'}>Save Customer</button>
               </div>
+            </div>
+          )}
+        </div>
+      </div>
 
-              <button 
-                style={{ 
-                  width: '100%',
-                  padding: '0.75rem 1rem',
-                  background: '#c0c0c0',
+      {/* 2. Payment Method */}
+      <div style={sectionStyle}>
+        <div style={headerStyle}>2. Payment Method</div>
+        <div style={contentStyle}>
+          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
+            <div style={{ flex: 1 }}>
+              <label style={{ display: 'block', marginBottom: '0.35rem', fontWeight: 'bold', fontSize: '0.75rem' }}>
+                Select Payment Method:
+              </label>
+              <select
+                value={selectedPaymentMethod}
+                onChange={(e) => setSelectedPaymentMethod(e.target.value)}
+                style={{ ...inputStyle, width: '100%' }}
+              >
+                <option value="">-- Select payment method --</option>
+                {paymentMethods.map(method => (
+                  <option key={method.id} value={method.id}>
+                    {method.type} ending in {method.last4} {method.default ? '(Default)' : ''}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <button
+              onClick={() => setShowNewPaymentForm(!showNewPaymentForm)}
+              style={{ ...buttonStyle, marginTop: '1.35rem', whiteSpace: 'nowrap' }}
+              onMouseDown={(e) => e.target.style.borderColor = '#000000 #ebebeb #ebebeb #000000'}
+              onMouseUp={(e) => e.target.style.borderColor = '#ebebeb #000000 #000000 #ebebeb'}
+            >
+              {showNewPaymentForm ? 'Cancel' : '+ New'}
+            </button>
+          </div>
+          {showNewPaymentForm && (
+            <div style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '2px solid #808080' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+                <select style={inputStyle}>
+                  <option value="">Payment Type</option>
+                  <option value="credit_card">Credit Card</option>
+                  <option value="debit_card">Debit Card</option>
+                  <option value="check">Check</option>
+                </select>
+                <input type="text" placeholder="Card/Account Number" style={inputStyle} />
+                <input type="text" placeholder="Expiration (MM/YY)" style={inputStyle} />
+                <button style={buttonStyle} onMouseDown={(e) => e.target.style.borderColor = '#000000 #ebebeb #ebebeb #000000'} onMouseUp={(e) => e.target.style.borderColor = '#ebebeb #000000 #000000 #ebebeb'}>Save Payment</button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* 3. Add Items to Order */}
+      <div style={sectionStyle}>
+        <div style={headerStyle}>3. Add Items to Order</div>
+        <div style={contentStyle}>
+          <div style={{ marginBottom: '0.75rem' }}>
+            <label style={{ display: 'block', marginBottom: '0.35rem', fontWeight: 'bold', fontSize: '0.75rem' }}>
+              Search Inventory:
+            </label>
+            <input
+              type="text"
+              placeholder="Search by name..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              style={{ ...inputStyle, width: '100%' }}
+            />
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '0.5rem', marginBottom: '0.75rem' }}>
+            {filteredItems.map(item => (
+              <button
+                key={item.item_id}
+                onClick={() => addItemToOrder(item)}
+                disabled={item.quantity_in_stock === 0}
+                style={{
+                  padding: '0.5rem',
+                  background: item.quantity_in_stock === 0 ? '#808080' : '#f0f0f0',
                   border: '2px solid',
-                  borderColor: '#ebebeb #000000 #000000 #ebebeb',
-                  cursor: 'pointer',
-                  fontWeight: 'bold',
-                  fontSize: '0.875rem',
+                  borderColor: '#ebebeb #808080 #808080 #ebebeb',
+                  cursor: item.quantity_in_stock === 0 ? 'not-allowed' : 'pointer',
+                  fontSize: '0.7rem',
                   fontFamily: 'MS Sans Serif, sans-serif'
                 }}
-                onMouseDown={(e) => e.target.style.borderColor = '#000000 #ebebeb #ebebeb #000000'}
-                onMouseUp={(e) => e.target.style.borderColor = '#ebebeb #000000 #000000 #ebebeb'}
               >
-                Process Payment & Complete Order
+                <div style={{ fontWeight: 'bold', marginBottom: '0.2rem' }}>{item.item_name}</div>
+                <div>${parseFloat(item.unit_price).toFixed(2)}</div>
+                <div style={{ color: item.quantity_in_stock < 10 ? '#800000' : '#808080', fontSize: '0.65rem' }}>
+                  Stock: {item.quantity_in_stock}
+                </div>
               </button>
+            ))}
+          </div>
+
+          <div style={{ padding: '0.5rem', background: '#f0f0f0', border: '2px solid', borderColor: '#808080 #ebebeb #ebebeb #808080', minHeight: '80px' }}>
+            <div style={{ fontWeight: 'bold', fontSize: '0.75rem', marginBottom: '0.5rem', color: '#000080' }}>
+              Order Items ({orderItems.length}):
             </div>
+            {orderItems.length === 0 ? (
+              <p style={{ color: '#808080', fontSize: '0.75rem', margin: 0 }}>No items added</p>
+            ) : (
+              orderItems.map(item => (
+                <div key={item.item_id} style={{ padding: '0.35rem', background: 'white', border: '1px solid #808080', marginBottom: '0.25rem', display: 'flex', gap: '0.35rem', alignItems: 'center', fontSize: '0.7rem' }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontWeight: 'bold' }}>{item.item_name}</div>
+                    <div style={{ color: '#808080' }}>${item.price.toFixed(2)} × {item.quantity} = ${(item.price * item.quantity).toFixed(2)}</div>
+                  </div>
+                  <input
+                    type="number"
+                    value={item.quantity}
+                    onChange={(e) => updateQuantity(item.item_id, parseInt(e.target.value))}
+                    min="1"
+                    style={{ width: '40px', ...inputStyle }}
+                  />
+                  <button onClick={() => removeItemFromOrder(item.item_id)} style={{ ...buttonStyle, padding: '0.2rem 0.4rem' }} onMouseDown={(e) => e.target.style.borderColor = '#000000 #ebebeb #ebebeb #000000'} onMouseUp={(e) => e.target.style.borderColor = '#ebebeb #000000 #000000 #ebebeb'}>×</button>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </div>
 
-      {/* Add Items Section */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        {/* Available Items */}
-        <div style={{ width: '100%' }}>
-            <div style={{
-              background: '#c0c0c0',
-              border: '2px solid',
-              borderColor: '#ebebeb #000000 #000000 #ebebeb'
-            }}>
-              <div style={{
-                background: 'linear-gradient(to right, #000080, #0000aa)',
-                color: 'white',
-                padding: '0.25rem 0.5rem',
-                fontWeight: 'bold',
-                fontSize: '0.875rem'
-              }}>
-                3. Available Inventory
-              </div>
-              <div style={{ padding: '1rem', background: 'white' }}>
-                {loading ? (
-                  <p style={{ textAlign: 'center', padding: '2rem', color: '#808080', fontSize: '0.875rem' }}>
-                    Loading inventory...
-                  </p>
-                ) : availableItems.length === 0 ? (
-                  <p style={{ textAlign: 'center', padding: '2rem', color: '#808080', fontSize: '0.875rem' }}>
-                    No inventory items available
-                  </p>
-                ) : (
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '0.75rem' }}>
-                    {availableItems.map(item => (
-                      <div 
-                        key={item.item_id}
-                        style={{ 
-                          padding: '0.75rem',
-                          background: '#f0f0f0',
-                          border: '2px solid',
-                          borderColor: '#ebebeb #808080 #808080 #ebebeb'
-                        }}
-                      >
-                        <h4 style={{ 
-                          margin: '0 0 0.5rem 0', 
-                          fontSize: '0.875rem',
-                          fontWeight: 'bold',
-                          color: '#000080'
-                        }}>
-                          {item.item_name}
-                        </h4>
-                        <p style={{ 
-                          margin: '0 0 0.25rem 0', 
-                          fontSize: '0.875rem',
-                          fontWeight: 'bold'
-                        }}>
-                          ${parseFloat(item.unit_price).toFixed(2)}
-                        </p>
-                        <p style={{ 
-                          margin: '0 0 0.5rem 0', 
-                          fontSize: '0.75rem', 
-                          color: '#808080' 
-                        }}>
-                          Stock: {item.quantity_in_stock}
-                        </p>
-                        <button 
-                          onClick={() => addItemToOrder(item)}
-                          style={{ 
-                            width: '100%',
-                            padding: '0.4rem',
-                            background: '#c0c0c0',
-                            border: '2px solid',
-                            borderColor: '#ebebeb #000000 #000000 #ebebeb',
-                            cursor: 'pointer',
-                            fontWeight: 'bold',
-                            fontSize: '0.75rem',
-                            fontFamily: 'MS Sans Serif, sans-serif'
-                          }}
-                          onMouseDown={(e) => e.target.style.borderColor = '#000000 #ebebeb #ebebeb #000000'}
-                          onMouseUp={(e) => e.target.style.borderColor = '#ebebeb #000000 #000000 #ebebeb'}
-                        >
-                          + Add
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+      {/* 4. Shipping Method */}
+      <div style={sectionStyle}>
+        <div style={headerStyle}>4. Shipping Method</div>
+        <div style={contentStyle}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+            <div>
+              <label style={{ display: 'block', marginBottom: '0.35rem', fontWeight: 'bold', fontSize: '0.75rem' }}>Carrier:</label>
+              <select
+                value={shippingCarrier}
+                onChange={(e) => handleCarrierChange(e.target.value)}
+                style={{ ...inputStyle, width: '100%' }}
+              >
+                <option value="">-- Select carrier --</option>
+                <option value="fedex">FedEx</option>
+                <option value="ups">UPS</option>
+                <option value="usps">USPS</option>
+                <option value="dhl">DHL</option>
+              </select>
+            </div>
+            <div>
+              <label style={{ display: 'block', marginBottom: '0.35rem', fontWeight: 'bold', fontSize: '0.75rem' }}>Service:</label>
+              <select
+                value={shippingService}
+                onChange={(e) => handleServiceChange(e.target.value)}
+                disabled={!shippingCarrier}
+                style={{ ...inputStyle, width: '100%', opacity: shippingCarrier ? 1 : 0.6 }}
+              >
+                <option value="">-- Select service --</option>
+                {shippingCarrier && shippingOptions[shippingCarrier]?.map(option => (
+                  <option key={option.service} value={option.service}>
+                    {option.service} - ${option.rate.toFixed(2)}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+          {shippingService && (
+            <div style={{ marginTop: '0.5rem', padding: '0.35rem', background: '#f0f0f0', fontSize: '0.75rem' }}>
+              <strong>Selected:</strong> {shippingService} - ${shippingRate.toFixed(2)}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* 5. Order Summary */}
+      <div style={sectionStyle}>
+        <div style={headerStyle}>5. Order Summary</div>
+        <div style={contentStyle}>
+          <div style={{ fontSize: '0.75rem', marginBottom: '0.75rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.35rem', paddingBottom: '0.35rem' }}>
+              <span><strong>Customer:</strong></span>
+              <span>{existingCustomers.find(c => c.customer_id === parseInt(selectedCustomer))?.company_name || 'Not selected'}</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.35rem', paddingBottom: '0.35rem' }}>
+              <span><strong>Shipping:</strong></span>
+              <span>{shippingService || 'Not selected'}</span>
             </div>
           </div>
 
-        {/* Current Order */}
-        <div style={{ width: '100%' }}>
-            <div style={{
-              background: '#c0c0c0',
-              border: '2px solid',
-              borderColor: '#ebebeb #000000 #000000 #ebebeb'
-            }}>
-              <div style={{
-                background: 'linear-gradient(to right, #000080, #0000aa)',
-                color: 'white',
-                padding: '0.25rem 0.5rem',
-                fontWeight: 'bold',
-                fontSize: '0.875rem'
-              }}>
-                Current Order
-              </div>
-              <div style={{ 
-                padding: '1rem', 
-                background: 'white',
-                minHeight: '300px',
-                maxHeight: '500px',
-                overflowY: 'auto'
-              }}>
-                {orderItems.length === 0 ? (
-                  <p style={{ 
-                    color: '#808080', 
-                    textAlign: 'center', 
-                    padding: '2rem',
-                    fontSize: '0.875rem'
-                  }}>
-                    No items added yet
-                  </p>
-                ) : (
-                  orderItems.map(item => (
-                    <div 
-                      key={item.item_id}
-                      style={{ 
-                        padding: '0.5rem',
-                        background: '#f0f0f0',
-                        border: '2px solid',
-                        borderColor: '#808080 #ebebeb #ebebeb #808080',
-                        marginBottom: '0.5rem'
-                      }}
-                    >
-                      <div style={{ 
-                        fontWeight: 'bold',
-                        fontSize: '0.875rem',
-                        marginBottom: '0.25rem'
-                      }}>
-                        {item.item_name}
-                      </div>
-                      <div style={{ 
-                        fontSize: '0.75rem', 
-                        color: '#808080',
-                        marginBottom: '0.5rem'
-                      }}>
-                        ${item.price.toFixed(2)} each
-                      </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <input 
-                          type="number"
-                          value={item.quantity}
-                          onChange={(e) => updateQuantity(item.item_id, parseInt(e.target.value))}
-                          min="1"
-                          max={item.quantity_in_stock}
-                          style={{ 
-                            width: '50px',
-                            padding: '0.25rem',
-                            border: '2px solid',
-                            borderColor: '#808080 #ebebeb #ebebeb #808080',
-                            textAlign: 'center',
-                            fontFamily: 'MS Sans Serif, sans-serif',
-                            fontSize: '0.75rem'
-                          }}
-                        />
-                        <button 
-                          onClick={() => removeItemFromOrder(item.item_id)}
-                          style={{ 
-                            padding: '0.25rem 0.5rem',
-                            background: '#c0c0c0',
-                            border: '2px solid',
-                            borderColor: '#ebebeb #000000 #000000 #ebebeb',
-                            cursor: 'pointer',
-                            fontWeight: 'bold',
-                            fontSize: '0.75rem',
-                            fontFamily: 'MS Sans Serif, sans-serif',
-                            lineHeight: '1'
-                          }}
-                          onMouseDown={(e) => e.target.style.borderColor = '#000000 #ebebeb #ebebeb #000000'}
-                          onMouseUp={(e) => e.target.style.borderColor = '#ebebeb #000000 #000000 #ebebeb'}
-                        >
-                          ×
-                        </button>
-                      </div>
-                    </div>
-                  ))
-                )}
-              </div>
+          <div style={{ padding: '0.5rem', background: '#f0f0f0', border: '2px solid', borderColor: '#808080 #ebebeb #ebebeb #808080', marginBottom: '0.75rem', fontSize: '0.75rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
+              <span>Subtotal:</span>
+              <span style={{ fontWeight: 'bold' }}>${calculateSubtotal().toFixed(2)}</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
+              <span>Tax (8%):</span>
+              <span style={{ fontWeight: 'bold' }}>${calculateTax().toFixed(2)}</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
+              <span>Shipping:</span>
+              <span style={{ fontWeight: 'bold' }}>${shippingRate.toFixed(2)}</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '0.35rem', marginTop: '0.35rem', borderTop: '2px solid #000080', fontSize: '0.9rem', fontWeight: 'bold', color: '#000080' }}>
+              <span>Total:</span>
+              <span>${calculateTotal()}</span>
             </div>
           </div>
-        </div>
 
-      <div style={{ 
-        marginTop: '1.5rem', 
-        padding: '1rem', 
-        background: '#c0c0c0',
-        border: '2px solid',
-        borderColor: '#ebebeb #000000 #000000 #ebebeb',
-        fontSize: '0.875rem'
-      }}>
-        <div style={{
-          background: 'linear-gradient(to right, #000080, #0000aa)',
-          color: 'white',
-          padding: '0.25rem 0.5rem',
-          fontWeight: 'bold',
-          fontSize: '0.875rem',
-          marginBottom: '0.5rem'
-        }}>
-          Note
-        </div>
-        <div style={{ padding: '0.5rem', background: 'white' }}>
-          <strong>Database integration pending.</strong> Orders will be tracked and stored once connected.
+          <button
+            disabled={orderItems.length === 0 || !selectedCustomer || !selectedPaymentMethod || !shippingService}
+            style={{
+              width: '100%',
+              ...buttonStyle,
+              background: (orderItems.length === 0 || !selectedCustomer || !selectedPaymentMethod || !shippingService) ? '#808080' : '#c0c0c0',
+              cursor: (orderItems.length === 0 || !selectedCustomer || !selectedPaymentMethod || !shippingService) ? 'not-allowed' : 'pointer',
+              color: (orderItems.length === 0 || !selectedCustomer || !selectedPaymentMethod || !shippingService) ? '#c0c0c0' : '#000000'
+            }}
+            onMouseDown={(e) => (orderItems.length > 0 && selectedCustomer && selectedPaymentMethod && shippingService) && (e.target.style.borderColor = '#000000 #ebebeb #ebebeb #000000')}
+            onMouseUp={(e) => e.target.style.borderColor = '#ebebeb #000000 #000000 #ebebeb'}
+          >
+            Complete Order
+          </button>
+          {(orderItems.length === 0 || !selectedCustomer || !selectedPaymentMethod || !shippingService) && (
+            <p style={{ fontSize: '0.7rem', color: '#800000', margin: '0.5rem 0 0 0', textAlign: 'center' }}>
+              {!selectedCustomer ? 'Select a customer' :
+                !selectedPaymentMethod ? 'Select payment method' :
+                  !shippingService ? 'Select shipping method' :
+                    'Add items to order'}
+            </p>
+          )}
         </div>
       </div>
     </div>
