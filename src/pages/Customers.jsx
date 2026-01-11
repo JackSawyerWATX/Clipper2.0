@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import '../styles/Customers.css'
 
 function Customers() {
   const [customers, setCustomers] = useState([])
@@ -317,7 +318,7 @@ function Customers() {
     return (
       <div className="page">
         <h1>Customers</h1>
-        <div style={{ textAlign: 'center', padding: '3rem', fontSize: '1.2rem', color: '#6c757d' }}>
+        <div className="customers-loading">
           Loading customers...
         </div>
       </div>
@@ -328,26 +329,12 @@ function Customers() {
     return (
       <div className="page">
         <h1>Customers</h1>
-        <div style={{ 
-          padding: '1.5rem', 
-          background: '#f8d7da', 
-          color: '#721c24', 
-          borderRadius: '4px',
-          border: '1px solid #f5c6cb'
-        }}>
+        <div className="customers-error-container">
           <strong>Error:</strong> {error}
           <br />
           <button 
             onClick={fetchCustomers}
-            style={{ 
-              marginTop: '1rem',
-              padding: '0.5rem 1rem',
-              background: '#dc3545',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer'
-            }}
+            className="customers-error-retry"
           >
             Retry
           </button>
@@ -358,262 +345,108 @@ function Customers() {
 
   return (
     <div className="page">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+      <div className="customers-header">
         <h1>Customers</h1>
         <button 
           onClick={() => setShowAddModal(true)}
-          style={{ 
-            padding: '0.5rem 1.5rem', 
-            background: '#c0c0c0', 
-            border: '2px solid',
-            borderColor: '#ebebeb #000000 #000000 #ebebeb',
-            cursor: 'pointer',
-            fontWeight: 'bold',
-            fontFamily: 'MS Sans Serif, sans-serif',
-            fontSize: '0.875rem'
-          }}
-          onMouseDown={(e) => e.target.style.borderColor = '#000000 #ebebeb #ebebeb #000000'}
-          onMouseUp={(e) => e.target.style.borderColor = '#ebebeb #000000 #000000 #ebebeb'}
+          className="customers-add-button"
         >
           + Add New Customer
         </button>
       </div>
       
-      <div style={{ marginBottom: '1.5rem' }}>
+      <div className="customers-search-container">
         <input 
           type="text" 
           placeholder="Search Customers..." 
           value={searchTerm}
           onChange={handleSearch}
-          style={{ 
-            padding: '0.5rem', 
-            width: '100%', 
-            maxWidth: '400px',
-            border: '2px solid',
-            borderColor: '#808080 #ebebeb #ebebeb #808080',
-            fontSize: '1rem',
-            fontFamily: 'MS Sans Serif, sans-serif',
-            background: '#ffffff'
-          }}
+          className="customers-search-input"
         />
       </div>
 
       {loading && (
-        <div style={{ textAlign: 'center', padding: '3rem', fontSize: '1.1rem', color: '#6c757d' }}>
+        <div className="customers-loading">
           Loading customers...
         </div>
       )}
 
       {error && (
-        <div style={{ 
-          padding: '1rem', 
-          background: '#f8d7da', 
-          color: '#721c24', 
-          borderRadius: '4px',
-          marginBottom: '1rem'
-        }}>
+        <div className="customers-inline-error">
           Error: {error}
         </div>
       )}
 
       {!loading && !error && customers && customers.length === 0 && (
-        <div style={{ textAlign: 'center', padding: '3rem', fontSize: '1.1rem', color: '#6c757d' }}>
+        <div className="customers-empty-state">
           No customers found
         </div>
       )}
 
       {!loading && !error && customers && customers.length > 0 && (
-        <div style={{ 
-          overflowX: 'auto',
-          border: '2px solid',
-          borderColor: '#808080 #ebebeb #ebebeb #808080',
-          background: 'white'
-        }}>
-          <table style={{ 
-            width: '100%', 
-            borderCollapse: 'collapse',
-            background: 'white',
-            fontFamily: 'MS Sans Serif, sans-serif',
-            fontSize: '0.875rem'
-          }}>
+        <div className="customers-table-container">
+          <table className="customers-table">
             <thead>
-              <tr style={{ 
-                background: '#000080',
-                color: 'white'
-              }}>
-                <th 
-                  onClick={() => handleSort('customer_id')}
-                  style={{ 
-                    padding: '0.5rem', 
-                    textAlign: 'left', 
-                    fontWeight: 'bold', 
-                    borderRight: '1px solid #808080',
-                    cursor: 'pointer',
-                    userSelect: 'none'
-                  }}
-                >
+              <tr>
+                <th onClick={() => handleSort('customer_id')}>
                   ID {sortColumn === 'customer_id' && (sortDirection === 'asc' ? '▲' : '▼')}
                 </th>
-                <th 
-                  onClick={() => handleSort('company_name')}
-                  style={{ 
-                    padding: '0.5rem', 
-                    textAlign: 'left', 
-                    fontWeight: 'bold', 
-                    borderRight: '1px solid #808080',
-                    cursor: 'pointer',
-                    userSelect: 'none'
-                  }}
-                >
+                <th onClick={() => handleSort('company_name')}>
                   Company Name {sortColumn === 'company_name' && (sortDirection === 'asc' ? '▲' : '▼')}
                 </th>
-                <th 
-                  onClick={() => handleSort('contact_name')}
-                  style={{ 
-                    padding: '0.5rem', 
-                    textAlign: 'left', 
-                    fontWeight: 'bold', 
-                    borderRight: '1px solid #808080',
-                    cursor: 'pointer',
-                    userSelect: 'none'
-                  }}
-                >
+                <th onClick={() => handleSort('contact_name')}>
                   Contact {sortColumn === 'contact_name' && (sortDirection === 'asc' ? '▲' : '▼')}
                 </th>
-                <th 
-                  onClick={() => handleSort('email')}
-                  style={{ 
-                    padding: '0.5rem', 
-                    textAlign: 'left', 
-                    fontWeight: 'bold', 
-                    borderRight: '1px solid #808080',
-                    cursor: 'pointer',
-                    userSelect: 'none'
-                  }}
-                >
+                <th onClick={() => handleSort('email')}>
                   Email {sortColumn === 'email' && (sortDirection === 'asc' ? '▲' : '▼')}
                 </th>
-                <th 
-                  onClick={() => handleSort('phone')}
-                  style={{ 
-                    padding: '0.5rem', 
-                    textAlign: 'left', 
-                    fontWeight: 'bold', 
-                    borderRight: '1px solid #808080',
-                    cursor: 'pointer',
-                    userSelect: 'none'
-                  }}
-                >
+                <th onClick={() => handleSort('phone')}>
                   Phone {sortColumn === 'phone' && (sortDirection === 'asc' ? '▲' : '▼')}
                 </th>
-                <th 
-                  onClick={() => handleSort('address_city')}
-                  style={{ 
-                    padding: '0.5rem', 
-                    textAlign: 'left', 
-                    fontWeight: 'bold', 
-                    borderRight: '1px solid #808080',
-                    cursor: 'pointer',
-                    userSelect: 'none'
-                  }}
-                >
+                <th onClick={() => handleSort('address_city')}>
                   City {sortColumn === 'address_city' && (sortDirection === 'asc' ? '▲' : '▼')}
                 </th>
-                <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Status</th>
-                <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold' }}>Actions</th>
+                <th>Status</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
             {customers.map((customer, index) => {
-              const isEvenRow = index % 2 === 0
-              const getStatusColors = (status) => {
-                switch(status) {
-                  case 'Active':
-                    return { bg: '#00ff00', text: '#000000' }
-                  case 'Inactive':
-                    return { bg: '#ff0000', text: '#ffffff' }
-                  default:
-                    return { bg: '#ffff00', text: '#000000' }
-                }
-              }
-              const statusColors = getStatusColors(customer.status)
-              
               return (
-                <tr key={customer.customer_id} style={{ 
-                  background: isEvenRow ? 'white' : '#f0f0f0',
-                  borderBottom: '1px solid #c0c0c0'
-                }}>
-                  <td style={{ 
-                    padding: '0.5rem',
-                    fontWeight: 'bold',
-                    color: '#000080',
-                    borderRight: '1px solid #c0c0c0'
-                  }}>
+                <tr key={customer.customer_id}>
+                  <td className="customers-table-id">
                     {customer.customer_id}
                   </td>
-                  <td style={{ 
-                    padding: '0.5rem',
-                    fontWeight: 'bold',
-                    borderRight: '1px solid #c0c0c0'
-                  }}>
+                  <td className="customers-table-company">
                     {customer.company_name}
                   </td>
-                  <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>
+                  <td>
                     {customer.contact_name || 'N/A'}
                   </td>
-                  <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>
+                  <td>
                     {customer.email || 'N/A'}
                   </td>
-                  <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>
+                  <td>
                     {customer.phone || 'N/A'}
                   </td>
-                  <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>
+                  <td>
                     {customer.address_city || 'N/A'}
                   </td>
-                  <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>
-                    <span style={{ 
-                      padding: '0.2rem 0.5rem',
-                      fontSize: '0.75rem',
-                      fontWeight: 'bold',
-                      background: statusColors.bg,
-                      color: statusColors.text,
-                      border: '1px solid',
-                      borderColor: statusColors.text
-                    }}>
+                  <td>
+                    <span className={`customers-status-badge customers-status-${customer.status.toLowerCase()}`}>
                       {customer.status}
                     </span>
                   </td>
-                  <td style={{ padding: '0.5rem' }}>
+                  <td>
                     <button 
                       onClick={() => handleEditCustomer(customer)}
-                      onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
-                      onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
-                      style={{ 
-                        padding: '0.25rem 0.75rem',
-                        marginRight: '0.25rem',
-                        background: '#c0c0c0',
-                        border: '2px solid',
-                        borderColor: '#ffffff #000000 #000000 #ffffff',
-                        cursor: 'pointer',
-                        fontSize: '0.75rem',
-                        fontFamily: 'MS Sans Serif, sans-serif'
-                      }}
+                      className="customers-action-button"
                     >
                       Edit
                     </button>
                     <button 
                       onClick={() => handleDeleteClick(customer)}
-                      onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
-                      onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
-                      style={{ 
-                        padding: '0.25rem 0.75rem',
-                        background: '#c0c0c0',
-                        border: '2px solid',
-                        borderColor: '#ffffff #000000 #000000 #ffffff',
-                        cursor: 'pointer',
-                        fontSize: '0.75rem',
-                        fontFamily: 'MS Sans Serif, sans-serif'
-                      }}
+                      className="customers-action-button"
                     >
                       Delete
                     </button>
@@ -628,92 +461,28 @@ function Customers() {
 
       {/* Pagination and Info */}
       {!loading && !error && customers && customers.length > 0 && (
-        <div style={{ 
-          marginTop: '1.5rem', 
-          display: 'flex', 
-          justifyContent: 'space-between', 
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: '1rem'
-        }}>
-          <div style={{ color: '#6c757d', fontSize: '0.875rem' }}>
+        <div className="customers-pagination-container">
+          <div className="customers-pagination-info">
             Showing {customers.length} of {total} customers
           </div>
         
-        <div style={{ display: 'flex', gap: '0.5rem' }}>
+        <div className="customers-pagination-controls">
           <button 
             onClick={() => setPage(p => Math.max(1, p - 1))}
             disabled={page === 1}
-            onMouseDown={(e) => {
-              if (page !== 1) {
-                e.currentTarget.style.borderTop = '2px solid #808080';
-                e.currentTarget.style.borderLeft = '2px solid #808080';
-                e.currentTarget.style.borderRight = '2px solid #ffffff';
-                e.currentTarget.style.borderBottom = '2px solid #ffffff';
-              }
-            }}
-            onMouseUp={(e) => {
-              if (page !== 1) {
-                e.currentTarget.style.borderTop = '2px solid #ffffff';
-                e.currentTarget.style.borderLeft = '2px solid #ffffff';
-                e.currentTarget.style.borderRight = '2px solid #000000';
-                e.currentTarget.style.borderBottom = '2px solid #000000';
-              }
-            }}
-            style={{ 
-              padding: '0.5rem 1rem',
-              background: page === 1 ? '#808080' : '#c0c0c0',
-              borderTop: '2px solid #ffffff',
-              borderLeft: '2px solid #ffffff',
-              borderRight: '2px solid #000000',
-              borderBottom: '2px solid #000000',
-              cursor: page === 1 ? 'not-allowed' : 'pointer',
-              color: page === 1 ? '#a0a0a0' : '#000',
-              fontFamily: 'MS Sans Serif, sans-serif'
-            }}
+            className="customers-pagination-button"
           >
             Previous
           </button>
           
-          <span style={{ 
-            padding: '0.5rem 1rem',
-            display: 'flex',
-            alignItems: 'center',
-            color: '#6c757d'
-          }}>
+          <span className="customers-pagination-page">
             Page {page} of {totalPages}
           </span>
           
           <button 
             onClick={() => setPage(p => Math.min(totalPages, p + 1))}
             disabled={page === totalPages}
-            onMouseDown={(e) => {
-              if (page !== totalPages) {
-                e.currentTarget.style.borderTop = '2px solid #808080';
-                e.currentTarget.style.borderLeft = '2px solid #808080';
-                e.currentTarget.style.borderRight = '2px solid #ffffff';
-                e.currentTarget.style.borderBottom = '2px solid #ffffff';
-              }
-            }}
-            onMouseUp={(e) => {
-              if (page !== totalPages) {
-                e.currentTarget.style.borderTop = '2px solid #ffffff';
-                e.currentTarget.style.borderLeft = '2px solid #ffffff';
-                e.currentTarget.style.borderRight = '2px solid #000000';
-                e.currentTarget.style.borderBottom = '2px solid #000000';
-              }
-            }}
-            style={{ 
-              padding: '0.5rem 1rem',
-              background: page === totalPages ? '#808080' : '#c0c0c0',
-              borderTop: '2px solid #ffffff',
-              borderLeft: '2px solid #ffffff',
-              borderRight: '2px solid #000000',
-              borderBottom: '2px solid #000000',
-              cursor: page === totalPages ? 'not-allowed' : 'pointer',
-              color: page === totalPages ? '#a0a0a0' : '#000',
-              fontFamily: 'MS Sans Serif, sans-serif'
-            }}
+            className="customers-pagination-button"
           >
             Next
           </button>
@@ -723,99 +492,34 @@ function Customers() {
 
       {/* Add Customer Modal */}
       {showAddModal && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'rgba(0, 0, 0, 0.5)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 1000
-        }}>
-          <div style={{
-            background: '#c0c0c0',
-            border: '2px solid',
-            borderColor: '#ffffff #000000 #000000 #ffffff',
-            boxShadow: '4px 4px 8px rgba(0,0,0,0.5)',
-            maxWidth: '600px',
-            width: '90%',
-            maxHeight: '90vh',
-            display: 'flex',
-            flexDirection: 'column',
-            fontFamily: 'MS Sans Serif, Microsoft Sans Serif, sans-serif'
-          }}>
-            <div style={{
-              padding: '0.4rem 0.6rem',
-              background: 'linear-gradient(to bottom, #000080 0%, #0000aa 100%)',
-              color: 'white',
-              borderBottom: '2px solid #000000',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              boxShadow: 'inset 1px 1px 0 rgba(255,255,255,0.3)'
-            }}>
-              <h2 style={{
-                margin: 0,
-                fontSize: '0.9rem',
-                fontWeight: 'bold',
-                textShadow: '1px 1px 0 rgba(0,0,0,0.5)'
-              }}>{editingCustomer ? 'Edit Customer' : 'Add New Customer'}</h2>
+        <div className="customers-modal-overlay">
+          <div className="customers-modal">
+            <div className="customers-modal-titlebar">
+              <h2 className="customers-modal-title">{editingCustomer ? 'Edit Customer' : 'Add New Customer'}</h2>
               <button
                 onClick={() => {
                   setShowAddModal(false)
                   resetForm()
                 }}
-                style={{
-                  background: '#c0c0c0',
-                  border: '2px solid',
-                  borderColor: '#ffffff #000000 #000000 #ffffff',
-                  fontSize: '1.2rem',
-                  fontWeight: 'bold',
-                  color: '#000',
-                  cursor: 'pointer',
-                  width: '24px',
-                  height: '24px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  transition: 'all 0.15s',
-                  boxShadow: '1px 1px 2px rgba(0,0,0,0.3)',
-                  padding: 0,
-                  lineHeight: 1
-                }}
+                className="customers-modal-close"
               >
                 ×
               </button>
             </div>
 
-            <div style={{
-              padding: '1rem',
-              overflowY: 'auto',
-              flex: 1
-            }}>
+            <div className="customers-modal-content">
               {formError && (
-                <div style={{
-                  padding: '0.75rem',
-                  background: '#ffffff',
-                  border: '2px solid',
-                  borderColor: '#808080 #ffffff #ffffff #808080',
-                  marginBottom: '1rem',
-                  color: '#c33',
-                  boxShadow: 'inset 1px 1px 2px rgba(0,0,0,0.2)'
-                }}>
+                <div className="customers-form-error">
                   {formError}
                 </div>
               )}
 
               <form onSubmit={handleSubmitCustomer}>
-                <div style={{ display: 'grid', gap: '1rem' }}>
+                <div className="customers-form-grid">
                 {/* Company Name - Required */}
                 <div>
-                  <label style={{ display: 'block', marginBottom: '0.4rem', fontWeight: 'bold', fontSize: '0.9rem' }}>
-                    Company Name <span style={{ color: 'red' }}>*</span>
+                  <label className="customers-form-label">
+                    Company Name <span className="customers-form-required">*</span>
                   </label>
                   <input
                     type="text"
@@ -823,22 +527,13 @@ function Customers() {
                     value={formData.company_name}
                     onChange={handleInputChange}
                     required
-                    style={{
-                      width: '100%',
-                      padding: '0.4rem',
-                      border: '2px solid',
-                      borderColor: '#808080 #ebebeb #ebebeb #808080',
-                      background: '#ffffff',
-                      fontSize: '0.9rem',
-                      fontFamily: 'MS Sans Serif, Microsoft Sans Serif, sans-serif',
-                      boxShadow: 'inset 1px 1px 2px rgba(0,0,0,0.1)'
-                    }}
+                    className="customers-form-input"
                   />
                 </div>
 
                   {/* Contact Name */}
                   <div>
-                    <label style={{ display: 'block', marginBottom: '0.4rem', fontWeight: 'bold', fontSize: '0.9rem' }}>
+                    <label className="customers-form-label">
                       Contact Name
                     </label>
                     <input
@@ -846,22 +541,13 @@ function Customers() {
                       name="contact_name"
                       value={formData.contact_name}
                       onChange={handleInputChange}
-                      style={{
-                        width: '100%',
-                        padding: '0.4rem',
-                        border: '2px solid',
-                        borderColor: '#808080 #ebebeb #ebebeb #808080',
-                        background: '#ffffff',
-                        fontSize: '0.9rem',
-                        fontFamily: 'MS Sans Serif, Microsoft Sans Serif, sans-serif',
-                        boxShadow: 'inset 1px 1px 2px rgba(0,0,0,0.1)'
-                      }}
+                      className="customers-form-input"
                     />
                   </div>
 
                 {/* Email */}
                 <div>
-                  <label style={{ display: 'block', marginBottom: '0.4rem', fontWeight: 'bold', fontSize: '0.9rem' }}>
+                  <label className="customers-form-label">
                     Email
                   </label>
                   <input
@@ -869,22 +555,13 @@ function Customers() {
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    style={{
-                      width: '100%',
-                      padding: '0.4rem',
-                      border: '2px solid',
-                      borderColor: '#808080 #ebebeb #ebebeb #808080',
-                      background: '#ffffff',
-                      fontSize: '0.9rem',
-                      fontFamily: 'MS Sans Serif, Microsoft Sans Serif, sans-serif',
-                      boxShadow: 'inset 1px 1px 2px rgba(0,0,0,0.1)'
-                    }}
+                    className="customers-form-input"
                   />
                 </div>
 
                 {/* Phone */}
                 <div>
-                  <label style={{ display: 'block', marginBottom: '0.4rem', fontWeight: 'bold', fontSize: '0.9rem' }}>
+                  <label className="customers-form-label">
                     Phone
                   </label>
                   <input
@@ -893,22 +570,13 @@ function Customers() {
                     value={formData.phone}
                     onChange={handleInputChange}
                     placeholder="(206) 713-3756"
-                    style={{
-                      width: '100%',
-                      padding: '0.4rem',
-                      border: '2px solid',
-                      borderColor: '#808080 #ebebeb #ebebeb #808080',
-                      background: '#ffffff',
-                      fontSize: '0.9rem',
-                      fontFamily: 'MS Sans Serif, Microsoft Sans Serif, sans-serif',
-                      boxShadow: 'inset 1px 1px 2px rgba(0,0,0,0.1)'
-                    }}
+                    className="customers-form-input"
                   />
                 </div>
 
                   {/* Address - Street */}
                   <div>
-                    <label style={{ display: 'block', marginBottom: '0.4rem', fontWeight: 'bold', fontSize: '0.9rem' }}>
+                    <label className="customers-form-label">
                       Street Address
                     </label>
                     <input
@@ -916,23 +584,14 @@ function Customers() {
                       name="address_street"
                       value={formData.address_street}
                       onChange={handleInputChange}
-                      style={{
-                        width: '100%',
-                        padding: '0.4rem',
-                        border: '2px solid',
-                        borderColor: '#808080 #ebebeb #ebebeb #808080',
-                        background: '#ffffff',
-                        fontSize: '0.9rem',
-                        fontFamily: 'MS Sans Serif, Microsoft Sans Serif, sans-serif',
-                        boxShadow: 'inset 1px 1px 2px rgba(0,0,0,0.1)'
-                      }}
+                      className="customers-form-input"
                     />
                   </div>
 
                   {/* City, State, Zip in a row */}
-                  <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: '1rem' }}>
+                  <div className="customers-form-row-3">
                     <div>
-                      <label style={{ display: 'block', marginBottom: '0.4rem', fontWeight: 'bold', fontSize: '0.9rem' }}>
+                      <label className="customers-form-label">
                         City
                       </label>
                       <input
@@ -940,20 +599,11 @@ function Customers() {
                         name="address_city"
                         value={formData.address_city}
                         onChange={handleInputChange}
-                        style={{
-                          width: '100%',
-                          padding: '0.4rem',
-                          border: '2px solid',
-                          borderColor: '#808080 #ebebeb #ebebeb #808080',
-                          background: '#ffffff',
-                          fontSize: '0.9rem',
-                          fontFamily: 'MS Sans Serif, Microsoft Sans Serif, sans-serif',
-                          boxShadow: 'inset 1px 1px 2px rgba(0,0,0,0.1)'
-                        }}
+                        className="customers-form-input"
                       />
                     </div>
                     <div>
-                      <label style={{ display: 'block', marginBottom: '0.4rem', fontWeight: 'bold', fontSize: '0.9rem' }}>
+                      <label className="customers-form-label">
                         State
                       </label>
                       <input
@@ -963,20 +613,11 @@ function Customers() {
                         onChange={handleInputChange}
                         maxLength="2"
                         placeholder="TX"
-                        style={{
-                          width: '100%',
-                          padding: '0.4rem',
-                          border: '2px solid',
-                          borderColor: '#808080 #ebebeb #ebebeb #808080',
-                          background: '#ffffff',
-                          fontSize: '0.9rem',
-                          fontFamily: 'MS Sans Serif, Microsoft Sans Serif, sans-serif',
-                          boxShadow: 'inset 1px 1px 2px rgba(0,0,0,0.1)'
-                        }}
+                        className="customers-form-input"
                       />
                     </div>
                     <div>
-                      <label style={{ display: 'block', marginBottom: '0.4rem', fontWeight: 'bold', fontSize: '0.9rem' }}>
+                      <label className="customers-form-label">
                         ZIP
                       </label>
                       <input
@@ -984,23 +625,14 @@ function Customers() {
                         name="address_zip"
                         value={formData.address_zip}
                         onChange={handleInputChange}
-                        style={{
-                          width: '100%',
-                          padding: '0.4rem',
-                          border: '2px solid',
-                          borderColor: '#808080 #ebebeb #ebebeb #808080',
-                          background: '#ffffff',
-                          fontSize: '0.9rem',
-                          fontFamily: 'MS Sans Serif, Microsoft Sans Serif, sans-serif',
-                          boxShadow: 'inset 1px 1px 2px rgba(0,0,0,0.1)'
-                        }}
+                        className="customers-form-input"
                       />
                     </div>
                   </div>
 
                   {/* Country */}
                   <div>
-                    <label style={{ display: 'block', marginBottom: '0.4rem', fontWeight: 'bold', fontSize: '0.9rem' }}>
+                    <label className="customers-form-label">
                       Country
                     </label>
                     <input
@@ -1008,39 +640,21 @@ function Customers() {
                       name="address_country"
                       value={formData.address_country}
                       onChange={handleInputChange}
-                      style={{
-                        width: '100%',
-                        padding: '0.4rem',
-                        border: '2px solid',
-                        borderColor: '#808080 #ebebeb #ebebeb #808080',
-                        background: '#ffffff',
-                        fontSize: '0.9rem',
-                        fontFamily: 'MS Sans Serif, Microsoft Sans Serif, sans-serif',
-                        boxShadow: 'inset 1px 1px 2px rgba(0,0,0,0.1)'
-                      }}
+                      className="customers-form-input"
                     />
                   </div>
 
                   {/* Status and Customer Type in a row */}
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                  <div className="customers-form-row-2">
                     <div>
-                      <label style={{ display: 'block', marginBottom: '0.4rem', fontWeight: 'bold', fontSize: '0.9rem' }}>
+                      <label className="customers-form-label">
                         Status
                       </label>
                       <select
                         name="status"
                         value={formData.status}
                         onChange={handleInputChange}
-                        style={{
-                          width: '100%',
-                          padding: '0.4rem',
-                          border: '2px solid',
-                          borderColor: '#808080 #ebebeb #ebebeb #808080',
-                          background: '#ffffff',
-                          fontSize: '0.9rem',
-                          fontFamily: 'MS Sans Serif, Microsoft Sans Serif, sans-serif',
-                          boxShadow: 'inset 1px 1px 2px rgba(0,0,0,0.1)'
-                        }}
+                        className="customers-form-select"
                       >
                         <option value="Active">Active</option>
                         <option value="Inactive">Inactive</option>
@@ -1048,23 +662,14 @@ function Customers() {
                       </select>
                     </div>
                     <div>
-                      <label style={{ display: 'block', marginBottom: '0.4rem', fontWeight: 'bold', fontSize: '0.9rem' }}>
+                      <label className="customers-form-label">
                         Customer Type
                       </label>
                       <select
                         name="customer_type"
                         value={formData.customer_type}
                         onChange={handleInputChange}
-                        style={{
-                          width: '100%',
-                          padding: '0.4rem',
-                          border: '2px solid',
-                          borderColor: '#808080 #ebebeb #ebebeb #808080',
-                          background: '#ffffff',
-                          fontSize: '0.9rem',
-                          fontFamily: 'MS Sans Serif, Microsoft Sans Serif, sans-serif',
-                          boxShadow: 'inset 1px 1px 2px rgba(0,0,0,0.1)'
-                        }}
+                        className="customers-form-select"
                       >
                         <option value="One-Time">One-Time</option>
                         <option value="Regular">Regular</option>
@@ -1074,73 +679,21 @@ function Customers() {
                   </div>
 
                   {/* Form Actions */}
-                  <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+                  <div className="customers-form-actions">
                     <button
                       type="button"
                       onClick={() => {
                         setShowAddModal(false)
                         resetForm()
                       }}
-                      style={{
-                        flex: 1,
-                        padding: '0.5rem 1rem',
-                        background: '#c0c0c0',
-                        border: '2px solid',
-                        borderColor: '#ffffff #000000 #000000 #ffffff',
-                        cursor: 'pointer',
-                        fontSize: '0.9rem',
-                        fontWeight: 'bold',
-                        fontFamily: 'MS Sans Serif, Microsoft Sans Serif, sans-serif',
-                        boxShadow: '2px 2px 4px rgba(0,0,0,0.4)',
-                        color: '#000',
-                        textShadow: '1px 1px 0 rgba(255,255,255,0.5)',
-                        transition: 'all 0.15s'
-                      }}
-                      onMouseDown={(e) => {
-                        e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'
-                        e.target.style.boxShadow = 'inset 1px 1px 2px rgba(0,0,0,0.5)'
-                        e.target.style.transform = 'translate(2px, 2px)'
-                      }}
-                      onMouseUp={(e) => {
-                        e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'
-                        e.target.style.boxShadow = '2px 2px 4px rgba(0,0,0,0.4)'
-                        e.target.style.transform = 'translate(0, 0)'
-                      }}
+                      className="customers-form-button"
                     >
                       Cancel
                     </button>
                     <button
                       type="submit"
                       disabled={submitting}
-                      style={{
-                        flex: 1,
-                        padding: '0.5rem 1rem',
-                        background: submitting ? '#808080' : '#c0c0c0',
-                        border: '2px solid',
-                        borderColor: submitting ? '#000000 #808080 #808080 #000000' : '#ffffff #000000 #000000 #ffffff',
-                        cursor: submitting ? 'not-allowed' : 'pointer',
-                        fontSize: '0.9rem',
-                        fontWeight: 'bold',
-                        fontFamily: 'MS Sans Serif, Microsoft Sans Serif, sans-serif',
-                        boxShadow: submitting ? 'inset 1px 1px 2px rgba(0,0,0,0.5)' : '2px 2px 4px rgba(0,0,0,0.4)',
-                        color: '#000',
-                        textShadow: '1px 1px 0 rgba(255,255,255,0.5)',
-                        transition: 'all 0.15s'
-                      }}
-                      onMouseDown={(e) => {
-                        if (!submitting) {
-                          e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'
-                          e.target.style.boxShadow = 'inset 1px 1px 2px rgba(0,0,0,0.5)'
-                          e.target.style.transform = 'translate(2px, 2px)'
-                        }
-                      }}
-                      onMouseUp={(e) => {
-                        if (!submitting) {
-                          e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'
-                          e.target.style.boxShadow = '2px 2px 4px rgba(0,0,0,0.4)'
-                          e.target.style.transform = 'translate(0, 0)'
-                        }
-                      }}
+                      className="customers-form-button"
                     >
                       {submitting ? (editingCustomer ? 'Updating...' : 'Adding...') : (editingCustomer ? 'Update Customer' : 'Add Customer')}
                     </button>
@@ -1154,205 +707,71 @@ function Customers() {
 
       {/* Delete Confirmation Modal */}
       {showDeleteModal && deletingCustomer && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'rgba(0, 0, 0, 0.5)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 1000
-        }}>
-          <div style={{
-            background: '#c0c0c0',
-            border: '2px solid',
-            borderColor: '#ffffff #000000 #000000 #ffffff',
-            boxShadow: '4px 4px 8px rgba(0,0,0,0.5)',
-            maxWidth: '500px',
-            width: '90%',
-            fontFamily: 'MS Sans Serif, Microsoft Sans Serif, sans-serif'
-          }}>
+        <div className="customers-modal-overlay">
+          <div className="customers-modal customers-modal-small">
             {/* Windows 3.0 Title Bar */}
-            <div style={{
-              padding: '0.4rem 0.6rem',
-              background: 'linear-gradient(to bottom, #000080 0%, #0000aa 100%)',
-              color: 'white',
-              borderBottom: '2px solid #000000',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              boxShadow: 'inset 1px 1px 0 rgba(255,255,255,0.3)'
-            }}>
-              <h2 style={{
-                margin: 0,
-                fontSize: '0.9rem',
-                fontWeight: 'bold',
-                textShadow: '1px 1px 0 rgba(0,0,0,0.5)'
-              }}>
+            <div className="customers-modal-titlebar">
+              <h2 className="customers-modal-title">
                 Delete Customer
               </h2>
               <button
                 onClick={handleDeleteCancel}
-                style={{
-                  background: '#c0c0c0',
-                  border: '2px solid',
-                  borderColor: '#ffffff #000000 #000000 #ffffff',
-                  fontSize: '1.2rem',
-                  fontWeight: 'bold',
-                  color: '#000',
-                  cursor: 'pointer',
-                  width: '24px',
-                  height: '24px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  transition: 'all 0.15s',
-                  boxShadow: '1px 1px 2px rgba(0,0,0,0.3)',
-                  padding: 0,
-                  lineHeight: 1
-                }}
+                className="customers-modal-close"
               >
                 ×
               </button>
             </div>
 
             {/* Modal Content */}
-            <div style={{ padding: '1rem' }}>
-              <div style={{ marginBottom: '1rem' }}>
-                <p style={{ margin: '0 0 0.75rem 0', fontSize: '0.9rem', lineHeight: '1.5' }}>
+            <div className="customers-modal-content">
+              <div>
+                <p className="customers-delete-text">
                   Are you sure you want to delete this customer profile?
                 </p>
-                <div style={{ 
-                  padding: '0.75rem',
-                  background: '#ffffff',
-                  border: '2px solid',
-                  borderColor: '#808080 #ffffff #ffffff #808080',
-                  boxShadow: 'inset 1px 1px 2px rgba(0,0,0,0.1)'
-                }}>
-                  <strong style={{ fontSize: '0.9rem' }}>{deletingCustomer.company_name}</strong>
+                <div className="customers-delete-info-box">
+                  <strong className="customers-delete-company">{deletingCustomer.company_name}</strong>
                   {deletingCustomer.contact_name && (
                     <>
                       <br />
-                      <span style={{ fontSize: '0.85rem' }}>Contact: {deletingCustomer.contact_name}</span>
+                      <span className="customers-delete-detail">Contact: {deletingCustomer.contact_name}</span>
                     </>
                   )}
                   {deletingCustomer.email && (
                     <>
                       <br />
-                      <span style={{ fontSize: '0.85rem' }}>Email: {deletingCustomer.email}</span>
+                      <span className="customers-delete-detail">Email: {deletingCustomer.email}</span>
                     </>
                   )}
                 </div>
-                <div style={{ 
-                  margin: '0.75rem 0 0 0',
-                  padding: '0.5rem',
-                  background: '#ffffff',
-                  border: '2px solid',
-                  borderColor: '#808080 #ffffff #ffffff #808080',
-                  boxShadow: 'inset 1px 1px 2px rgba(0,0,0,0.1)'
-                }}>
-                  <p style={{ margin: 0, color: '#dc3545', fontWeight: 'bold', fontSize: '0.9rem' }}>
+                <div className="customers-delete-warning-box">
+                  <p className="customers-delete-warning-text">
                     ⚠️ This action cannot be undone.
                   </p>
                 </div>
               </div>
 
               {deleteWarning && (
-                <div style={{
-                  padding: '0.75rem',
-                  background: '#ffff00',
-                  border: '2px solid',
-                  borderColor: '#808080 #ffffff #ffffff #808080',
-                  marginBottom: '1rem',
-                  color: '#000',
-                  fontWeight: 'bold',
-                  fontSize: '0.9rem',
-                  boxShadow: 'inset 1px 1px 2px rgba(0,0,0,0.1)'
-                }}>
+                <div className="customers-delete-alert">
                   {deleteWarning}
                 </div>
               )}
 
-              <div style={{ 
-                display: 'flex', 
-                gap: '1rem', 
-                marginBottom: '1rem'
-              }}>
+              <div className="customers-delete-actions">
                 <button
                   onClick={handleDeleteCancel}
-                  style={{
-                    flex: 1,
-                    padding: '0.5rem 1rem',
-                    background: '#c0c0c0',
-                    border: '2px solid',
-                    borderColor: '#ffffff #000000 #000000 #ffffff',
-                    cursor: 'pointer',
-                    fontSize: '0.9rem',
-                    fontWeight: 'bold',
-                    fontFamily: 'MS Sans Serif, Microsoft Sans Serif, sans-serif',
-                    boxShadow: '2px 2px 4px rgba(0,0,0,0.4)',
-                    color: '#000',
-                    textShadow: '1px 1px 0 rgba(255,255,255,0.5)',
-                    transition: 'all 0.15s'
-                  }}
-                  onMouseDown={(e) => {
-                    e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'
-                    e.target.style.boxShadow = 'inset 1px 1px 2px rgba(0,0,0,0.5)'
-                    e.target.style.transform = 'translate(2px, 2px)'
-                  }}
-                  onMouseUp={(e) => {
-                    e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'
-                    e.target.style.boxShadow = '2px 2px 4px rgba(0,0,0,0.4)'
-                    e.target.style.transform = 'translate(0, 0)'
-                  }}
+                  className="customers-form-button"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleDeleteConfirm}
-                  style={{
-                    flex: 1,
-                    padding: '0.5rem 1rem',
-                    background: '#c0c0c0',
-                    border: '2px solid',
-                    borderColor: '#ffffff #000000 #000000 #ffffff',
-                    cursor: 'pointer',
-                    fontSize: '0.9rem',
-                    fontWeight: 'bold',
-                    fontFamily: 'MS Sans Serif, Microsoft Sans Serif, sans-serif',
-                    boxShadow: '2px 2px 4px rgba(0,0,0,0.4)',
-                    color: '#dc3545',
-                    textShadow: '1px 1px 0 rgba(255,255,255,0.5)',
-                    transition: 'all 0.15s'
-                  }}
-                  onMouseDown={(e) => {
-                    e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'
-                    e.target.style.boxShadow = 'inset 1px 1px 2px rgba(0,0,0,0.5)'
-                    e.target.style.transform = 'translate(2px, 2px)'
-                  }}
-                  onMouseUp={(e) => {
-                    e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'
-                    e.target.style.boxShadow = '2px 2px 4px rgba(0,0,0,0.4)'
-                    e.target.style.transform = 'translate(0, 0)'
-                  }}
+                  className="customers-form-button customers-form-button-delete"
                 >
                   Delete
                 </button>
               </div>
 
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                padding: '0.75rem',
-                background: '#ffffff',
-                border: '2px solid',
-                borderColor: '#808080 #ffffff #ffffff #808080',
-                boxShadow: 'inset 1px 1px 2px rgba(0,0,0,0.1)'
-              }}>
+              <div className="customers-delete-checkbox-container">
                 <input
                 type="checkbox"
                 id="deleteConfirmCheckbox"
@@ -1361,20 +780,11 @@ function Customers() {
                   setDeleteConfirmed(e.target.checked)
                   if (deleteWarning) setDeleteWarning('')
                 }}
-                style={{
-                  width: '16px',
-                  height: '16px',
-                  cursor: 'pointer'
-                }}
+                className="customers-delete-checkbox"
               />
               <label 
                 htmlFor="deleteConfirmCheckbox"
-                style={{
-                  margin: 0,
-                  cursor: 'pointer',
-                  fontSize: '0.9rem',
-                  color: '#000'
-                }}
+                className="customers-delete-checkbox-label"
               >
                 I understand this action cannot be undone
               </label>
