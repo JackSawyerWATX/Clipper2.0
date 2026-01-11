@@ -1,0 +1,862 @@
+/* ═══════════════════════════════════════════════════════════════════════════════
+   ██╗    ██╗██╗███╗   ██╗██████╗  ██████╗ ██╗    ██╗███████╗    ██████╗     ██████╗ 
+   ██║    ██║██║████╗  ██║██╔══██╗██╔═══██╗██║    ██║██╔════╝    ╚════██╗   ██╔═████╗
+   ██║ █╗ ██║██║██╔██╗ ██║██║  ██║██║   ██║██║ █╗ ██║███████╗     █████╔╝   ██║██╔██║
+   ██║███╗██║██║██║╚██╗██║██║  ██║██║   ██║██║███╗██║╚════██║     ╚═══██╗   ████╔╝██║
+   ╚███╔███╔╝██║██║ ╚████║██████╔╝╚██████╔╝╚███╔███╔╝███████║    ██████╔╝██╗╚██████╔╝
+   ╚══╝╚══╝ ╚═╝╚═╝  ╚═══╝╚═════╝  ╚═════╝  ╚══╝╚══╝ ╚══════╝    ╚═════╝ ╚═╝ ╚═════╝ 
+   
+   WINDOWS 3.0 THEME STYLESHEET FOR CLIPPER 2.0
+   Classic Windows 3.x Aesthetic | Authentic Color Palette | Retro UI Components
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* ============================================
+   ROOT VARIABLES - Windows 3.0 Color Palette
+   ============================================ */
+:root {
+  --win3-gray: #c0c0c0;
+  --win3-light-gray: #dfdfdf;
+  --win3-dark-gray: #808080;
+  --win3-black: #000000;
+  --win3-white: #ffffff;
+  --win3-blue: #000080;
+  --win3-light-blue: #0000ff;
+  --win3-title-bar: #000080;
+  --win3-title-text: #ffffff;
+  --win3-highlight: #ffffff;
+  --win3-shadow: #808080;
+  --win3-dark-shadow: #000000;
+  --win3-desktop: #008080;
+  --win3-active-caption: #000080;
+  --win3-inactive-caption: #808080;
+}
+
+/* ============================================
+   BODY AND GLOBAL STYLES
+   ============================================ */
+.win3-body {
+  background-color: var(--win3-desktop);
+  font-family: 'MS Sans Serif', 'Microsoft Sans Serif', Arial, sans-serif;
+  font-size: 11px;
+  color: var(--win3-black);
+  margin: 0;
+  padding: 0;
+  line-height: 1.4;
+}
+
+.win3-desktop {
+  background-color: var(--win3-desktop);
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* ============================================
+   WINDOW CONTAINER
+   ============================================ */
+.win3-window {
+  background-color: var(--win3-gray);
+  border-top: 2px solid var(--win3-highlight);
+  border-left: 2px solid var(--win3-highlight);
+  border-right: 2px solid var(--win3-black);
+  border-bottom: 2px solid var(--win3-black);
+  box-shadow: 1px 1px 0 var(--win3-dark-shadow);
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+}
+
+.win3-window.inactive {
+  border-color: var(--win3-dark-gray);
+}
+
+/* ============================================
+   TITLE BAR
+   ============================================ */
+.win3-title-bar {
+  background-color: var(--win3-title-bar);
+  color: var(--win3-title-text);
+  padding: 2px 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: bold;
+  height: 18px;
+  cursor: move;
+}
+
+.win3-title-bar.inactive {
+  background-color: var(--win3-inactive-caption);
+}
+
+.win3-title-text {
+  flex: 1;
+  padding-left: 4px;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+
+.win3-window-controls {
+  display: flex;
+  gap: 2px;
+}
+
+.win3-control-button {
+  width: 16px;
+  height: 14px;
+  background-color: var(--win3-gray);
+  border-top: 1px solid var(--win3-highlight);
+  border-left: 1px solid var(--win3-highlight);
+  border-right: 1px solid var(--win3-black);
+  border-bottom: 1px solid var(--win3-black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 8px;
+  color: var(--win3-black);
+  padding: 0;
+}
+
+.win3-control-button:active {
+  border-top: 1px solid var(--win3-black);
+  border-left: 1px solid var(--win3-black);
+  border-right: 1px solid var(--win3-highlight);
+  border-bottom: 1px solid var(--win3-highlight);
+}
+
+/* ============================================
+   MENU BAR
+   ============================================ */
+.win3-menu-bar {
+  background-color: var(--win3-gray);
+  display: flex;
+  padding: 2px 4px;
+  border-bottom: 2px solid var(--win3-highlight);
+  gap: 8px;
+}
+
+.win3-menu-item {
+  padding: 2px 8px;
+  cursor: pointer;
+  color: var(--win3-black);
+  position: relative;
+}
+
+.win3-menu-item:hover {
+  background-color: var(--win3-blue);
+  color: var(--win3-white);
+}
+
+.win3-menu-item.active {
+  border-top: 1px solid var(--win3-black);
+  border-left: 1px solid var(--win3-black);
+  border-right: 1px solid var(--win3-highlight);
+  border-bottom: 1px solid var(--win3-highlight);
+}
+
+/* ============================================
+   TOOLBAR
+   ============================================ */
+.win3-toolbar {
+  background-color: var(--win3-gray);
+  padding: 4px;
+  display: flex;
+  gap: 4px;
+  border-bottom: 2px solid var(--win3-shadow);
+  flex-wrap: wrap;
+}
+
+.win3-toolbar-separator {
+  width: 2px;
+  background-color: var(--win3-shadow);
+  margin: 0 4px;
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+.win3-button {
+  background-color: var(--win3-gray);
+  border-top: 2px solid var(--win3-highlight);
+  border-left: 2px solid var(--win3-highlight);
+  border-right: 2px solid var(--win3-black);
+  border-bottom: 2px solid var(--win3-black);
+  padding: 4px 12px;
+  min-width: 75px;
+  font-family: 'MS Sans Serif', 'Microsoft Sans Serif', Arial, sans-serif;
+  font-size: 11px;
+  cursor: pointer;
+  color: var(--win3-black);
+  text-align: center;
+  outline: none;
+}
+
+.win3-button:hover {
+  background-color: var(--win3-light-gray);
+}
+
+.win3-button:active {
+  border-top: 2px solid var(--win3-black);
+  border-left: 2px solid var(--win3-black);
+  border-right: 2px solid var(--win3-highlight);
+  border-bottom: 2px solid var(--win3-highlight);
+  padding: 5px 11px 3px 13px;
+}
+
+.win3-button:focus {
+  outline: 1px dotted var(--win3-black);
+  outline-offset: -4px;
+}
+
+.win3-button:disabled {
+  color: var(--win3-dark-gray);
+  text-shadow: 1px 1px 0 var(--win3-white);
+  cursor: not-allowed;
+}
+
+.win3-button-primary {
+  border: 3px solid var(--win3-black);
+  font-weight: bold;
+}
+
+.win3-button-small {
+  min-width: 50px;
+  padding: 2px 8px;
+}
+
+/* ============================================
+   INPUT FIELDS
+   ============================================ */
+.win3-input {
+  background-color: var(--win3-white);
+  border-top: 2px solid var(--win3-shadow);
+  border-left: 2px solid var(--win3-shadow);
+  border-right: 2px solid var(--win3-highlight);
+  border-bottom: 2px solid var(--win3-highlight);
+  padding: 2px 4px;
+  font-family: 'MS Sans Serif', 'Microsoft Sans Serif', Arial, sans-serif;
+  font-size: 11px;
+  color: var(--win3-black);
+  outline: none;
+}
+
+.win3-input:focus {
+  outline: 1px dotted var(--win3-black);
+  outline-offset: -3px;
+}
+
+.win3-input:disabled {
+  background-color: var(--win3-gray);
+  color: var(--win3-dark-gray);
+}
+
+.win3-textarea {
+  background-color: var(--win3-white);
+  border-top: 2px solid var(--win3-shadow);
+  border-left: 2px solid var(--win3-shadow);
+  border-right: 2px solid var(--win3-highlight);
+  border-bottom: 2px solid var(--win3-highlight);
+  padding: 4px;
+  font-family: 'Courier New', 'Fixedsys', monospace;
+  font-size: 11px;
+  color: var(--win3-black);
+  resize: both;
+  outline: none;
+}
+
+/* ============================================
+   SELECT / DROPDOWN
+   ============================================ */
+.win3-select {
+  background-color: var(--win3-white);
+  border-top: 2px solid var(--win3-shadow);
+  border-left: 2px solid var(--win3-shadow);
+  border-right: 2px solid var(--win3-highlight);
+  border-bottom: 2px solid var(--win3-highlight);
+  padding: 2px 4px;
+  font-family: 'MS Sans Serif', 'Microsoft Sans Serif', Arial, sans-serif;
+  font-size: 11px;
+  color: var(--win3-black);
+  cursor: pointer;
+}
+
+.win3-select:focus {
+  outline: 1px dotted var(--win3-black);
+  outline-offset: -3px;
+}
+
+/* ============================================
+   CHECKBOX AND RADIO BUTTONS
+   ============================================ */
+.win3-checkbox-container,
+.win3-radio-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+  cursor: pointer;
+}
+
+.win3-checkbox,
+.win3-radio {
+  width: 13px;
+  height: 13px;
+  background-color: var(--win3-white);
+  border-top: 2px solid var(--win3-shadow);
+  border-left: 2px solid var(--win3-shadow);
+  border-right: 2px solid var(--win3-highlight);
+  border-bottom: 2px solid var(--win3-highlight);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.win3-checkbox input[type="checkbox"],
+.win3-radio input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.win3-checkbox input[type="checkbox"]:checked ~ .checkmark::after {
+  content: '✓';
+  position: absolute;
+  left: 2px;
+  top: -2px;
+  color: var(--win3-black);
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* ============================================
+   TABS
+   ============================================ */
+.win3-tabs {
+  display: flex;
+  background-color: var(--win3-gray);
+  border-bottom: 2px solid var(--win3-shadow);
+}
+
+.win3-tab {
+  background-color: var(--win3-gray);
+  border-top: 2px solid var(--win3-highlight);
+  border-left: 2px solid var(--win3-highlight);
+  border-right: 2px solid var(--win3-black);
+  padding: 4px 12px;
+  cursor: pointer;
+  margin-right: 2px;
+  position: relative;
+  top: 2px;
+}
+
+.win3-tab.active {
+  background-color: var(--win3-gray);
+  border-bottom: 2px solid var(--win3-gray);
+  top: 0;
+  padding-bottom: 6px;
+  font-weight: bold;
+}
+
+.win3-tab:hover:not(.active) {
+  background-color: var(--win3-light-gray);
+}
+
+/* ============================================
+   CONTENT AREA
+   ============================================ */
+.win3-content {
+  background-color: var(--win3-gray);
+  padding: 8px;
+  flex: 1;
+  overflow: auto;
+}
+
+.win3-panel {
+  background-color: var(--win3-gray);
+  border-top: 2px solid var(--win3-shadow);
+  border-left: 2px solid var(--win3-shadow);
+  border-right: 2px solid var(--win3-highlight);
+  border-bottom: 2px solid var(--win3-highlight);
+  padding: 8px;
+  margin: 8px 0;
+}
+
+.win3-panel-raised {
+  background-color: var(--win3-gray);
+  border-top: 2px solid var(--win3-highlight);
+  border-left: 2px solid var(--win3-highlight);
+  border-right: 2px solid var(--win3-black);
+  border-bottom: 2px solid var(--win3-black);
+  padding: 8px;
+  margin: 8px 0;
+}
+
+/* ============================================
+   GROUPBOX
+   ============================================ */
+.win3-groupbox {
+  border: 2px solid var(--win3-shadow);
+  border-top-color: var(--win3-highlight);
+  border-left-color: var(--win3-highlight);
+  padding: 12px 8px 8px 8px;
+  margin: 8px 0;
+  position: relative;
+}
+
+.win3-groupbox-title {
+  position: absolute;
+  top: -8px;
+  left: 8px;
+  background-color: var(--win3-gray);
+  padding: 0 4px;
+  font-weight: bold;
+}
+
+/* ============================================
+   TABLE / GRID
+   ============================================ */
+.win3-table {
+  width: 100%;
+  background-color: var(--win3-white);
+  border-top: 2px solid var(--win3-shadow);
+  border-left: 2px solid var(--win3-shadow);
+  border-right: 2px solid var(--win3-highlight);
+  border-bottom: 2px solid var(--win3-highlight);
+  border-collapse: collapse;
+  font-size: 11px;
+}
+
+.win3-table th {
+  background-color: var(--win3-gray);
+  border-top: 2px solid var(--win3-highlight);
+  border-left: 2px solid var(--win3-highlight);
+  border-right: 2px solid var(--win3-shadow);
+  border-bottom: 2px solid var(--win3-shadow);
+  padding: 4px 8px;
+  text-align: left;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.win3-table th:active {
+  border-top: 2px solid var(--win3-shadow);
+  border-left: 2px solid var(--win3-shadow);
+  border-right: 2px solid var(--win3-highlight);
+  border-bottom: 2px solid var(--win3-highlight);
+}
+
+.win3-table td {
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--win3-light-gray);
+}
+
+.win3-table tr:hover {
+  background-color: var(--win3-blue);
+  color: var(--win3-white);
+}
+
+.win3-table tr.selected {
+  background-color: var(--win3-blue);
+  color: var(--win3-white);
+}
+
+/* ============================================
+   LIST BOX
+   ============================================ */
+.win3-listbox {
+  background-color: var(--win3-white);
+  border-top: 2px solid var(--win3-shadow);
+  border-left: 2px solid var(--win3-shadow);
+  border-right: 2px solid var(--win3-highlight);
+  border-bottom: 2px solid var(--win3-highlight);
+  padding: 0;
+  list-style: none;
+  overflow-y: auto;
+  max-height: 200px;
+}
+
+.win3-listbox-item {
+  padding: 2px 4px;
+  cursor: pointer;
+}
+
+.win3-listbox-item:hover {
+  background-color: var(--win3-blue);
+  color: var(--win3-white);
+}
+
+.win3-listbox-item.selected {
+  background-color: var(--win3-blue);
+  color: var(--win3-white);
+}
+
+/* ============================================
+   STATUS BAR
+   ============================================ */
+.win3-status-bar {
+  background-color: var(--win3-gray);
+  border-top: 2px solid var(--win3-highlight);
+  padding: 2px 4px;
+  display: flex;
+  gap: 4px;
+  font-size: 11px;
+  min-height: 18px;
+  align-items: center;
+}
+
+.win3-status-section {
+  border-top: 1px solid var(--win3-shadow);
+  border-left: 1px solid var(--win3-shadow);
+  border-right: 1px solid var(--win3-highlight);
+  border-bottom: 1px solid var(--win3-highlight);
+  padding: 1px 6px;
+  flex: 1;
+}
+
+/* ============================================
+   SCROLLBAR STYLES
+   ============================================ */
+.win3-scrollbar::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+  background-color: var(--win3-gray);
+}
+
+.win3-scrollbar::-webkit-scrollbar-track {
+  background: repeating-linear-gradient(
+    45deg,
+    var(--win3-white),
+    var(--win3-white) 2px,
+    var(--win3-light-gray) 2px,
+    var(--win3-light-gray) 4px
+  );
+}
+
+.win3-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--win3-gray);
+  border-top: 2px solid var(--win3-highlight);
+  border-left: 2px solid var(--win3-highlight);
+  border-right: 2px solid var(--win3-shadow);
+  border-bottom: 2px solid var(--win3-shadow);
+}
+
+.win3-scrollbar::-webkit-scrollbar-button {
+  background-color: var(--win3-gray);
+  border-top: 2px solid var(--win3-highlight);
+  border-left: 2px solid var(--win3-highlight);
+  border-right: 2px solid var(--win3-black);
+  border-bottom: 2px solid var(--win3-black);
+}
+
+.win3-scrollbar::-webkit-scrollbar-button:active {
+  border-top: 2px solid var(--win3-black);
+  border-left: 2px solid var(--win3-black);
+  border-right: 2px solid var(--win3-highlight);
+  border-bottom: 2px solid var(--win3-highlight);
+}
+
+/* ============================================
+   DIALOG / MODAL
+   ============================================ */
+.win3-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.win3-dialog {
+  background-color: var(--win3-gray);
+  border-top: 2px solid var(--win3-highlight);
+  border-left: 2px solid var(--win3-highlight);
+  border-right: 2px solid var(--win3-black);
+  border-bottom: 2px solid var(--win3-black);
+  box-shadow: 4px 4px 0 var(--win3-black);
+  min-width: 300px;
+  max-width: 500px;
+}
+
+.win3-dialog-content {
+  padding: 16px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.win3-dialog-icon {
+  font-size: 32px;
+  flex-shrink: 0;
+}
+
+.win3-dialog-buttons {
+  padding: 8px 16px 16px 16px;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+/* ============================================
+   ICON STYLES
+   ============================================ */
+.win3-icon {
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.win3-icon-small {
+  width: 16px;
+  height: 16px;
+}
+
+/* ============================================
+   PROGRESS BAR
+   ============================================ */
+.win3-progress {
+  background-color: var(--win3-white);
+  border-top: 2px solid var(--win3-shadow);
+  border-left: 2px solid var(--win3-shadow);
+  border-right: 2px solid var(--win3-highlight);
+  border-bottom: 2px solid var(--win3-highlight);
+  height: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.win3-progress-bar {
+  background-color: var(--win3-blue);
+  height: 100%;
+  transition: width 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--win3-white);
+  font-size: 10px;
+  font-weight: bold;
+}
+
+/* ============================================
+   SEPARATOR / DIVIDER
+   ============================================ */
+.win3-separator {
+  height: 2px;
+  background: linear-gradient(
+    to bottom,
+    var(--win3-shadow) 0%,
+    var(--win3-shadow) 50%,
+    var(--win3-highlight) 50%,
+    var(--win3-highlight) 100%
+  );
+  margin: 8px 0;
+}
+
+/* ============================================
+   LABEL / TEXT
+   ============================================ */
+.win3-label {
+  font-family: 'MS Sans Serif', 'Microsoft Sans Serif', Arial, sans-serif;
+  font-size: 11px;
+  color: var(--win3-black);
+  display: inline-block;
+  padding: 2px 0;
+}
+
+.win3-label-bold {
+  font-weight: bold;
+}
+
+.win3-label-disabled {
+  color: var(--win3-dark-gray);
+  text-shadow: 1px 1px 0 var(--win3-white);
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+.win3-flex-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.win3-flex-column {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.win3-space-between {
+  justify-content: space-between;
+}
+
+.win3-center {
+  justify-content: center;
+  align-items: center;
+}
+
+.win3-text-center {
+  text-align: center;
+}
+
+.win3-margin-small {
+  margin: 4px;
+}
+
+.win3-margin-medium {
+  margin: 8px;
+}
+
+.win3-margin-large {
+  margin: 16px;
+}
+
+.win3-padding-small {
+  padding: 4px;
+}
+
+.win3-padding-medium {
+  padding: 8px;
+}
+
+.win3-padding-large {
+  padding: 16px;
+}
+
+/* ============================================
+   CARD / CONTAINER
+   ============================================ */
+.win3-card {
+  background-color: var(--win3-gray);
+  border-top: 2px solid var(--win3-highlight);
+  border-left: 2px solid var(--win3-highlight);
+  border-right: 2px solid var(--win3-black);
+  border-bottom: 2px solid var(--win3-black);
+  padding: 12px;
+  margin: 8px 0;
+}
+
+/* ============================================
+   FORM LAYOUT
+   ============================================ */
+.win3-form-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+  align-items: center;
+}
+
+.win3-form-label {
+  min-width: 100px;
+  font-weight: bold;
+}
+
+.win3-form-input {
+  flex: 1;
+}
+
+/* ============================================
+   GRID LAYOUT
+   ============================================ */
+.win3-grid {
+  display: grid;
+  gap: 8px;
+}
+
+.win3-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.win3-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.win3-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+@media (max-width: 768px) {
+  .win3-window {
+    margin: 5px;
+  }
+  
+  .win3-grid-2,
+  .win3-grid-3,
+  .win3-grid-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================
+   ANIMATION CLASSES
+   ============================================ */
+@keyframes win3-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.win3-blink {
+  animation: win3-blink 1s step-end infinite;
+}
+
+/* ============================================
+   CONTEXT MENU
+   ============================================ */
+.win3-context-menu {
+  position: absolute;
+  background-color: var(--win3-gray);
+  border-top: 2px solid var(--win3-highlight);
+  border-left: 2px solid var(--win3-highlight);
+  border-right: 2px solid var(--win3-black);
+  border-bottom: 2px solid var(--win3-black);
+  box-shadow: 2px 2px 0 var(--win3-black);
+  padding: 2px;
+  z-index: 1000;
+  min-width: 150px;
+}
+
+.win3-context-menu-item {
+  padding: 4px 24px 4px 8px;
+  cursor: pointer;
+}
+
+.win3-context-menu-item:hover {
+  background-color: var(--win3-blue);
+  color: var(--win3-white);
+}
+
+.win3-context-menu-separator {
+  height: 2px;
+  background: linear-gradient(
+    to bottom,
+    var(--win3-shadow) 0%,
+    var(--win3-shadow) 50%,
+    var(--win3-highlight) 50%,
+    var(--win3-highlight) 100%
+  );
+  margin: 2px 0;
+}
+
+/* ============================================
+   TOOLTIP
+   ============================================ */
+.win3-tooltip {
+  position: absolute;
+  background-color: #ffffcc;
+  border: 1px solid var(--win3-black);
+  padding: 4px 8px;
+  font-size: 11px;
+  z-index: 1001;
+  pointer-events: none;
+  box-shadow: 1px 1px 0 var(--win3-black);
+}
