@@ -48,6 +48,14 @@
   background: #c0c0c0;
 }
 
+.win3-subtitle-error {
+  font-size: 0.9rem;
+  color: #800000;
+  margin: 0 0 1.5rem 0;
+  padding: 0.5rem;
+  background: #c0c0c0;
+}
+
 /* Dashboard Grid */
 .dashboard-grid {
   display: grid;
@@ -96,9 +104,20 @@
   font-family: 'MS Sans Serif', 'Microsoft Sans Serif', monospace;
 }
 
-.win3-status-active {
-  color: #000080;
+.win3-display-value-small {
   font-size: 1.8rem;
+  font-weight: bold;
+  color: #000000;
+  text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.5);
+  font-family: 'MS Sans Serif', 'Microsoft Sans Serif', monospace;
+}
+
+.win3-status-active {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #000080;
+  text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.5);
+  font-family: 'MS Sans Serif', 'Microsoft Sans Serif', monospace;
 }
 
 /* Sunken Display Effect */
