@@ -193,11 +193,15 @@ function Analytics() {
   }
 
   // Quarterly Revenue Chart Data
+  const sortedQuarters = Object.entries(salesData.quarterly).sort((a, b) => {
+    const order = ['Q1', 'Q2', 'Q3', 'Q4']
+    return order.indexOf(a[0]) - order.indexOf(b[0])
+  })
   const quarterlyChartData = {
-    labels: Object.keys(salesData.quarterly),
+    labels: sortedQuarters.map(([quarter]) => quarter),
     datasets: [{
       label: 'Revenue ($)',
-      data: Object.values(salesData.quarterly).map(d => d.revenue),
+      data: sortedQuarters.map(([, data]) => data.revenue),
       backgroundColor: '#000080',
       borderColor: '#000000',
       borderWidth: 2
@@ -501,7 +505,12 @@ function Analytics() {
                   </tr>
                 </thead>
                 <tbody>
-                  {Object.entries(salesData.quarterly).map(([quarter, data], index) => (
+                  {Object.entries(salesData.quarterly)
+                    .sort((a, b) => {
+                      const order = ['Q1', 'Q2', 'Q3', 'Q4']
+                      return order.indexOf(a[0]) - order.indexOf(b[0])
+                    })
+                    .map(([quarter, data], index) => (
                     <tr key={quarter} style={{ background: index % 2 === 0 ? '#ffffff' : '#f0f0f0' }}>
                       <td style={{ padding: '0.6rem', border: '1px solid #c0c0c0', fontSize: '0.9rem', fontWeight: '500' }}>
                         {quarter}
