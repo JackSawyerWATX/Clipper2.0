@@ -597,6 +597,8 @@
   padding-bottom: 0.5rem;
   border-bottom: 2px solid #c0c0c0;
   margin-bottom: 1rem;
+  width: 100%;
+  display: block;
 }
 
 /* Responsive Design */

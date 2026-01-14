@@ -40,9 +40,6 @@
    PAGE HEADER
    ============================================ */
 .customers-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   margin-bottom: 2rem;
 }
 
@@ -66,6 +63,9 @@
    ============================================ */
 .customers-search-container {
   margin-bottom: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
 }
 
 .customers-search-input {

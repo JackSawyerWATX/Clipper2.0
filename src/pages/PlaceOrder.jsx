@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import '../styles/PlaceOrder.css'
 
 function PlaceOrder() {
   const [existingCustomers, setExistingCustomers] = useState([])
@@ -127,73 +128,29 @@ function PlaceOrder() {
     }
   }
 
-  const sectionStyle = {
-    background: '#c0c0c0',
-    border: '2px solid',
-    borderColor: '#ebebeb #000000 #000000 #ebebeb',
-    marginBottom: '1rem'
-  }
-
-  const headerStyle = {
-    background: 'linear-gradient(to right, #000080, #0000aa)',
-    color: 'white',
-    padding: '0.25rem 0.5rem',
-    fontWeight: 'bold',
-    fontSize: '0.875rem'
-  }
-
-  const contentStyle = {
-    padding: '0.75rem',
-    background: 'white'
-  }
-
-  const inputStyle = {
-    padding: '0.4rem',
-    border: '2px solid',
-    borderColor: '#808080 #ebebeb #ebebeb #808080',
-    fontSize: '0.75rem',
-    fontFamily: 'MS Sans Serif, sans-serif'
-  }
-
-  const buttonStyle = {
-    padding: '0.4rem 0.75rem',
-    background: '#c0c0c0',
-    border: '2px solid',
-    borderColor: '#ebebeb #000000 #000000 #ebebeb',
-    cursor: 'pointer',
-    fontWeight: 'bold',
-    fontSize: '0.75rem',
-    fontFamily: 'MS Sans Serif, sans-serif'
-  }
-
   return (
-    <div className="page" style={{ fontFamily: 'MS Sans Serif, sans-serif', padding: '1rem' }}>
-      <h1 style={{
-        color: '#000080',
-        marginBottom: '0.5rem',
-        fontSize: '1.5rem',
-        fontWeight: 'bold'
-      }}>
+    <div className="place-order-container">
+      <h1 className="place-order-title">
         Place Order
       </h1>
-      <p style={{ color: '#808080', marginBottom: '1rem', fontSize: '0.875rem' }}>
+      <p className="place-order-subtitle">
         Create and manage orders for customers
       </p>
 
       {/* 1. Customer Selection */}
-      <div style={sectionStyle}>
-        <div style={headerStyle}>1. Select Customer</div>
-        <div style={contentStyle}>
-          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
-            <div style={{ flex: 1 }}>
-              <label style={{ display: 'block', marginBottom: '0.35rem', fontWeight: 'bold', fontSize: '0.75rem' }}>
+      <div className="order-section">
+        <div className="order-section-header">1. Select Customer</div>
+        <div className="order-section-content">
+          <div className="order-flex-row">
+            <div className="order-flex-1">
+              <label className="order-label">
                 Customer:
               </label>
               <select
                 value={selectedCustomer}
                 onChange={(e) => setSelectedCustomer(e.target.value)}
                 disabled={loading}
-                style={{ ...inputStyle, width: '100%', opacity: loading ? 0.6 : 1 }}
+                className="order-input-full-width"
               >
                 <option value="">{loading ? '-- Loading... --' : '-- Select customer --'}</option>
                 {existingCustomers.map(customer => (
@@ -205,20 +162,18 @@ function PlaceOrder() {
             </div>
             <button
               onClick={() => setShowNewCustomerForm(!showNewCustomerForm)}
-              style={{ ...buttonStyle, marginTop: '1.35rem', whiteSpace: 'nowrap' }}
-              onMouseDown={(e) => e.target.style.borderColor = '#000000 #ebebeb #ebebeb #000000'}
-              onMouseUp={(e) => e.target.style.borderColor = '#ebebeb #000000 #000000 #ebebeb'}
+              className="order-button order-button-nowrap"
             >
               {showNewCustomerForm ? 'Cancel' : '+ New'}
             </button>
           </div>
           {showNewCustomerForm && (
-            <div style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '2px solid #808080' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
-                <input type="text" placeholder="Company Name" style={inputStyle} />
-                <input type="email" placeholder="Email" style={inputStyle} />
-                <input type="tel" placeholder="Phone" style={inputStyle} />
-                <button style={buttonStyle} onMouseDown={(e) => e.target.style.borderColor = '#000000 #ebebeb #ebebeb #000000'} onMouseUp={(e) => e.target.style.borderColor = '#ebebeb #000000 #000000 #ebebeb'}>Save Customer</button>
+            <div className="new-form-section">
+              <div className="order-grid-2col">
+                <input type="text" placeholder="Company Name" className="order-input" />
+                <input type="email" placeholder="Email" className="order-input" />
+                <input type="tel" placeholder="Phone" className="order-input" />
+                <button className="order-button">Save Customer</button>
               </div>
             </div>
           )}
@@ -226,18 +181,18 @@ function PlaceOrder() {
       </div>
 
       {/* 2. Payment Method */}
-      <div style={sectionStyle}>
-        <div style={headerStyle}>2. Payment Method</div>
-        <div style={contentStyle}>
-          <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
-            <div style={{ flex: 1 }}>
-              <label style={{ display: 'block', marginBottom: '0.35rem', fontWeight: 'bold', fontSize: '0.75rem' }}>
+      <div className="order-section">
+        <div className="order-section-header">2. Payment Method</div>
+        <div className="order-section-content">
+          <div className="order-flex-row">
+            <div className="order-flex-1">
+              <label className="order-label">
                 Select Payment Method:
               </label>
               <select
                 value={selectedPaymentMethod}
                 onChange={(e) => setSelectedPaymentMethod(e.target.value)}
-                style={{ ...inputStyle, width: '100%' }}
+                className="order-input-full-width"
               >
                 <option value="">-- Select payment method --</option>
                 {paymentMethods.map(method => (
@@ -249,25 +204,23 @@ function PlaceOrder() {
             </div>
             <button
               onClick={() => setShowNewPaymentForm(!showNewPaymentForm)}
-              style={{ ...buttonStyle, marginTop: '1.35rem', whiteSpace: 'nowrap' }}
-              onMouseDown={(e) => e.target.style.borderColor = '#000000 #ebebeb #ebebeb #000000'}
-              onMouseUp={(e) => e.target.style.borderColor = '#ebebeb #000000 #000000 #ebebeb'}
+              className="order-button order-button-nowrap"
             >
               {showNewPaymentForm ? 'Cancel' : '+ New'}
             </button>
           </div>
           {showNewPaymentForm && (
-            <div style={{ marginTop: '0.75rem', paddingTop: '0.75rem', borderTop: '2px solid #808080' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
-                <select style={inputStyle}>
+            <div className="new-form-section">
+              <div className="order-grid-2col">
+                <select className="order-input">
                   <option value="">Payment Type</option>
                   <option value="credit_card">Credit Card</option>
                   <option value="debit_card">Debit Card</option>
                   <option value="check">Check</option>
                 </select>
-                <input type="text" placeholder="Card/Account Number" style={inputStyle} />
-                <input type="text" placeholder="Expiration (MM/YY)" style={inputStyle} />
-                <button style={buttonStyle} onMouseDown={(e) => e.target.style.borderColor = '#000000 #ebebeb #ebebeb #000000'} onMouseUp={(e) => e.target.style.borderColor = '#ebebeb #000000 #000000 #ebebeb'}>Save Payment</button>
+                <input type="text" placeholder="Card/Account Number" className="order-input" />
+                <input type="text" placeholder="Expiration (MM/YY)" className="order-input" />
+                <button className="order-button">Save Payment</button>
               </div>
             </div>
           )}
@@ -275,11 +228,11 @@ function PlaceOrder() {
       </div>
 
       {/* 3. Add Items to Order */}
-      <div style={sectionStyle}>
-        <div style={headerStyle}>3. Add Items to Order</div>
-        <div style={contentStyle}>
+      <div className="order-section">
+        <div className="order-section-header">3. Add Items to Order</div>
+        <div className="order-section-content">
           <div style={{ marginBottom: '0.75rem' }}>
-            <label style={{ display: 'block', marginBottom: '0.35rem', fontWeight: 'bold', fontSize: '0.75rem' }}>
+            <label className="order-label">
               Search Inventory:
             </label>
             <input
@@ -287,56 +240,48 @@ function PlaceOrder() {
               placeholder="Search by name..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              style={{ ...inputStyle, width: '100%' }}
+              className="order-input-full-width"
             />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '0.5rem', marginBottom: '0.75rem' }}>
+          <div className="inventory-grid">
             {filteredItems.map(item => (
               <button
                 key={item.item_id}
                 onClick={() => addItemToOrder(item)}
                 disabled={item.quantity_in_stock === 0}
-                style={{
-                  padding: '0.5rem',
-                  background: item.quantity_in_stock === 0 ? '#808080' : '#f0f0f0',
-                  border: '2px solid',
-                  borderColor: '#ebebeb #808080 #808080 #ebebeb',
-                  cursor: item.quantity_in_stock === 0 ? 'not-allowed' : 'pointer',
-                  fontSize: '0.7rem',
-                  fontFamily: 'MS Sans Serif, sans-serif'
-                }}
+                className="inventory-item-button"
               >
-                <div style={{ fontWeight: 'bold', marginBottom: '0.2rem' }}>{item.item_name}</div>
+                <div className="inventory-item-name">{item.item_name}</div>
                 <div>${parseFloat(item.unit_price).toFixed(2)}</div>
-                <div style={{ color: item.quantity_in_stock < 10 ? '#800000' : '#808080', fontSize: '0.65rem' }}>
+                <div className={item.quantity_in_stock < 10 ? 'inventory-item-stock-low' : 'inventory-item-stock-normal'}>
                   Stock: {item.quantity_in_stock}
                 </div>
               </button>
             ))}
           </div>
 
-          <div style={{ padding: '0.5rem', background: '#f0f0f0', border: '2px solid', borderColor: '#808080 #ebebeb #ebebeb #808080', minHeight: '80px' }}>
-            <div style={{ fontWeight: 'bold', fontSize: '0.75rem', marginBottom: '0.5rem', color: '#000080' }}>
+          <div className="order-items-container">
+            <div className="order-items-title">
               Order Items ({orderItems.length}):
             </div>
             {orderItems.length === 0 ? (
-              <p style={{ color: '#808080', fontSize: '0.75rem', margin: 0 }}>No items added</p>
+              <p className="order-items-empty">No items added</p>
             ) : (
               orderItems.map(item => (
-                <div key={item.item_id} style={{ padding: '0.35rem', background: 'white', border: '1px solid #808080', marginBottom: '0.25rem', display: 'flex', gap: '0.35rem', alignItems: 'center', fontSize: '0.7rem' }}>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: 'bold' }}>{item.item_name}</div>
-                    <div style={{ color: '#808080' }}>${item.price.toFixed(2)} × {item.quantity} = ${(item.price * item.quantity).toFixed(2)}</div>
+                <div key={item.item_id} className="order-item-card">
+                  <div className="order-item-info">
+                    <div className="order-item-name">{item.item_name}</div>
+                    <div className="order-item-price">${item.price.toFixed(2)} × {item.quantity} = ${(item.price * item.quantity).toFixed(2)}</div>
                   </div>
                   <input
                     type="number"
                     value={item.quantity}
                     onChange={(e) => updateQuantity(item.item_id, parseInt(e.target.value))}
                     min="1"
-                    style={{ width: '40px', ...inputStyle }}
+                    className="order-item-quantity-input"
                   />
-                  <button onClick={() => removeItemFromOrder(item.item_id)} style={{ ...buttonStyle, padding: '0.2rem 0.4rem' }} onMouseDown={(e) => e.target.style.borderColor = '#000000 #ebebeb #ebebeb #000000'} onMouseUp={(e) => e.target.style.borderColor = '#ebebeb #000000 #000000 #ebebeb'}>×</button>
+                  <button onClick={() => removeItemFromOrder(item.item_id)} className="order-button order-button-small">×</button>
                 </div>
               ))
             )}
@@ -345,16 +290,16 @@ function PlaceOrder() {
       </div>
 
       {/* 4. Shipping Method */}
-      <div style={sectionStyle}>
-        <div style={headerStyle}>4. Shipping Method</div>
-        <div style={contentStyle}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+      <div className="order-section">
+        <div className="order-section-header">4. Shipping Method</div>
+        <div className="order-section-content">
+          <div className="order-grid-2col-gap">
             <div>
-              <label style={{ display: 'block', marginBottom: '0.35rem', fontWeight: 'bold', fontSize: '0.75rem' }}>Carrier:</label>
+              <label className="order-label">Carrier:</label>
               <select
                 value={shippingCarrier}
                 onChange={(e) => handleCarrierChange(e.target.value)}
-                style={{ ...inputStyle, width: '100%' }}
+                className="order-input-full-width"
               >
                 <option value="">-- Select carrier --</option>
                 <option value="fedex">FedEx</option>
@@ -364,12 +309,12 @@ function PlaceOrder() {
               </select>
             </div>
             <div>
-              <label style={{ display: 'block', marginBottom: '0.35rem', fontWeight: 'bold', fontSize: '0.75rem' }}>Service:</label>
+              <label className="order-label">Service:</label>
               <select
                 value={shippingService}
                 onChange={(e) => handleServiceChange(e.target.value)}
                 disabled={!shippingCarrier}
-                style={{ ...inputStyle, width: '100%', opacity: shippingCarrier ? 1 : 0.6 }}
+                className="order-input-full-width"
               >
                 <option value="">-- Select service --</option>
                 {shippingCarrier && shippingOptions[shippingCarrier]?.map(option => (
@@ -381,7 +326,7 @@ function PlaceOrder() {
             </div>
           </div>
           {shippingService && (
-            <div style={{ marginTop: '0.5rem', padding: '0.35rem', background: '#f0f0f0', fontSize: '0.75rem' }}>
+            <div className="shipping-info-display">
               <strong>Selected:</strong> {shippingService} - ${shippingRate.toFixed(2)}
             </div>
           )}
@@ -389,34 +334,34 @@ function PlaceOrder() {
       </div>
 
       {/* 5. Order Summary */}
-      <div style={sectionStyle}>
-        <div style={headerStyle}>5. Order Summary</div>
-        <div style={contentStyle}>
-          <div style={{ fontSize: '0.75rem', marginBottom: '0.75rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.35rem', paddingBottom: '0.35rem' }}>
+      <div className="order-section">
+        <div className="order-section-header">5. Order Summary</div>
+        <div className="order-section-content">
+          <div className="summary-info">
+            <div className="summary-row">
               <span><strong>Customer:</strong></span>
               <span>{existingCustomers.find(c => c.customer_id === parseInt(selectedCustomer))?.company_name || 'Not selected'}</span>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.35rem', paddingBottom: '0.35rem' }}>
+            <div className="summary-row">
               <span><strong>Shipping:</strong></span>
               <span>{shippingService || 'Not selected'}</span>
             </div>
           </div>
 
-          <div style={{ padding: '0.5rem', background: '#f0f0f0', border: '2px solid', borderColor: '#808080 #ebebeb #ebebeb #808080', marginBottom: '0.75rem', fontSize: '0.75rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
+          <div className="summary-totals">
+            <div className="summary-totals-row">
               <span>Subtotal:</span>
               <span style={{ fontWeight: 'bold' }}>${calculateSubtotal().toFixed(2)}</span>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
+            <div className="summary-totals-row">
               <span>Tax (8%):</span>
               <span style={{ fontWeight: 'bold' }}>${calculateTax().toFixed(2)}</span>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
+            <div className="summary-totals-row">
               <span>Shipping:</span>
               <span style={{ fontWeight: 'bold' }}>${shippingRate.toFixed(2)}</span>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '0.35rem', marginTop: '0.35rem', borderTop: '2px solid #000080', fontSize: '0.9rem', fontWeight: 'bold', color: '#000080' }}>
+            <div className="summary-total-row">
               <span>Total:</span>
               <span>${calculateTotal()}</span>
             </div>
@@ -424,20 +369,12 @@ function PlaceOrder() {
 
           <button
             disabled={orderItems.length === 0 || !selectedCustomer || !selectedPaymentMethod || !shippingService}
-            style={{
-              width: '100%',
-              ...buttonStyle,
-              background: (orderItems.length === 0 || !selectedCustomer || !selectedPaymentMethod || !shippingService) ? '#808080' : '#c0c0c0',
-              cursor: (orderItems.length === 0 || !selectedCustomer || !selectedPaymentMethod || !shippingService) ? 'not-allowed' : 'pointer',
-              color: (orderItems.length === 0 || !selectedCustomer || !selectedPaymentMethod || !shippingService) ? '#c0c0c0' : '#000000'
-            }}
-            onMouseDown={(e) => (orderItems.length > 0 && selectedCustomer && selectedPaymentMethod && shippingService) && (e.target.style.borderColor = '#000000 #ebebeb #ebebeb #000000')}
-            onMouseUp={(e) => e.target.style.borderColor = '#ebebeb #000000 #000000 #ebebeb'}
+            className="order-button-full-width"
           >
             Complete Order
           </button>
           {(orderItems.length === 0 || !selectedCustomer || !selectedPaymentMethod || !shippingService) && (
-            <p style={{ fontSize: '0.7rem', color: '#800000', margin: '0.5rem 0 0 0', textAlign: 'center' }}>
+            <p className="order-error-message">
               {!selectedCustomer ? 'Select a customer' :
                 !selectedPaymentMethod ? 'Select payment method' :
                   !shippingService ? 'Select shipping method' :

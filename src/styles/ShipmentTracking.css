@@ -1,0 +1,424 @@
+/* Shipment Tracking Page Styles */
+
+/* Header Section */
+.shipment-header {
+  margin-bottom: 1.5rem;
+}
+
+.shipment-add-button {
+  padding: 0.5rem 1.5rem;
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #ffffff #000000 #000000 #ffffff;
+  cursor: pointer;
+  font-weight: bold;
+  font-family: 'MS Sans Serif', sans-serif;
+  font-size: 0.875rem;
+}
+
+.shipment-add-button:active {
+  border-color: #000000 #ffffff #ffffff #000000;
+}
+
+/* Filters Section */
+.shipment-filters {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.shipment-search-input {
+  padding: 0.5rem;
+  flex: 1;
+  min-width: 300px;
+  border: 2px solid;
+  border-color: #808080 #ebebeb #ebebeb #808080;
+  font-size: 1rem;
+  font-family: 'MS Sans Serif', sans-serif;
+  background: #ffffff;
+}
+
+.shipment-filter-select {
+  padding: 0.5rem;
+  border: 2px solid;
+  border-color: #808080 #ebebeb #ebebeb #808080;
+  font-size: 1rem;
+  font-family: 'MS Sans Serif', sans-serif;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+/* Loading/Error/Empty States */
+.shipment-loading {
+  text-align: center;
+  padding: 3rem;
+  font-size: 1.1rem;
+  color: #808080;
+}
+
+.shipment-error {
+  padding: 1rem;
+  background: #f8d7da;
+  color: #721c24;
+  border: 2px solid;
+  border-color: #f5c6cb;
+  margin-bottom: 1rem;
+  font-family: 'MS Sans Serif', sans-serif;
+}
+
+.shipment-error-button {
+  margin-left: 1rem;
+  padding: 0.5rem 1rem;
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #ffffff #000000 #000000 #ffffff;
+  cursor: pointer;
+  font-family: 'MS Sans Serif', sans-serif;
+}
+
+.shipment-empty {
+  text-align: center;
+  padding: 3rem;
+  font-size: 1.1rem;
+  color: #808080;
+}
+
+/* Table Styles */
+.shipment-table-container {
+  overflow-x: auto;
+  border: 2px solid;
+  border-color: #808080 #ffffff #ffffff #808080;
+  background: white;
+}
+
+.shipment-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  font-family: 'MS Sans Serif', sans-serif;
+  font-size: 0.875rem;
+}
+
+.shipment-table thead tr {
+  background: #000080;
+  color: white;
+}
+
+.shipment-table th {
+  padding: 0.5rem;
+  text-align: left;
+  font-weight: bold;
+  border-right: 1px solid #808080;
+  cursor: pointer;
+  user-select: none;
+}
+
+.shipment-table th:last-child {
+  cursor: default;
+}
+
+.shipment-table-row-even {
+  background: white;
+  border-bottom: 1px solid #c0c0c0;
+}
+
+.shipment-table-row-odd {
+  background: #f0f0f0;
+  border-bottom: 1px solid #c0c0c0;
+}
+
+.shipment-table-cell {
+  padding: 0.5rem;
+  border-right: 1px solid #c0c0c0;
+}
+
+.shipment-table-cell-id {
+  padding: 0.5rem;
+  font-weight: bold;
+  color: #000080;
+  border-right: 1px solid #c0c0c0;
+}
+
+.shipment-table-cell-order {
+  padding: 0.5rem;
+  font-weight: bold;
+  border-right: 1px solid #c0c0c0;
+}
+
+.shipment-carrier-badge {
+  padding: 0.2rem 0.5rem;
+  background: #c0c0c0;
+  border: 1px solid;
+  border-color: #ffffff #000000 #000000 #ffffff;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.shipment-tracking-number {
+  padding: 0.5rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.75rem;
+  border-right: 1px solid #c0c0c0;
+}
+
+.shipment-status-container {
+  padding: 0.5rem;
+  border-right: 1px solid #c0c0c0;
+}
+
+.shipment-status-badge {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: bold;
+  border: 1px solid;
+  margin-bottom: 0.25rem;
+}
+
+.shipment-status-progress-bar {
+  width: 100%;
+  height: 4px;
+  background: #808080;
+  border: 1px solid;
+  border-color: #808080 #ffffff #ffffff #808080;
+  overflow: hidden;
+}
+
+.shipment-status-progress-fill {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.shipment-actions-cell {
+  padding: 0.5rem;
+}
+
+.shipment-action-button {
+  padding: 0.25rem 0.75rem;
+  margin-right: 0.25rem;
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #ffffff #000000 #000000 #ffffff;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-family: 'MS Sans Serif', sans-serif;
+}
+
+.shipment-action-button:active {
+  border-color: #000000 #ffffff #ffffff #000000;
+}
+
+/* Results Counter */
+.shipment-results-counter {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  color: #000000;
+  font-family: 'MS Sans Serif', sans-serif;
+  font-size: 0.875rem;
+}
+
+/* Modal Styles */
+.shipment-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  font-family: 'MS Sans Serif', sans-serif;
+}
+
+.shipment-modal-container {
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #ffffff #000000 #000000 #ffffff;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow: auto;
+}
+
+.shipment-modal-header {
+  background: linear-gradient(to right, #000080, #0000aa);
+  color: white;
+  padding: 0.5rem;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.shipment-modal-close {
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #ffffff #000000 #000000 #ffffff;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.75rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shipment-modal-body {
+  padding: 1rem;
+  background: white;
+}
+
+/* Form Styles */
+.shipment-form-group {
+  margin-bottom: 1rem;
+}
+
+.shipment-form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  font-size: 0.875rem;
+}
+
+.shipment-form-required {
+  color: red;
+}
+
+.shipment-form-select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 2px solid;
+  border-color: #808080 #ebebeb #ebebeb #808080;
+  font-size: 0.875rem;
+  font-family: 'MS Sans Serif', sans-serif;
+}
+
+.shipment-form-select-disabled {
+  width: 100%;
+  padding: 0.5rem;
+  border: 2px solid;
+  border-color: #808080 #ebebeb #ebebeb #808080;
+  font-size: 0.875rem;
+  font-family: 'MS Sans Serif', sans-serif;
+  opacity: 0.6;
+}
+
+.shipment-form-toggle-button {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #ebebeb #000000 #000000 #ebebeb;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.875rem;
+  font-family: 'MS Sans Serif', sans-serif;
+}
+
+.shipment-form-toggle-button:active {
+  border-color: #000000 #ebebeb #ebebeb #000000;
+}
+
+.shipment-new-customer-section {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 2px solid #c0c0c0;
+}
+
+.shipment-form-input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 2px solid;
+  border-color: #808080 #ebebeb #ebebeb #808080;
+  font-family: 'MS Sans Serif', sans-serif;
+  font-size: 0.875rem;
+}
+
+.shipment-form-input-spacing {
+  width: 100%;
+  padding: 0.5rem;
+  border: 2px solid;
+  border-color: #808080 #ebebeb #ebebeb #808080;
+  margin-bottom: 0.5rem;
+  font-family: 'MS Sans Serif', sans-serif;
+  font-size: 0.875rem;
+}
+
+.shipment-form-textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 2px solid;
+  border-color: #808080 #ebebeb #ebebeb #808080;
+  font-size: 0.875rem;
+  font-family: 'MS Sans Serif', sans-serif;
+  resize: vertical;
+}
+
+/* Form Actions */
+.shipment-form-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.shipment-form-submit-button {
+  flex: 1;
+  padding: 0.75rem;
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #ebebeb #000000 #000000 #ebebeb;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.875rem;
+  font-family: 'MS Sans Serif', sans-serif;
+}
+
+.shipment-form-submit-button:active {
+  border-color: #000000 #ebebeb #ebebeb #000000;
+}
+
+.shipment-form-submit-button-disabled {
+  flex: 1;
+  padding: 0.75rem;
+  background: #808080;
+  border: 2px solid;
+  border-color: #ebebeb #000000 #000000 #ebebeb;
+  cursor: not-allowed;
+  font-weight: bold;
+  font-size: 0.875rem;
+  font-family: 'MS Sans Serif', sans-serif;
+}
+
+.shipment-form-cancel-button {
+  flex: 1;
+  padding: 0.75rem;
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #ebebeb #000000 #000000 #ebebeb;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.875rem;
+  font-family: 'MS Sans Serif', sans-serif;
+}
+
+.shipment-form-cancel-button:active {
+  border-color: #000000 #ebebeb #ebebeb #000000;
+}
+
+.shipment-form-cancel-button-disabled {
+  flex: 1;
+  padding: 0.75rem;
+  background: #808080;
+  border: 2px solid;
+  border-color: #ebebeb #000000 #000000 #ebebeb;
+  cursor: not-allowed;
+  font-weight: bold;
+  font-size: 0.875rem;
+  font-family: 'MS Sans Serif', sans-serif;
+}

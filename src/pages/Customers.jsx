@@ -347,14 +347,6 @@ function Customers() {
     <div className="page">
       <div className="customers-header">
         <h1>Customers</h1>
-        <button 
-          onClick={() => setShowAddModal(true)}
-          className="customers-add-button"
-          onMouseDown={(e) => e.target.style.borderColor = '#000000 #ebebeb #ebebeb #000000'}
-          onMouseUp={(e) => e.target.style.borderColor = '#ebebeb #000000 #000000 #ebebeb'}
-        >
-          + Add New Customer
-        </button>
       </div>
       
       <div className="customers-search-container">
@@ -365,6 +357,14 @@ function Customers() {
           onChange={handleSearch}
           className="customers-search-input"
         />
+        <button 
+          onClick={() => setShowAddModal(true)}
+          className="customers-add-button"
+          onMouseDown={(e) => e.target.style.borderColor = '#000000 #ebebeb #ebebeb #000000'}
+          onMouseUp={(e) => e.target.style.borderColor = '#ebebeb #000000 #000000 #ebebeb'}
+        >
+          + Add New Customer
+        </button>
       </div>
 
       {loading && (

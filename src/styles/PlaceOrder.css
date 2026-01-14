@@ -1,0 +1,304 @@
+/* PlaceOrder.css - Windows 3.1 themed Place Order page styles */
+
+.place-order-container {
+  font-family: 'MS Sans Serif', sans-serif;
+  padding: 1rem;
+}
+
+.place-order-title {
+  color: #000080;
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-shadow: 2px 2px 0 rgba(192,192,192,0.5);
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #c0c0c0;
+  width: 100%;
+  display: block;
+}
+
+.place-order-subtitle {
+  color: #808080;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+}
+
+/* Section Styles */
+.order-section {
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #ebebeb #000000 #000000 #ebebeb;
+  margin-bottom: 1rem;
+}
+
+.order-section-header {
+  background: linear-gradient(to right, #000080, #0000aa);
+  color: white;
+  padding: 0.25rem 0.5rem;
+  font-weight: bold;
+  font-size: 0.875rem;
+}
+
+.order-section-content {
+  padding: 0.75rem;
+  background: white;
+}
+
+/* Form Elements */
+.order-input {
+  padding: 0.4rem;
+  border: 2px solid;
+  border-color: #808080 #ebebeb #ebebeb #808080;
+  font-size: 0.75rem;
+  font-family: 'MS Sans Serif', sans-serif;
+}
+
+.order-input-full-width {
+  padding: 0.4rem;
+  border: 2px solid;
+  border-color: #808080 #ebebeb #ebebeb #808080;
+  font-size: 0.75rem;
+  font-family: 'MS Sans Serif', sans-serif;
+  width: 100%;
+}
+
+.order-input:disabled,
+.order-input-full-width:disabled {
+  opacity: 0.6;
+}
+
+.order-label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-weight: bold;
+  font-size: 0.75rem;
+}
+
+/* Button Styles */
+.order-button {
+  padding: 0.4rem 0.75rem;
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #ebebeb #000000 #000000 #ebebeb;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.75rem;
+  font-family: 'MS Sans Serif', sans-serif;
+}
+
+.order-button:active {
+  border-color: #000000 #ebebeb #ebebeb #000000;
+}
+
+.order-button:disabled {
+  background: #808080;
+  cursor: not-allowed;
+  color: #c0c0c0;
+}
+
+.order-button-full-width {
+  width: 100%;
+  padding: 0.4rem 0.75rem;
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #ebebeb #000000 #000000 #ebebeb;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.75rem;
+  font-family: 'MS Sans Serif', sans-serif;
+}
+
+.order-button-full-width:active {
+  border-color: #000000 #ebebeb #ebebeb #000000;
+}
+
+.order-button-full-width:disabled {
+  background: #808080;
+  cursor: not-allowed;
+  color: #c0c0c0;
+}
+
+.order-button-nowrap {
+  margin-top: 1.35rem;
+  white-space: nowrap;
+}
+
+.order-button-small {
+  padding: 0.2rem 0.4rem;
+}
+
+/* Layout Utilities */
+.order-flex-row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.order-flex-1 {
+  flex: 1;
+}
+
+.order-grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.order-grid-2col-gap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+/* Form Sections */
+.new-form-section {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 2px solid #808080;
+}
+
+/* Inventory Grid */
+.inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.inventory-item-button {
+  padding: 0.5rem;
+  background: #f0f0f0;
+  border: 2px solid;
+  border-color: #ebebeb #808080 #808080 #ebebeb;
+  cursor: pointer;
+  font-size: 0.7rem;
+  font-family: 'MS Sans Serif', sans-serif;
+}
+
+.inventory-item-button:disabled {
+  background: #808080;
+  cursor: not-allowed;
+}
+
+.inventory-item-name {
+  font-weight: bold;
+  margin-bottom: 0.2rem;
+}
+
+.inventory-item-stock-low {
+  color: #800000;
+  font-size: 0.65rem;
+}
+
+.inventory-item-stock-normal {
+  color: #808080;
+  font-size: 0.65rem;
+}
+
+/* Order Items Display */
+.order-items-container {
+  padding: 0.5rem;
+  background: #f0f0f0;
+  border: 2px solid;
+  border-color: #808080 #ebebeb #ebebeb #808080;
+  min-height: 80px;
+}
+
+.order-items-title {
+  font-weight: bold;
+  font-size: 0.75rem;
+  margin-bottom: 0.5rem;
+  color: #000080;
+}
+
+.order-items-empty {
+  color: #808080;
+  font-size: 0.75rem;
+  margin: 0;
+}
+
+.order-item-card {
+  padding: 0.35rem;
+  background: white;
+  border: 1px solid #808080;
+  margin-bottom: 0.25rem;
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+  font-size: 0.7rem;
+}
+
+.order-item-info {
+  flex: 1;
+}
+
+.order-item-name {
+  font-weight: bold;
+}
+
+.order-item-price {
+  color: #808080;
+}
+
+.order-item-quantity-input {
+  width: 40px;
+  padding: 0.4rem;
+  border: 2px solid;
+  border-color: #808080 #ebebeb #ebebeb #808080;
+  font-size: 0.75rem;
+  font-family: 'MS Sans Serif', sans-serif;
+}
+
+/* Shipping Info Display */
+.shipping-info-display {
+  margin-top: 0.5rem;
+  padding: 0.35rem;
+  background: #f0f0f0;
+  font-size: 0.75rem;
+}
+
+/* Summary Styles */
+.summary-info {
+  font-size: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+  padding-bottom: 0.35rem;
+}
+
+.summary-totals {
+  padding: 0.5rem;
+  background: #f0f0f0;
+  border: 2px solid;
+  border-color: #808080 #ebebeb #ebebeb #808080;
+  margin-bottom: 0.75rem;
+  font-size: 0.75rem;
+}
+
+.summary-totals-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+}
+
+.summary-total-row {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 0.35rem;
+  margin-top: 0.35rem;
+  border-top: 2px solid #000080;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #000080;
+}
+
+.order-error-message {
+  font-size: 0.7rem;
+  color: #800000;
+  margin: 0.5rem 0 0 0;
+  text-align: center;
+}
