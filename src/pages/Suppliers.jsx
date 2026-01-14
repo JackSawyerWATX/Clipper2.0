@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import '../styles/Suppliers.css'
 
 function Suppliers() {
   const [suppliers, setSuppliers] = useState([])
@@ -113,173 +114,78 @@ function Suppliers() {
 
   return (
     <div className="page">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+      <div className="suppliers-header">
         <h1>Suppliers</h1>
-        <button 
-          onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
-          onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
-          style={{ 
-            padding: '0.5rem 1.5rem', 
-            background: '#c0c0c0', 
-            border: '2px solid',
-            borderColor: '#ffffff #000000 #000000 #ffffff',
-            cursor: 'pointer',
-            fontWeight: 'bold',
-            fontFamily: 'MS Sans Serif, sans-serif',
-            fontSize: '0.875rem'
-          }}
-        >
-          + Add New Supplier
-        </button>
       </div>
 
-      <div style={{ marginBottom: '1.5rem' }}>
+      <div className="suppliers-search-container">
         <input 
           type="text" 
           placeholder="Search suppliers by name, contact, or location..." 
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          style={{ 
-            padding: '0.5rem', 
-            width: '100%', 
-            maxWidth: '500px',
-            border: '2px solid',
-            borderColor: '#808080 #ebebeb #ebebeb #808080',
-            fontSize: '1rem',
-            fontFamily: 'MS Sans Serif, sans-serif'
-          }}
+          className="suppliers-search-input"
         />
+        <button className="suppliers-add-button">
+          + Add New Supplier
+        </button>
       </div>
 
       {loading && (
-        <div style={{ textAlign: 'center', padding: '3rem', fontSize: '1.1rem', color: '#808080' }}>
+        <div className="suppliers-loading">
           Loading suppliers...
         </div>
       )}
 
       {error && (
-        <div style={{ 
-          padding: '1rem', 
-          background: '#ff0000', 
-          color: '#ffffff', 
-          border: '2px solid',
-          borderColor: '#ffffff #000000 #000000 #ffffff',
-          marginBottom: '1rem',
-          fontFamily: 'MS Sans Serif, sans-serif'
-        }}>
+        <div className="suppliers-error">
           Error: {error}
         </div>
       )}
 
       {!loading && !error && (
-        <div style={{ 
-          overflowX: 'auto',
-          border: '2px solid',
-          borderColor: '#808080 #ebebeb #ebebeb #808080',
-          background: 'white'
-        }}>
-          <table style={{ 
-            width: '100%', 
-            borderCollapse: 'collapse',
-            background: 'white',
-            fontFamily: 'MS Sans Serif, sans-serif',
-            fontSize: '0.875rem'
-          }}>
+        <div className="suppliers-table-container">
+          <table className="suppliers-table">
             <thead>
-              <tr style={{ 
-                background: '#000080',
-                color: 'white'
-              }}>
+              <tr>
                 <th 
                   onClick={() => handleSort('supplier_id')}
-                  style={{ 
-                    padding: '0.5rem', 
-                    textAlign: 'left', 
-                    fontWeight: 'bold', 
-                    borderRight: '1px solid #808080',
-                    cursor: 'pointer',
-                    userSelect: 'none'
-                  }}
                 >
                   ID {sortColumn === 'supplier_id' && (sortDirection === 'asc' ? '▲' : '▼')}
                 </th>
                 <th 
                   onClick={() => handleSort('company_name')}
-                  style={{ 
-                    padding: '0.5rem', 
-                    textAlign: 'left', 
-                    fontWeight: 'bold', 
-                    borderRight: '1px solid #808080',
-                    cursor: 'pointer',
-                    userSelect: 'none'
-                  }}
                 >
                   Company Name {sortColumn === 'company_name' && (sortDirection === 'asc' ? '▲' : '▼')}
                 </th>
                 <th 
                   onClick={() => handleSort('address_city')}
-                  style={{ 
-                    padding: '0.5rem', 
-                    textAlign: 'left', 
-                    fontWeight: 'bold', 
-                    borderRight: '1px solid #808080',
-                    cursor: 'pointer',
-                    userSelect: 'none'
-                  }}
                 >
                   Address {sortColumn === 'address_city' && (sortDirection === 'asc' ? '▲' : '▼')}
                 </th>
                 <th 
                   onClick={() => handleSort('phone')}
-                  style={{ 
-                    padding: '0.5rem', 
-                    textAlign: 'left', 
-                    fontWeight: 'bold', 
-                    borderRight: '1px solid #808080',
-                    cursor: 'pointer',
-                    userSelect: 'none'
-                  }}
                 >
                   Phone {sortColumn === 'phone' && (sortDirection === 'asc' ? '▲' : '▼')}
                 </th>
                 <th 
                   onClick={() => handleSort('contact_person')}
-                  style={{ 
-                    padding: '0.5rem', 
-                    textAlign: 'left', 
-                    fontWeight: 'bold', 
-                    borderRight: '1px solid #808080',
-                    cursor: 'pointer',
-                    userSelect: 'none'
-                  }}
                 >
                   Contact Person {sortColumn === 'contact_person' && (sortDirection === 'asc' ? '▲' : '▼')}
                 </th>
                 <th 
                   onClick={() => handleSort('email')}
-                  style={{ 
-                    padding: '0.5rem', 
-                    textAlign: 'left', 
-                    fontWeight: 'bold', 
-                    borderRight: '1px solid #808080',
-                    cursor: 'pointer',
-                    userSelect: 'none'
-                  }}
                 >
                   Email {sortColumn === 'email' && (sortDirection === 'asc' ? '▲' : '▼')}
                 </th>
-                <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Status</th>
-                <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold' }}>Actions</th>
+                <th>Status</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               {sortedSuppliers.length === 0 ? (
                 <tr>
-                  <td colSpan="8" style={{ 
-                    padding: '2rem', 
-                    textAlign: 'center',
-                    color: '#808080'
-                  }}>
+                  <td colSpan="8" className="suppliers-empty-row">
                     {suppliers.length === 0 ? 'No suppliers found' : 'No suppliers match your search'}
                   </td>
                 </tr>
@@ -289,88 +195,45 @@ function Suppliers() {
                   const statusColors = getStatusColors(supplier.status)
                   
                   return (
-                    <tr key={supplier.supplier_id} style={{ 
-                      background: isEvenRow ? 'white' : '#f0f0f0',
-                      borderBottom: '1px solid #c0c0c0'
-                    }}>
-                      <td style={{ 
-                        padding: '0.5rem',
-                        fontWeight: 'bold',
-                        color: '#000080',
-                        borderRight: '1px solid #c0c0c0'
-                      }}>
+                    <tr key={supplier.supplier_id} className={isEvenRow ? 'suppliers-table-row-even' : 'suppliers-table-row-odd'}>
+                      <td className="suppliers-table-cell-id">
                         {supplier.supplier_id}
                       </td>
-                      <td style={{ 
-                        padding: '0.5rem',
-                        fontWeight: 'bold',
-                        borderRight: '1px solid #c0c0c0'
-                      }}>
+                      <td className="suppliers-table-cell-company">
                         {supplier.company_name}
                       </td>
-                      <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>
+                      <td className="suppliers-table-cell">
                         <div>{supplier.address_street}</div>
-                        <div style={{ fontSize: '0.75rem', color: '#808080' }}>
+                        <div className="suppliers-address-secondary">
                           {supplier.address_city}, {supplier.address_state} {supplier.address_zip}
                         </div>
                       </td>
-                      <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>
+                      <td className="suppliers-table-cell">
                         {supplier.phone}
                       </td>
-                      <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>
+                      <td className="suppliers-table-cell">
                         {supplier.contact_person}
                       </td>
-                      <td style={{ 
-                        padding: '0.5rem',
-                        borderRight: '1px solid #c0c0c0',
-                        color: '#000080'
-                      }}>
+                      <td className="suppliers-table-cell-email">
                         {supplier.email}
                       </td>
-                      <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>
-                        <span style={{ 
-                          display: 'inline-block',
-                          padding: '0.2rem 0.5rem',
-                          fontSize: '0.75rem',
-                          fontWeight: 'bold',
-                          background: statusColors.bg,
-                          color: statusColors.text,
-                          border: '1px solid',
-                          borderColor: statusColors.text
-                        }}>
+                      <td className="suppliers-table-cell">
+                        <span 
+                          className="suppliers-status-badge"
+                          style={{ 
+                            background: statusColors.bg,
+                            color: statusColors.text,
+                            borderColor: statusColors.text
+                          }}
+                        >
                           {supplier.status}
                         </span>
                       </td>
-                      <td style={{ padding: '0.5rem' }}>
-                        <button 
-                          onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
-                          onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
-                          style={{ 
-                            padding: '0.25rem 0.75rem',
-                            marginRight: '0.25rem',
-                            background: '#c0c0c0',
-                            border: '2px solid',
-                            borderColor: '#ffffff #000000 #000000 #ffffff',
-                            cursor: 'pointer',
-                            fontSize: '0.75rem',
-                            fontFamily: 'MS Sans Serif, sans-serif'
-                          }}
-                        >
+                      <td className="suppliers-actions-cell">
+                        <button className="suppliers-action-button">
                           Edit
                         </button>
-                        <button 
-                          onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
-                          onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
-                          style={{ 
-                            padding: '0.25rem 0.75rem',
-                            background: '#c0c0c0',
-                            border: '2px solid',
-                            borderColor: '#ffffff #000000 #000000 #ffffff',
-                            cursor: 'pointer',
-                            fontSize: '0.75rem',
-                            fontFamily: 'MS Sans Serif, sans-serif'
-                          }}
-                        >
+                        <button className="suppliers-action-button">
                           Delete
                         </button>
                       </td>
@@ -384,16 +247,7 @@ function Suppliers() {
       )}
 
       {!loading && !error && (
-        <div style={{ 
-          marginTop: '1rem',
-          padding: '0.5rem',
-          color: '#000000',
-          fontSize: '0.875rem',
-          fontFamily: 'MS Sans Serif, sans-serif',
-          background: '#c0c0c0',
-          border: '2px solid',
-          borderColor: '#ffffff #808080 #808080 #ffffff'
-        }}>
+        <div className="suppliers-results-counter">
           Showing {sortedSuppliers.length} of {suppliers.length} suppliers
         </div>
       )}

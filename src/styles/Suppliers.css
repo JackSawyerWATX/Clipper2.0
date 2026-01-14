@@ -1,0 +1,175 @@
+/* Suppliers Page Styles */
+
+/* Header Section */
+.suppliers-header {
+  margin-bottom: 1.5rem;
+}
+
+.suppliers-add-button {
+  padding: 0.5rem 1.5rem;
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #ffffff #000000 #000000 #ffffff;
+  cursor: pointer;
+  font-weight: bold;
+  font-family: 'MS Sans Serif', sans-serif;
+  font-size: 0.875rem;
+}
+
+.suppliers-add-button:active {
+  border-color: #000000 #ffffff #ffffff #000000;
+}
+
+/* Search Section */
+.suppliers-search-container {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.suppliers-search-input {
+  padding: 0.5rem;
+  flex: 1;
+  min-width: 300px;
+  border: 2px solid;
+  border-color: #808080 #ebebeb #ebebeb #808080;
+  font-size: 1rem;
+  font-family: 'MS Sans Serif', sans-serif;
+}
+
+/* Loading/Error States */
+.suppliers-loading {
+  text-align: center;
+  padding: 3rem;
+  font-size: 1.1rem;
+  color: #808080;
+}
+
+.suppliers-error {
+  padding: 1rem;
+  background: #ff0000;
+  color: #ffffff;
+  border: 2px solid;
+  border-color: #ffffff #000000 #000000 #ffffff;
+  margin-bottom: 1rem;
+  font-family: 'MS Sans Serif', sans-serif;
+}
+
+/* Table Styles */
+.suppliers-table-container {
+  overflow-x: auto;
+  border: 2px solid;
+  border-color: #808080 #ebebeb #ebebeb #808080;
+  background: white;
+}
+
+.suppliers-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  font-family: 'MS Sans Serif', sans-serif;
+  font-size: 0.875rem;
+}
+
+.suppliers-table thead tr {
+  background: #000080;
+  color: white;
+}
+
+.suppliers-table th {
+  padding: 0.5rem;
+  text-align: left;
+  font-weight: bold;
+  border-right: 1px solid #808080;
+  cursor: pointer;
+  user-select: none;
+}
+
+.suppliers-table th:last-child {
+  cursor: default;
+}
+
+.suppliers-table-row-even {
+  background: white;
+  border-bottom: 1px solid #c0c0c0;
+}
+
+.suppliers-table-row-odd {
+  background: #f0f0f0;
+  border-bottom: 1px solid #c0c0c0;
+}
+
+.suppliers-table-cell {
+  padding: 0.5rem;
+  border-right: 1px solid #c0c0c0;
+}
+
+.suppliers-table-cell-id {
+  padding: 0.5rem;
+  font-weight: bold;
+  color: #000080;
+  border-right: 1px solid #c0c0c0;
+}
+
+.suppliers-table-cell-company {
+  padding: 0.5rem;
+  font-weight: bold;
+  border-right: 1px solid #c0c0c0;
+}
+
+.suppliers-table-cell-email {
+  padding: 0.5rem;
+  border-right: 1px solid #c0c0c0;
+  color: #000080;
+}
+
+.suppliers-address-secondary {
+  font-size: 0.75rem;
+  color: #808080;
+}
+
+.suppliers-status-badge {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: bold;
+  border: 1px solid;
+}
+
+.suppliers-empty-row {
+  padding: 2rem;
+  text-align: center;
+  color: #808080;
+}
+
+.suppliers-actions-cell {
+  padding: 0.5rem;
+}
+
+.suppliers-action-button {
+  padding: 0.25rem 0.75rem;
+  margin-right: 0.25rem;
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #ffffff #000000 #000000 #ffffff;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-family: 'MS Sans Serif', sans-serif;
+}
+
+.suppliers-action-button:active {
+  border-color: #000000 #ffffff #ffffff #000000;
+}
+
+/* Results Counter */
+.suppliers-results-counter {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  color: #000000;
+  font-size: 0.875rem;
+  font-family: 'MS Sans Serif', sans-serif;
+  background: #c0c0c0;
+  border: 2px solid;
+  border-color: #ffffff #808080 #808080 #ffffff;
+}
