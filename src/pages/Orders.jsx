@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import '../styles/Orders.css'
 
 function Orders() {
   const [orders, setOrders] = useState([])
@@ -249,9 +250,9 @@ function Orders() {
 
   if (loading) {
     return (
-      <div className="page">
-        <h1 style={{ color: '#000080' }}>Orders</h1>
-        <div style={{ padding: '2rem', textAlign: 'center', color: '#808080' }}>
+      <div className="page orders-page">
+        <h1>Orders</h1>
+        <div className="orders-loading">
           Loading orders...
         </div>
       </div>
@@ -259,76 +260,24 @@ function Orders() {
   }
 
   return (
-    <div className="page">
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center', 
-        marginBottom: '1.5rem',
-        padding: '0.5rem'
-      }}>
-        <h1 style={{ 
-          color: '#000080',
-          fontSize: '1.5rem',
-          fontWeight: 'bold',
-          margin: 0
-        }}>Orders</h1>
-        <button style={{ 
-          padding: '0.5rem 1rem',
-          background: '#c0c0c0',
-          border: '2px solid',
-          borderColor: '#ffffff #000000 #000000 #ffffff',
-          cursor: 'pointer',
-          fontWeight: 'bold',
-          fontSize: '0.875rem',
-          fontFamily: 'MS Sans Serif, sans-serif'
-        }}
-        onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
-        onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
-        >
-          + Create New Order
-        </button>
+    <div className="page orders-page">
+      <div className="orders-header">
+        <h1>Orders</h1>
       </div>
 
       {/* Filters */}
-      <div style={{ 
-        display: 'flex', 
-        gap: '1rem', 
-        marginBottom: '1rem',
-        flexWrap: 'wrap',
-        padding: '0.5rem',
-        background: '#c0c0c0',
-        border: '2px solid',
-        borderColor: '#808080 #ffffff #ffffff #808080'
-      }}>
+      <div className="orders-filters">
         <input 
           type="text"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Search orders..." 
-          style={{ 
-            padding: '0.4rem 0.5rem',
-            flex: '1',
-            minWidth: '200px',
-            border: '2px solid',
-            borderColor: '#808080 #ebebeb #ebebeb #808080',
-            background: 'white',
-            fontSize: '0.875rem',
-            fontFamily: 'MS Sans Serif, sans-serif'
-          }}
+          className="orders-search-input"
         />
         <select 
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          style={{ 
-            padding: '0.4rem 0.5rem',
-            border: '2px solid',
-            borderColor: '#808080 #ebebeb #ebebeb #808080',
-            background: 'white',
-            fontSize: '0.875rem',
-            fontFamily: 'MS Sans Serif, sans-serif',
-            cursor: 'pointer'
-          }}
+          className="orders-status-select"
         >
           <option value="">All Statuses</option>
           <option value="pending">Pending</option>
@@ -337,44 +286,29 @@ function Orders() {
           <option value="completed">Completed</option>
           <option value="cancelled">Cancelled</option>
         </select>
+        <button className="orders-add-button">
+          + Create New Order
+        </button>
       </div>
 
       {/* Orders Table */}
-      <div style={{ 
-        overflowX: 'auto',
-        border: '2px solid',
-        borderColor: '#808080 #ffffff #ffffff #808080',
-        background: 'white'
-      }}>
-        <table style={{ 
-          width: '100%', 
-          borderCollapse: 'collapse',
-          background: 'white',
-          fontFamily: 'MS Sans Serif, sans-serif',
-          fontSize: '0.875rem'
-        }}>
+      <div className="orders-table-container">
+        <table className="orders-table">
           <thead>
-            <tr style={{ 
-              background: '#000080',
-              color: 'white'
-            }}>
-              <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Order ID</th>
-              <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>State</th>
-              <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Customer</th>
-              <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Date</th>
-              <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Total</th>
-              <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Status</th>
-              <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold' }}>Actions</th>
+            <tr>
+              <th>Order ID</th>
+              <th>State</th>
+              <th>Customer</th>
+              <th>Date</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {filteredOrders.length === 0 ? (
               <tr>
-                <td colSpan="7" style={{ 
-                  padding: '2rem', 
-                  textAlign: 'center',
-                  color: '#808080'
-                }}>
+                <td colSpan="7" className="empty-cell">
                   {orders.length === 0 ? 'No orders found' : 'No orders match your filters'}
                 </td>
               </tr>
@@ -383,81 +317,37 @@ function Orders() {
                 const statusColors = getStatusColor(order.status)
                 const isEvenRow = index % 2 === 0
                 return (
-                  <tr key={order.order_id} style={{ 
-                    background: isEvenRow ? 'white' : '#f0f0f0',
-                    borderBottom: '1px solid #c0c0c0'
-                  }}>
-                    <td style={{ 
-                      padding: '0.5rem',
-                      fontWeight: 'bold',
-                      color: '#000080',
-                      borderRight: '1px solid #c0c0c0'
-                    }}>
+                  <tr key={order.order_id} className={isEvenRow ? 'even' : 'odd'}>
+                    <td className="order-id-cell">
                       {order.order_number}
                     </td>
-                    <td style={{ 
-                      padding: '0.5rem',
-                      fontWeight: 'bold',
-                      borderRight: '1px solid #c0c0c0'
-                    }}>
+                    <td className="order-state-cell">
                       {getStateFromOrderNumber(order.order_number)}
                     </td>
-                    <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>
+                    <td>
                       {order.customer_name || 'N/A'}
                     </td>
-                    <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>
+                    <td>
                       {order.order_date ? new Date(order.order_date).toLocaleDateString() : 'N/A'}
                     </td>
-                    <td style={{ 
-                      padding: '0.5rem',
-                      fontWeight: 'bold',
-                      borderRight: '1px solid #c0c0c0'
-                    }}>
+                    <td className="order-total-cell">
                       ${parseFloat(order.grand_total || 0).toFixed(2)}
                     </td>
-                    <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>
-                      <span style={{ 
-                        display: 'inline-block',
-                        padding: '0.2rem 0.5rem',
-                        fontSize: '0.75rem',
-                        fontWeight: 'bold',
-                        background: statusColors.bg,
-                        color: statusColors.text,
-                        border: '1px solid',
-                        borderColor: statusColors.text
-                      }}>
+                    <td>
+                      <span className={`status-badge ${order.status?.toLowerCase()}`}>
                         {order.status}
                       </span>
                     </td>
-                    <td style={{ padding: '0.5rem' }}>
-                      <button style={{ 
-                        padding: '0.25rem 0.75rem',
-                        marginRight: '0.25rem',
-                        background: '#c0c0c0',
-                        border: '2px solid',
-                        borderColor: '#ffffff #000000 #000000 #ffffff',
-                        cursor: 'pointer',
-                        fontSize: '0.75rem',
-                        fontFamily: 'MS Sans Serif, sans-serif'
-                      }}
-                      onClick={() => handleViewOrder(order)}
-                      onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
-                      onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
+                    <td>
+                      <button 
+                        className="action-button"
+                        onClick={() => handleViewOrder(order)}
                       >
                         View
                       </button>
-                      <button style={{ 
-                        padding: '0.25rem 0.75rem',
-                        background: '#c0c0c0',
-                        border: '2px solid',
-                        borderColor: '#ffffff #000000 #000000 #ffffff',
-                        cursor: 'pointer',
-                        fontSize: '0.75rem',
-                        fontFamily: 'MS Sans Serif, sans-serif'
-                      }}
-                      onClick={() => handleEditOrder(order)}
-                      onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
-                      onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
+                      <button 
+                        className="action-button"
+                        onClick={() => handleEditOrder(order)}
                       >
                         Edit
                       </button>
@@ -470,105 +360,45 @@ function Orders() {
         </table>
       </div>
 
-      <div style={{ 
-        marginTop: '1rem',
-        padding: '0.5rem',
-        color: '#000000',
-        fontSize: '0.875rem',
-        fontFamily: 'MS Sans Serif, sans-serif',
-        background: '#c0c0c0',
-        border: '2px solid',
-        borderColor: '#ffffff #808080 #808080 #ffffff'
-      }}>
+      <div className="orders-summary">
         Showing {filteredOrders.length} of {orders.length} orders
       </div>
 
       {/* View Order Modal */}
       {showViewModal && selectedOrder && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'rgba(0, 0, 0, 0.5)',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          zIndex: 1000
-        }}>
-          <div style={{
-            background: '#c0c0c0',
-            border: '2px solid',
-            borderColor: '#ffffff #000000 #000000 #ffffff',
-            width: '90%',
-            maxWidth: '800px',
-            maxHeight: '90vh',
-            display: 'flex',
-            flexDirection: 'column',
-            fontFamily: 'MS Sans Serif, sans-serif'
-          }}>
+        <div className="modal-overlay">
+          <div className="modal-window">
             {/* Modal Title Bar */}
-            <div style={{
-              background: 'linear-gradient(to right, #000080, #0000aa)',
-              color: 'white',
-              padding: '0.25rem 0.5rem',
-              fontWeight: 'bold',
-              fontSize: '0.875rem',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center'
-            }}>
+            <div className="modal-titlebar">
               <span>Order Details - {selectedOrder.order_number}</span>
               <button
                 onClick={closeViewModal}
-                style={{
-                  background: '#c0c0c0',
-                  border: '2px solid',
-                  borderColor: '#ffffff #000000 #000000 #ffffff',
-                  width: '20px',
-                  height: '20px',
-                  padding: 0,
-                  cursor: 'pointer',
-                  fontWeight: 'bold',
-                  fontSize: '0.75rem'
-                }}
-                onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
-                onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
+                className="modal-close-button"
               >
                 ×
               </button>
             </div>
 
             {/* Modal Content */}
-            <div style={{
-              padding: '1rem',
-              overflowY: 'auto',
-              flex: 1,
-              background: 'white'
-            }}>
+            <div className="modal-content">
               {loadingDetails ? (
-                <div style={{ textAlign: 'center', padding: '2rem', color: '#808080' }}>
+                <div className="modal-loading">
                   Loading order details...
                 </div>
               ) : (
                 <>
                   {/* Invoice Header */}
-                  <div style={{
-                    borderBottom: '2px solid #000080',
-                    paddingBottom: '1rem',
-                    marginBottom: '1rem'
-                  }}>
-                    <h2 style={{ margin: '0 0 0.5rem 0', color: '#000080', fontSize: '1.5rem' }}>
+                  <div className="invoice-header">
+                    <h2 className="invoice-title">
                       INVOICE
                     </h2>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                    <div className="invoice-grid">
                       <div>
-                        <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1rem', color: '#000080' }}>
+                        <h3 className="invoice-section-title">
                           Bill To:
                         </h3>
-                        <div style={{ fontSize: '0.875rem', lineHeight: '1.5' }}>
-                          <div style={{ fontWeight: 'bold' }}>{selectedOrder.customer_name || 'N/A'}</div>
+                        <div className="invoice-section-content">
+                          <div className="invoice-customer-name">{selectedOrder.customer_name || 'N/A'}</div>
                           <div>{selectedOrder.shipping_address_street || 'N/A'}</div>
                           <div>
                             {selectedOrder.shipping_address_city}, {selectedOrder.shipping_address_state} {selectedOrder.shipping_address_zip}
@@ -580,69 +410,55 @@ function Orders() {
                         </div>
                       </div>
                       <div>
-                        <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1rem', color: '#000080' }}>
+                        <h3 className="invoice-section-title">
                           Order Information:
                         </h3>
-                        <div style={{ fontSize: '0.875rem', lineHeight: '1.5' }}>
-                          <div><strong>Order Number:</strong> {selectedOrder.order_number}</div>
-                          <div><strong>Order Date:</strong> {new Date(selectedOrder.order_date).toLocaleDateString()}</div>
-                          <div><strong>Status:</strong> <span style={{
-                            padding: '0.2rem 0.5rem',
-                            background: getStatusColor(selectedOrder.status).bg,
-                            color: getStatusColor(selectedOrder.status).text,
-                            fontWeight: 'bold'
-                          }}>{selectedOrder.status}</span></div>
-                          <div><strong>Payment Method:</strong> {selectedOrder.payment_method}</div>
-                          <div><strong>Payment Status:</strong> {selectedOrder.payment_status}</div>
+                        <div className="invoice-section-content">
+                          <div><span className="invoice-info-label">Order Number:</span> {selectedOrder.order_number}</div>
+                          <div><span className="invoice-info-label">Order Date:</span> {new Date(selectedOrder.order_date).toLocaleDateString()}</div>
+                          <div><span className="invoice-info-label">Status:</span> <span className={`status-badge ${selectedOrder.status?.toLowerCase()}`}>{selectedOrder.status}</span></div>
+                          <div><span className="invoice-info-label">Payment Method:</span> {selectedOrder.payment_method}</div>
+                          <div><span className="invoice-info-label">Payment Status:</span> {selectedOrder.payment_status}</div>
                         </div>
                       </div>
                     </div>
                   </div>
 
                   {/* Order Items Table */}
-                  <div style={{ marginBottom: '1rem' }}>
-                    <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1rem', color: '#000080' }}>
+                  <div className="order-items-section">
+                    <h3 className="edit-form-section-title">
                       Order Items:
                     </h3>
-                    <table style={{
-                      width: '100%',
-                      borderCollapse: 'collapse',
-                      border: '2px solid',
-                      borderColor: '#808080 #ffffff #ffffff #808080',
-                      fontSize: '0.875rem'
-                    }}>
+                    <table className="order-items-table">
                       <thead>
-                        <tr style={{ background: '#000080', color: 'white' }}>
-                          <th style={{ padding: '0.5rem', textAlign: 'left', borderRight: '1px solid #c0c0c0' }}>Item</th>
-                          <th style={{ padding: '0.5rem', textAlign: 'center', borderRight: '1px solid #c0c0c0' }}>Quantity</th>
-                          <th style={{ padding: '0.5rem', textAlign: 'right', borderRight: '1px solid #c0c0c0' }}>Unit Price</th>
-                          <th style={{ padding: '0.5rem', textAlign: 'right' }}>Subtotal</th>
+                        <tr>
+                          <th className="align-left">Item</th>
+                          <th className="align-center">Quantity</th>
+                          <th className="align-right">Unit Price</th>
+                          <th className="align-right">Subtotal</th>
                         </tr>
                       </thead>
                       <tbody>
                         {orderDetails && orderDetails.length > 0 ? (
                           orderDetails.map((item, index) => (
-                            <tr key={index} style={{
-                              background: index % 2 === 0 ? 'white' : '#f0f0f0',
-                              borderBottom: '1px solid #c0c0c0'
-                            }}>
-                              <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>
+                            <tr key={index} className={index % 2 === 0 ? 'even' : 'odd'}>
+                              <td>
                                 Item #{item.item_id}
                               </td>
-                              <td style={{ padding: '0.5rem', textAlign: 'center', borderRight: '1px solid #c0c0c0' }}>
+                              <td className="align-center">
                                 {item.quantity}
                               </td>
-                              <td style={{ padding: '0.5rem', textAlign: 'right', borderRight: '1px solid #c0c0c0' }}>
+                              <td className="align-right">
                                 ${parseFloat(item.unit_price || 0).toFixed(2)}
                               </td>
-                              <td style={{ padding: '0.5rem', textAlign: 'right', fontWeight: 'bold' }}>
+                              <td className="align-right bold">
                                 ${parseFloat(item.subtotal || 0).toFixed(2)}
                               </td>
                             </tr>
                           ))
                         ) : (
                           <tr>
-                            <td colSpan="4" style={{ padding: '1rem', textAlign: 'center', color: '#808080' }}>
+                            <td colSpan="4" className="empty">
                               No items found
                             </td>
                           </tr>
@@ -652,60 +468,29 @@ function Orders() {
                   </div>
 
                   {/* Order Totals */}
-                  <div style={{
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                    marginTop: '1rem',
-                    paddingTop: '1rem',
-                    borderTop: '2px solid #000080'
-                  }}>
-                    <div style={{ width: '300px', fontSize: '0.875rem' }}>
-                      <div style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        padding: '0.5rem',
-                        background: '#f0f0f0',
-                        marginBottom: '0.25rem'
-                      }}>
+                  <div className="order-totals-container">
+                    <div className="order-totals">
+                      <div className="order-total-row">
                         <span>Subtotal:</span>
-                        <span style={{ fontWeight: 'bold' }}>
+                        <span className="order-total-value">
                           ${parseFloat(selectedOrder.total_amount || 0).toFixed(2)}
                         </span>
                       </div>
-                      <div style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        padding: '0.5rem',
-                        background: '#f0f0f0',
-                        marginBottom: '0.25rem'
-                      }}>
+                      <div className="order-total-row">
                         <span>Tax:</span>
-                        <span style={{ fontWeight: 'bold' }}>
+                        <span className="order-total-value">
                           ${parseFloat(selectedOrder.tax_amount || 0).toFixed(2)}
                         </span>
                       </div>
-                      <div style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        padding: '0.5rem',
-                        background: '#f0f0f0',
-                        marginBottom: '0.25rem'
-                      }}>
+                      <div className="order-total-row">
                         <span>Shipping:</span>
-                        <span style={{ fontWeight: 'bold', color: '#808080' }}>
+                        <span className="order-total-value tbd">
                           TBD
                         </span>
                       </div>
-                      <div style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        padding: '0.75rem 0.5rem',
-                        background: '#000080',
-                        color: 'white',
-                        fontSize: '1.1rem'
-                      }}>
-                        <span style={{ fontWeight: 'bold' }}>GRAND TOTAL:</span>
-                        <span style={{ fontWeight: 'bold' }}>
+                      <div className="order-total-row grand-total">
+                        <span className="order-total-label">GRAND TOTAL:</span>
+                        <span className="order-total-value">
                           ${parseFloat(selectedOrder.grand_total || 0).toFixed(2)}
                         </span>
                       </div>
@@ -714,14 +499,8 @@ function Orders() {
 
                   {/* Notes Section */}
                   {selectedOrder.notes && (
-                    <div style={{
-                      marginTop: '1rem',
-                      padding: '0.75rem',
-                      background: '#ffffcc',
-                      border: '1px solid #e0e000',
-                      fontSize: '0.875rem'
-                    }}>
-                      <strong>Notes:</strong> {selectedOrder.notes}
+                    <div className="order-notes">
+                      <span className="order-notes-label">Notes:</span> {selectedOrder.notes}
                     </div>
                   )}
                 </>
@@ -729,29 +508,10 @@ function Orders() {
             </div>
 
             {/* Modal Footer */}
-            <div style={{
-              padding: '0.75rem',
-              background: '#c0c0c0',
-              borderTop: '2px solid',
-              borderColor: '#ffffff #000000',
-              display: 'flex',
-              justifyContent: 'flex-end',
-              gap: '0.5rem'
-            }}>
+            <div className="modal-footer">
               <button
                 onClick={closeViewModal}
-                style={{
-                  padding: '0.5rem 1.5rem',
-                  background: '#c0c0c0',
-                  border: '2px solid',
-                  borderColor: '#ffffff #000000 #000000 #ffffff',
-                  cursor: 'pointer',
-                  fontWeight: 'bold',
-                  fontSize: '0.875rem',
-                  fontFamily: 'MS Sans Serif, sans-serif'
-                }}
-                onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
-                onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
+                className="modal-button"
               >
                 Close
               </button>
@@ -762,175 +522,101 @@ function Orders() {
 
       {/* Edit Order Modal */}
       {showEditModal && selectedOrder && editFormData && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'rgba(0, 0, 0, 0.5)',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          zIndex: 1000
-        }}>
-          <div style={{
-            background: '#c0c0c0',
-            border: '2px solid',
-            borderColor: '#ffffff #000000 #000000 #ffffff',
-            width: '90%',
-            maxWidth: '900px',
-            maxHeight: '90vh',
-            display: 'flex',
-            flexDirection: 'column',
-            fontFamily: 'MS Sans Serif, sans-serif'
-          }}>
+        <div className="modal-overlay">
+          <div className="modal-window edit-modal">
             {/* Modal Title Bar */}
-            <div style={{
-              background: 'linear-gradient(to right, #000080, #0000aa)',
-              color: 'white',
-              padding: '0.25rem 0.5rem',
-              fontWeight: 'bold',
-              fontSize: '0.875rem'
-            }}>
+            <div className="modal-titlebar">
               Edit Order - {selectedOrder.order_number}
             </div>
 
             {/* Modal Content */}
-            <div style={{
-              padding: '1rem',
-              overflowY: 'auto',
-              flex: 1,
-              background: 'white'
-            }}>
+            <div className="modal-content">
               {loadingDetails ? (
-                <div style={{ textAlign: 'center', padding: '2rem', color: '#808080' }}>
+                <div className="modal-loading">
                   Loading order details...
                 </div>
               ) : (
                 <>
                   {/* Customer Information */}
-                  <div style={{ marginBottom: '1rem' }}>
-                    <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1rem', color: '#000080' }}>
+                  <div className="edit-form-section">
+                    <h3 className="edit-form-section-title">
                       Customer Information
                     </h3>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', fontSize: '0.875rem' }}>
-                      <div>
-                        <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '0.25rem' }}>
+                    <div className="form-grid-2col">
+                      <div className="form-field">
+                        <label className="form-label">
                           Company Name:
                         </label>
                         <input
                           type="text"
                           value={editFormData.customer_name}
                           onChange={(e) => handleEditFormChange('customer_name', e.target.value)}
-                          style={{
-                            width: '100%',
-                            padding: '0.4rem',
-                            border: '2px solid',
-                            borderColor: '#808080 #ebebeb #ebebeb #808080',
-                            fontFamily: 'MS Sans Serif, sans-serif',
-                            fontSize: '0.875rem'
-                          }}
+                          className="form-input"
                         />
                       </div>
-                      <div>
-                        <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '0.25rem' }}>
+                      <div className="form-field">
+                        <label className="form-label">
                           Email:
                         </label>
                         <input
                           type="email"
                           value={editFormData.customer_email}
                           onChange={(e) => handleEditFormChange('customer_email', e.target.value)}
-                          style={{
-                            width: '100%',
-                            padding: '0.4rem',
-                            border: '2px solid',
-                            borderColor: '#808080 #ebebeb #ebebeb #808080',
-                            fontFamily: 'MS Sans Serif, sans-serif',
-                            fontSize: '0.875rem'
-                          }}
+                          className="form-input"
                         />
                       </div>
                     </div>
                   </div>
 
                   {/* Shipping Address */}
-                  <div style={{ marginBottom: '1rem' }}>
-                    <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1rem', color: '#000080' }}>
+                  <div className="edit-form-section">
+                    <h3 className="edit-form-section-title">
                       Shipping Address
                     </h3>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '0.75rem', fontSize: '0.875rem' }}>
-                      <div>
-                        <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '0.25rem' }}>
+                      <div className="form-field">
+                        <label className="form-label">
                           Street:
                         </label>
                         <input
                           type="text"
                           value={editFormData.shipping_address_street}
                           onChange={(e) => handleEditFormChange('shipping_address_street', e.target.value)}
-                          style={{
-                            width: '100%',
-                            padding: '0.4rem',
-                            border: '2px solid',
-                            borderColor: '#808080 #ebebeb #ebebeb #808080',
-                            fontFamily: 'MS Sans Serif, sans-serif',
-                            fontSize: '0.875rem'
-                          }}
+                          className="form-input"
                         />
                       </div>
-                      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: '0.75rem' }}>
-                        <div>
-                          <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '0.25rem' }}>
+                      <div className="form-grid-city-state-zip">
+                        <div className="form-field">
+                          <label className="form-label">
                             City:
                           </label>
                           <input
                             type="text"
                             value={editFormData.shipping_address_city}
                             onChange={(e) => handleEditFormChange('shipping_address_city', e.target.value)}
-                            style={{
-                              width: '100%',
-                              padding: '0.4rem',
-                              border: '2px solid',
-                              borderColor: '#808080 #ebebeb #ebebeb #808080',
-                              fontFamily: 'MS Sans Serif, sans-serif',
-                              fontSize: '0.875rem'
-                            }}
+                            className="form-input"
                           />
                         </div>
-                        <div>
-                          <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '0.25rem' }}>
+                        <div className="form-field">
+                          <label className="form-label">
                             State:
                           </label>
                           <input
                             type="text"
                             value={editFormData.shipping_address_state}
                             onChange={(e) => handleEditFormChange('shipping_address_state', e.target.value)}
-                            style={{
-                              width: '100%',
-                              padding: '0.4rem',
-                              border: '2px solid',
-                              borderColor: '#808080 #ebebeb #ebebeb #808080',
-                              fontFamily: 'MS Sans Serif, sans-serif',
-                              fontSize: '0.875rem'
-                            }}
+                            className="form-input"
                           />
                         </div>
-                        <div>
-                          <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '0.25rem' }}>
+                        <div className="form-field">
+                          <label className="form-label">
                             ZIP:
                           </label>
                           <input
                             type="text"
                             value={editFormData.shipping_address_zip}
                             onChange={(e) => handleEditFormChange('shipping_address_zip', e.target.value)}
-                            style={{
-                              width: '100%',
-                              padding: '0.4rem',
-                              border: '2px solid',
-                              borderColor: '#808080 #ebebeb #ebebeb #808080',
-                              fontFamily: 'MS Sans Serif, sans-serif',
-                              fontSize: '0.875rem'
-                            }}
+                            className="form-input"
                           />
                         </div>
                       </div>
@@ -938,26 +624,19 @@ function Orders() {
                   </div>
 
                   {/* Order Status */}
-                  <div style={{ marginBottom: '1rem' }}>
-                    <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1rem', color: '#000080' }}>
+                  <div className="edit-form-section">
+                    <h3 className="edit-form-section-title">
                       Order Status & Payment
                     </h3>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.75rem', fontSize: '0.875rem' }}>
-                      <div>
-                        <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '0.25rem' }}>
+                    <div className="form-grid-3col">
+                      <div className="form-field">
+                        <label className="form-label">
                           Status:
                         </label>
                         <select
                           value={editFormData.status}
                           onChange={(e) => handleEditFormChange('status', e.target.value)}
-                          style={{
-                            width: '100%',
-                            padding: '0.4rem',
-                            border: '2px solid',
-                            borderColor: '#808080 #ebebeb #ebebeb #808080',
-                            fontFamily: 'MS Sans Serif, sans-serif',
-                            fontSize: '0.875rem'
-                          }}
+                          className="form-select"
                         >
                           <option value="Pending">Pending</option>
                           <option value="Processing">Processing</option>
@@ -966,21 +645,14 @@ function Orders() {
                           <option value="Cancelled">Cancelled</option>
                         </select>
                       </div>
-                      <div>
-                        <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '0.25rem' }}>
+                      <div className="form-field">
+                        <label className="form-label">
                           Payment Method:
                         </label>
                         <select
                           value={editFormData.payment_method}
                           onChange={(e) => handleEditFormChange('payment_method', e.target.value)}
-                          style={{
-                            width: '100%',
-                            padding: '0.4rem',
-                            border: '2px solid',
-                            borderColor: '#808080 #ebebeb #ebebeb #808080',
-                            fontFamily: 'MS Sans Serif, sans-serif',
-                            fontSize: '0.875rem'
-                          }}
+                          className="form-select"
                         >
                           <option value="Credit Card">Credit Card</option>
                           <option value="PayPal">PayPal</option>
@@ -988,21 +660,14 @@ function Orders() {
                           <option value="Purchase Order">Purchase Order</option>
                         </select>
                       </div>
-                      <div>
-                        <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '0.25rem' }}>
+                      <div className="form-field">
+                        <label className="form-label">
                           Payment Status:
                         </label>
                         <select
                           value={editFormData.payment_status}
                           onChange={(e) => handleEditFormChange('payment_status', e.target.value)}
-                          style={{
-                            width: '100%',
-                            padding: '0.4rem',
-                            border: '2px solid',
-                            borderColor: '#808080 #ebebeb #ebebeb #808080',
-                            fontFamily: 'MS Sans Serif, sans-serif',
-                            fontSize: '0.875rem'
-                          }}
+                          className="form-select"
                         >
                           <option value="Pending">Pending</option>
                           <option value="Paid">Paid</option>
@@ -1013,68 +678,43 @@ function Orders() {
                   </div>
 
                   {/* Order Items */}
-                  <div style={{ marginBottom: '1rem' }}>
-                    <h3 style={{ margin: '0 0 0.5rem 0', fontSize: '1rem', color: '#000080' }}>
+                  <div className="edit-form-section">
+                    <h3 className="edit-form-section-title">
                       Order Items
                     </h3>
-                    <table style={{
-                      width: '100%',
-                      borderCollapse: 'collapse',
-                      border: '2px solid',
-                      borderColor: '#808080 #ffffff #ffffff #808080',
-                      fontSize: '0.875rem'
-                    }}>
+                    <table className="order-items-table">
                       <thead>
-                        <tr style={{ background: '#000080', color: 'white' }}>
-                          <th style={{ padding: '0.5rem', textAlign: 'left' }}>Item</th>
-                          <th style={{ padding: '0.5rem', textAlign: 'center' }}>Quantity</th>
-                          <th style={{ padding: '0.5rem', textAlign: 'right' }}>Unit Price</th>
-                          <th style={{ padding: '0.5rem', textAlign: 'right' }}>Subtotal</th>
+                        <tr>
+                          <th className="align-left">Item</th>
+                          <th className="align-center">Quantity</th>
+                          <th className="align-right">Unit Price</th>
+                          <th className="align-right">Subtotal</th>
                         </tr>
                       </thead>
                       <tbody>
                         {editOrderItems.map((item, index) => (
-                          <tr key={index} style={{
-                            background: index % 2 === 0 ? 'white' : '#f0f0f0',
-                            borderBottom: '1px solid #c0c0c0'
-                          }}>
-                            <td style={{ padding: '0.5rem' }}>
+                          <tr key={index} className={index % 2 === 0 ? 'even' : 'odd'}>
+                            <td>
                               Item #{item.item_id}
                             </td>
-                            <td style={{ padding: '0.5rem', textAlign: 'center' }}>
+                            <td className="align-center">
                               <input
                                 type="number"
                                 value={item.quantity}
                                 onChange={(e) => handleItemChange(index, 'quantity', parseFloat(e.target.value) || 0)}
-                                style={{
-                                  width: '60px',
-                                  padding: '0.25rem',
-                                  border: '2px solid',
-                                  borderColor: '#808080 #ebebeb #ebebeb #808080',
-                                  fontFamily: 'MS Sans Serif, sans-serif',
-                                  fontSize: '0.875rem',
-                                  textAlign: 'center'
-                                }}
+                                className="form-input small"
                               />
                             </td>
-                            <td style={{ padding: '0.5rem', textAlign: 'right' }}>
+                            <td className="align-right">
                               <input
                                 type="number"
                                 step="0.01"
                                 value={item.unit_price}
                                 onChange={(e) => handleItemChange(index, 'unit_price', parseFloat(e.target.value) || 0)}
-                                style={{
-                                  width: '80px',
-                                  padding: '0.25rem',
-                                  border: '2px solid',
-                                  borderColor: '#808080 #ebebeb #ebebeb #808080',
-                                  fontFamily: 'MS Sans Serif, sans-serif',
-                                  fontSize: '0.875rem',
-                                  textAlign: 'right'
-                                }}
+                                className="form-input medium"
                               />
                             </td>
-                            <td style={{ padding: '0.5rem', textAlign: 'right', fontWeight: 'bold' }}>
+                            <td className="align-right bold">
                               ${parseFloat(item.subtotal || 0).toFixed(2)}
                             </td>
                           </tr>
@@ -1084,62 +724,27 @@ function Orders() {
                   </div>
 
                   {/* Totals Display */}
-                  <div style={{
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                    marginTop: '1rem',
-                    paddingTop: '1rem',
-                    borderTop: '2px solid #000080'
-                  }}>
-                    <div style={{ width: '300px', fontSize: '0.875rem' }}>
-                      <div style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        padding: '0.5rem',
-                        background: '#f0f0f0'
-                      }}>
+                  <div className="order-totals-container">
+                    <div className="order-totals">
+                      <div className="order-total-row">
                         <span>Subtotal:</span>
-                        <span style={{ fontWeight: 'bold' }}>
+                        <span className="order-total-value">
                           ${calculateTotals().subtotal.toFixed(2)}
                         </span>
                       </div>
-                      <div style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        padding: '0.5rem',
-                        background: '#f0f0f0',
-                        alignItems: 'center',
-                        marginTop: '0.25rem'
-                      }}>
+                      <div className="edit-totals-input-row">
                         <span>Tax:</span>
                         <input
                           type="number"
                           step="0.01"
                           value={editFormData.tax_amount}
                           onChange={(e) => handleEditFormChange('tax_amount', parseFloat(e.target.value) || 0)}
-                          style={{
-                            width: '100px',
-                            padding: '0.25rem',
-                            border: '2px solid',
-                            borderColor: '#808080 #ebebeb #ebebeb #808080',
-                            fontFamily: 'MS Sans Serif, sans-serif',
-                            fontSize: '0.875rem',
-                            textAlign: 'right',
-                            fontWeight: 'bold'
-                          }}
+                          className="form-input large"
                         />
                       </div>
-                      <div style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        padding: '0.75rem 0.5rem',
-                        background: '#000080',
-                        color: 'white',
-                        fontSize: '1.1rem',
-                        marginTop: '0.25rem'
-                      }}>
-                        <span style={{ fontWeight: 'bold' }}>GRAND TOTAL:</span>
-                        <span style={{ fontWeight: 'bold' }}>
+                      <div className="order-total-row grand-total">
+                        <span className="order-total-label">GRAND TOTAL:</span>
+                        <span className="order-total-value">
                           ${calculateTotals().grandTotal.toFixed(2)}
                         </span>
                       </div>
@@ -1148,22 +753,14 @@ function Orders() {
 
                   {/* Notes */}
                   <div style={{ marginTop: '1rem' }}>
-                    <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '0.25rem', fontSize: '0.875rem' }}>
+                    <label className="form-label">
                       Notes:
                     </label>
                     <textarea
                       value={editFormData.notes}
                       onChange={(e) => handleEditFormChange('notes', e.target.value)}
                       rows="3"
-                      style={{
-                        width: '100%',
-                        padding: '0.4rem',
-                        border: '2px solid',
-                        borderColor: '#808080 #ffffff #ffffff #808080',
-                        fontFamily: 'MS Sans Serif, sans-serif',
-                        fontSize: '0.875rem',
-                        resize: 'vertical'
-                      }}
+                      className="form-textarea"
                     />
                   </div>
                 </>
@@ -1171,50 +768,18 @@ function Orders() {
             </div>
 
             {/* Modal Footer */}
-            <div style={{
-              padding: '0.75rem',
-              background: '#c0c0c0',
-              borderTop: '2px solid',
-              borderColor: '#ffffff #000000',
-              display: 'flex',
-              justifyContent: 'flex-end',
-              gap: '0.5rem'
-            }}>
+            <div className="modal-footer">
               <button
                 onClick={handleSaveClick}
                 disabled={saving}
-                style={{
-                  padding: '0.5rem 1.5rem',
-                  background: '#c0c0c0',
-                  border: '2px solid',
-                  borderColor: '#ffffff #000000 #000000 #ffffff',
-                  cursor: saving ? 'not-allowed' : 'pointer',
-                  fontWeight: 'bold',
-                  fontSize: '0.875rem',
-                  fontFamily: 'MS Sans Serif, sans-serif',
-                  opacity: saving ? 0.6 : 1
-                }}
-                onMouseDown={(e) => !saving && (e.target.style.borderColor = '#000000 #ffffff #ffffff #000000')}
-                onMouseUp={(e) => !saving && (e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff')}
+                className="modal-button"
               >
                 {saving ? 'Saving...' : 'SAVE'}
               </button>
               <button
                 onClick={handleCancelClick}
                 disabled={saving}
-                style={{
-                  padding: '0.5rem 1.5rem',
-                  background: '#c0c0c0',
-                  border: '2px solid',
-                  borderColor: '#ffffff #000000 #000000 #ffffff',
-                  cursor: saving ? 'not-allowed' : 'pointer',
-                  fontWeight: 'bold',
-                  fontSize: '0.875rem',
-                  fontFamily: 'MS Sans Serif, sans-serif',
-                  opacity: saving ? 0.6 : 1
-                }}
-                onMouseDown={(e) => !saving && (e.target.style.borderColor = '#000000 #ffffff #ffffff #000000')}
-                onMouseUp={(e) => !saving && (e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff')}
+                className="modal-button"
               >
                 CANCEL
               </button>
@@ -1225,80 +790,24 @@ function Orders() {
 
       {/* Save Confirmation Popup */}
       {showSaveConfirm && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'rgba(0, 0, 0, 0.7)',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          zIndex: 2000
-        }}>
-          <div style={{
-            background: '#c0c0c0',
-            border: '2px solid',
-            borderColor: '#ffffff #000000 #000000 #ffffff',
-            width: '400px',
-            fontFamily: 'MS Sans Serif, sans-serif'
-          }}>
-            <div style={{
-              background: 'linear-gradient(to right, #000080, #0000aa)',
-              color: 'white',
-              padding: '0.25rem 0.5rem',
-              fontWeight: 'bold',
-              fontSize: '0.875rem'
-            }}>
+        <div className="modal-overlay confirmation">
+          <div className="modal-window confirm-modal">
+            <div className="modal-titlebar">
               Confirm Save
             </div>
-            <div style={{
-              padding: '1.5rem',
-              background: 'white',
-              fontSize: '0.875rem',
-              textAlign: 'center'
-            }}>
+            <div className="confirm-message">
               Are you sure you want to save the changes to this order?
             </div>
-            <div style={{
-              padding: '0.75rem',
-              background: '#c0c0c0',
-              display: 'flex',
-              justifyContent: 'center',
-              gap: '0.5rem'
-            }}>
+            <div className="modal-footer center">
               <button
                 onClick={handleConfirmSave}
-                style={{
-                  padding: '0.5rem 2rem',
-                  background: '#c0c0c0',
-                  border: '2px solid',
-                  borderColor: '#ffffff #000000 #000000 #ffffff',
-                  cursor: 'pointer',
-                  fontWeight: 'bold',
-                  fontSize: '0.875rem',
-                  fontFamily: 'MS Sans Serif, sans-serif'
-                }}
-                onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
-                onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
+                className="modal-button wide"
               >
                 YES
               </button>
               <button
                 onClick={handleCancelSave}
-                style={{
-                  padding: '0.5rem 2rem',
-                  background: '#c0c0c0',
-                  border: '2px solid',
-                  borderColor: '#ffffff #000000 #000000 #ffffff',
-                  cursor: 'pointer',
-                  fontWeight: 'bold',
-                  fontSize: '0.875rem',
-                  fontFamily: 'MS Sans Serif, sans-serif'
-                }}
-                onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
-                onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
+                className="modal-button wide"
               >
                 NO
               </button>
@@ -1309,80 +818,24 @@ function Orders() {
 
       {/* Cancel Confirmation Popup */}
       {showCancelConfirm && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'rgba(0, 0, 0, 0.7)',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          zIndex: 2000
-        }}>
-          <div style={{
-            background: '#c0c0c0',
-            border: '2px solid',
-            borderColor: '#ffffff #000000 #000000 #ffffff',
-            width: '400px',
-            fontFamily: 'MS Sans Serif, sans-serif'
-          }}>
-            <div style={{
-              background: 'linear-gradient(to right, #000080, #0000aa)',
-              color: 'white',
-              padding: '0.25rem 0.5rem',
-              fontWeight: 'bold',
-              fontSize: '0.875rem'
-            }}>
+        <div className="modal-overlay confirmation">
+          <div className="modal-window confirm-modal">
+            <div className="modal-titlebar">
               Confirm Cancel
             </div>
-            <div style={{
-              padding: '1.5rem',
-              background: 'white',
-              fontSize: '0.875rem',
-              textAlign: 'center'
-            }}>
+            <div className="confirm-message">
               Are you sure you want to cancel? All changes will be lost!
             </div>
-            <div style={{
-              padding: '0.75rem',
-              background: '#c0c0c0',
-              display: 'flex',
-              justifyContent: 'center',
-              gap: '0.5rem'
-            }}>
+            <div className="modal-footer center">
               <button
                 onClick={handleConfirmCancel}
-                style={{
-                  padding: '0.5rem 2rem',
-                  background: '#c0c0c0',
-                  border: '2px solid',
-                  borderColor: '#ffffff #000000 #000000 #ffffff',
-                  cursor: 'pointer',
-                  fontWeight: 'bold',
-                  fontSize: '0.875rem',
-                  fontFamily: 'MS Sans Serif, sans-serif'
-                }}
-                onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
-                onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
+                className="modal-button wide"
               >
                 YES
               </button>
               <button
                 onClick={handleCancelCancel}
-                style={{
-                  padding: '0.5rem 2rem',
-                  background: '#c0c0c0',
-                  border: '2px solid',
-                  borderColor: '#ffffff #000000 #000000 #ffffff',
-                  cursor: 'pointer',
-                  fontWeight: 'bold',
-                  fontSize: '0.875rem',
-                  fontFamily: 'MS Sans Serif, sans-serif'
-                }}
-                onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
-                onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
+                className="modal-button wide"
               >
                 NO
               </button>

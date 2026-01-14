@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import '../styles/ShipmentTracking.css'
 
 function ShipmentTracking() {
   const [shipments, setShipments] = useState([])
@@ -260,56 +261,22 @@ function ShipmentTracking() {
 
   return (
     <div className="page">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+      <div className="shipment-header">
         <h1>Shipment Tracking</h1>
-        <button 
-          onClick={() => setShowModal(true)}
-          onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
-          onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
-          style={{ 
-            padding: '0.5rem 1.5rem', 
-            background: '#c0c0c0', 
-            border: '2px solid',
-            borderColor: '#ffffff #000000 #000000 #ffffff',
-            cursor: 'pointer',
-            fontWeight: 'bold',
-            fontFamily: 'MS Sans Serif, sans-serif',
-            fontSize: '0.875rem'
-          }}
-        >
-          + Create New Shipment
-        </button>
       </div>
 
-      <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
+      <div className="shipment-filters">
         <input 
           type="text" 
           placeholder="Search by tracking number, order ID, or customer..." 
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          style={{ 
-            padding: '0.5rem', 
-            flex: '1',
-            minWidth: '300px',
-            border: '2px solid',
-            borderColor: '#808080 #ebebeb #ebebeb #808080',
-            fontSize: '1rem',
-            fontFamily: 'MS Sans Serif, sans-serif',
-            background: '#ffffff'
-          }}
+          className="shipment-search-input"
         />
         <select 
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          style={{ 
-            padding: '0.5rem',
-            border: '2px solid',
-            borderColor: '#808080 #ebebeb #ebebeb #808080',
-            fontSize: '1rem',
-            fontFamily: 'MS Sans Serif, sans-serif',
-            background: '#ffffff',
-            cursor: 'pointer'
-          }}
+          className="shipment-filter-select"
         >
           <option value="">All Statuses</option>
           <option value="pending">Pending</option>
@@ -322,15 +289,7 @@ function ShipmentTracking() {
         <select 
           value={carrierFilter}
           onChange={(e) => setCarrierFilter(e.target.value)}
-          style={{ 
-            padding: '0.5rem',
-            border: '2px solid',
-            borderColor: '#808080 #ebebeb #ebebeb #808080',
-            fontSize: '1rem',
-            fontFamily: 'MS Sans Serif, sans-serif',
-            background: '#ffffff',
-            cursor: 'pointer'
-          }}
+          className="shipment-filter-select"
         >
           <option value="">All Carriers</option>
           <option value="fedex">FedEx</option>
@@ -338,36 +297,26 @@ function ShipmentTracking() {
           <option value="usps">USPS</option>
           <option value="dhl">DHL</option>
         </select>
+        <button 
+          onClick={() => setShowModal(true)}
+          className="shipment-add-button"
+        >
+          + Create New Shipment
+        </button>
       </div>
 
       {loading && (
-        <div style={{ textAlign: 'center', padding: '3rem', fontSize: '1.1rem', color: '#808080' }}>
+        <div className="shipment-loading">
           Loading shipments...
         </div>
       )}
 
       {error && (
-        <div style={{ 
-          padding: '1rem', 
-          background: '#f8d7da', 
-          color: '#721c24', 
-          border: '2px solid',
-          borderColor: '#f5c6cb',
-          marginBottom: '1rem',
-          fontFamily: 'MS Sans Serif, sans-serif'
-        }}>
+        <div className="shipment-error">
           Error: {error}
           <button 
             onClick={fetchShipments}
-            style={{ 
-              marginLeft: '1rem',
-              padding: '0.5rem 1rem',
-              background: '#c0c0c0',
-              border: '2px solid',
-              borderColor: '#ffffff #000000 #000000 #ffffff',
-              cursor: 'pointer',
-              fontFamily: 'MS Sans Serif, sans-serif'
-            }}
+            className="shipment-error-button"
           >
             Retry
           </button>
@@ -375,135 +324,41 @@ function ShipmentTracking() {
       )}
 
       {!loading && !error && sortedShipments.length === 0 && (
-        <div style={{ textAlign: 'center', padding: '3rem', fontSize: '1.1rem', color: '#808080' }}>
+        <div className="shipment-empty">
           No shipments found
         </div>
       )}
 
       {!loading && !error && sortedShipments.length > 0 && (
-      <div style={{ 
-        overflowX: 'auto',
-        border: '2px solid',
-        borderColor: '#808080 #ffffff #ffffff #808080',
-        background: 'white'
-      }}>
-        <table style={{ 
-          width: '100%', 
-          borderCollapse: 'collapse',
-          background: 'white',
-          fontFamily: 'MS Sans Serif, sans-serif',
-          fontSize: '0.875rem'
-        }}>
+      <div className="shipment-table-container">
+        <table className="shipment-table">
           <thead>
-            <tr style={{ 
-              background: '#000080',
-              color: 'white'
-            }}>
-              <th 
-                onClick={() => handleSort('shipment_id')}
-                style={{ 
-                  padding: '0.5rem', 
-                  textAlign: 'left', 
-                  fontWeight: 'bold', 
-                  borderRight: '1px solid #808080',
-                  cursor: 'pointer',
-                  userSelect: 'none'
-                }}
-              >
+            <tr>
+              <th onClick={() => handleSort('shipment_id')}>
                 Shipment ID {sortColumn === 'shipment_id' && (sortDirection === 'asc' ? '▲' : '▼')}
               </th>
-              <th 
-                onClick={() => handleSort('order_number')}
-                style={{ 
-                  padding: '0.5rem', 
-                  textAlign: 'left', 
-                  fontWeight: 'bold', 
-                  borderRight: '1px solid #808080',
-                  cursor: 'pointer',
-                  userSelect: 'none'
-                }}
-              >
+              <th onClick={() => handleSort('order_number')}>
                 Order ID {sortColumn === 'order_number' && (sortDirection === 'asc' ? '▲' : '▼')}
               </th>
-              <th 
-                onClick={() => handleSort('customer_name')}
-                style={{ 
-                  padding: '0.5rem', 
-                  textAlign: 'left', 
-                  fontWeight: 'bold', 
-                  borderRight: '1px solid #808080',
-                  cursor: 'pointer',
-                  userSelect: 'none'
-                }}
-              >
+              <th onClick={() => handleSort('customer_name')}>
                 Customer {sortColumn === 'customer_name' && (sortDirection === 'asc' ? '▲' : '▼')}
               </th>
-              <th 
-                onClick={() => handleSort('carrier')}
-                style={{ 
-                  padding: '0.5rem', 
-                  textAlign: 'left', 
-                  fontWeight: 'bold', 
-                  borderRight: '1px solid #808080',
-                  cursor: 'pointer',
-                  userSelect: 'none'
-                }}
-              >
+              <th onClick={() => handleSort('carrier')}>
                 Carrier {sortColumn === 'carrier' && (sortDirection === 'asc' ? '▲' : '▼')}
               </th>
-              <th 
-                onClick={() => handleSort('tracking_number')}
-                style={{ 
-                  padding: '0.5rem', 
-                  textAlign: 'left', 
-                  fontWeight: 'bold', 
-                  borderRight: '1px solid #808080',
-                  cursor: 'pointer',
-                  userSelect: 'none'
-                }}
-              >
+              <th onClick={() => handleSort('tracking_number')}>
                 Tracking Number {sortColumn === 'tracking_number' && (sortDirection === 'asc' ? '▲' : '▼')}
               </th>
-              <th 
-                onClick={() => handleSort('to_location')}
-                style={{ 
-                  padding: '0.5rem', 
-                  textAlign: 'left', 
-                  fontWeight: 'bold', 
-                  borderRight: '1px solid #808080',
-                  cursor: 'pointer',
-                  userSelect: 'none'
-                }}
-              >
+              <th onClick={() => handleSort('to_location')}>
                 Destination {sortColumn === 'to_location' && (sortDirection === 'asc' ? '▲' : '▼')}
               </th>
-              <th 
-                onClick={() => handleSort('shipped_date')}
-                style={{ 
-                  padding: '0.5rem', 
-                  textAlign: 'left', 
-                  fontWeight: 'bold', 
-                  borderRight: '1px solid #808080',
-                  cursor: 'pointer',
-                  userSelect: 'none'
-                }}
-              >
+              <th onClick={() => handleSort('shipped_date')}>
                 Date {sortColumn === 'shipped_date' && (sortDirection === 'asc' ? '▲' : '▼')}
               </th>
-              <th 
-                onClick={() => handleSort('status')}
-                style={{ 
-                  padding: '0.5rem', 
-                  textAlign: 'left', 
-                  fontWeight: 'bold', 
-                  borderRight: '1px solid #808080',
-                  cursor: 'pointer',
-                  userSelect: 'none'
-                }}
-              >
+              <th onClick={() => handleSort('status')}>
                 Status {sortColumn === 'status' && (sortDirection === 'asc' ? '▲' : '▼')}
               </th>
-              <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold' }}>Actions</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -512,116 +367,52 @@ function ShipmentTracking() {
               const progress = getStatusProgress(shipment.status)
               const isEvenRow = index % 2 === 0
               return (
-                <tr key={shipment.shipment_id} style={{ 
-                  background: isEvenRow ? 'white' : '#f0f0f0',
-                  borderBottom: '1px solid #c0c0c0'
-                }}>
-                  <td style={{ 
-                    padding: '0.5rem',
-                    fontWeight: 'bold',
-                    color: '#000080',
-                    borderRight: '1px solid #c0c0c0'
-                  }}>
+                <tr key={shipment.shipment_id} className={isEvenRow ? 'shipment-table-row-even' : 'shipment-table-row-odd'}>
+                  <td className="shipment-table-cell-id">
                     {shipment.shipment_id}
                   </td>
-                  <td style={{ 
-                    padding: '0.5rem',
-                    fontWeight: 'bold',
-                    borderRight: '1px solid #c0c0c0'
-                  }}>
+                  <td className="shipment-table-cell-order">
                     {shipment.order_number || 'N/A'}
                   </td>
-                  <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>
+                  <td className="shipment-table-cell">
                     {shipment.customer_name || 'N/A'}
                   </td>
-                  <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>
-                    <span style={{ 
-                      padding: '0.2rem 0.5rem',
-                      background: '#c0c0c0',
-                      border: '1px solid',
-                      borderColor: '#ffffff #000000 #000000 #ffffff',
-                      fontSize: '0.75rem',
-                      fontWeight: 'bold'
-                    }}>
+                  <td className="shipment-table-cell">
+                    <span className="shipment-carrier-badge">
                       {shipment.carrier || 'N/A'}
                     </span>
                   </td>
-                  <td style={{ 
-                    padding: '0.5rem',
-                    fontFamily: 'Courier New, monospace',
-                    fontSize: '0.75rem',
-                    borderRight: '1px solid #c0c0c0'
-                  }}>
+                  <td className="shipment-tracking-number">
                     {shipment.tracking_number || 'N/A'}
                   </td>
-                  <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>
+                  <td className="shipment-table-cell">
                     {shipment.to_location || 'N/A'}
                   </td>
-                  <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>
+                  <td className="shipment-table-cell">
                     {shipment.shipped_date ? new Date(shipment.shipped_date).toLocaleDateString() : 'N/A'}
                   </td>
-                  <td style={{ padding: '0.5rem', borderRight: '1px solid #c0c0c0' }}>
+                  <td className="shipment-status-container">
                     <div>
-                      <span style={{ 
-                        display: 'inline-block',
-                        padding: '0.2rem 0.5rem',
-                        fontSize: '0.75rem',
-                        fontWeight: 'bold',
+                      <span className="shipment-status-badge" style={{ 
                         background: statusColors.bg,
                         color: statusColors.text,
-                        border: '1px solid',
-                        borderColor: statusColors.text,
-                        marginBottom: '0.25rem'
+                        borderColor: statusColors.text
                       }}>
                         {shipment.status}
                       </span>
-                      <div style={{ 
-                        width: '100%',
-                        height: '4px',
-                        background: '#808080',
-                        border: '1px solid',
-                        borderColor: '#808080 #ffffff #ffffff #808080',
-                        overflow: 'hidden'
-                      }}>
-                        <div style={{ 
+                      <div className="shipment-status-progress-bar">
+                        <div className="shipment-status-progress-fill" style={{ 
                           width: `${progress}%`,
-                          height: '100%',
-                          background: statusColors.text,
-                          transition: 'width 0.3s ease'
+                          background: statusColors.text
                         }} />
                       </div>
                     </div>
                   </td>
-                  <td style={{ padding: '0.5rem' }}>
-                    <button 
-                      onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
-                      onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
-                      style={{ 
-                        padding: '0.25rem 0.75rem',
-                        marginRight: '0.25rem',
-                        background: '#c0c0c0',
-                        border: '2px solid',
-                        borderColor: '#ffffff #000000 #000000 #ffffff',
-                        cursor: 'pointer',
-                        fontSize: '0.75rem',
-                        fontFamily: 'MS Sans Serif, sans-serif'
-                      }}
-                    >
+                  <td className="shipment-actions-cell">
+                    <button className="shipment-action-button">
                       Track
                     </button>
-                    <button 
-                      onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
-                      onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
-                      style={{ 
-                        padding: '0.25rem 0.75rem',
-                        background: '#c0c0c0',
-                        border: '2px solid',
-                        borderColor: '#ffffff #000000 #000000 #ffffff',
-                        cursor: 'pointer',
-                        fontSize: '0.75rem',
-                        fontFamily: 'MS Sans Serif, sans-serif'
-                      }}
-                    >
+                    <button className="shipment-action-button">
                       Details
                     </button>
                   </td>
@@ -634,95 +425,40 @@ function ShipmentTracking() {
       )}
 
       {!loading && !error && (
-      <div style={{ 
-        marginTop: '1rem',
-        padding: '0.5rem',
-        color: '#000000',
-        fontFamily: 'MS Sans Serif, sans-serif',
-        fontSize: '0.875rem'
-      }}>
+      <div className="shipment-results-counter">
         Showing {sortedShipments.length} of {shipments.length} shipments
       </div>
       )}
 
       {/* Create Shipment Modal */}
       {showModal && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'rgba(0, 0, 0, 0.5)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 1000,
-          fontFamily: 'MS Sans Serif, sans-serif'
-        }}>
-          <div style={{
-            background: '#c0c0c0',
-            border: '2px solid',
-            borderColor: '#ffffff #000000 #000000 #ffffff',
-            width: '90%',
-            maxWidth: '600px',
-            maxHeight: '90vh',
-            overflow: 'auto'
-          }}>
+        <div className="shipment-modal-overlay">
+          <div className="shipment-modal-container">
             {/* Modal Header */}
-            <div style={{
-              background: 'linear-gradient(to right, #000080, #0000aa)',
-              color: 'white',
-              padding: '0.5rem',
-              fontWeight: 'bold',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center'
-            }}>
+            <div className="shipment-modal-header">
               <span>Create New Shipment</span>
               <button
                 onClick={() => setShowModal(false)}
-                style={{
-                  background: '#c0c0c0',
-                  border: '2px solid',
-                  borderColor: '#ffffff #000000 #000000 #ffffff',
-                  width: '20px',
-                  height: '20px',
-                  cursor: 'pointer',
-                  fontWeight: 'bold',
-                  fontSize: '0.75rem',
-                  padding: 0,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
+                className="shipment-modal-close"
               >
                 ×
               </button>
             </div>
 
             {/* Modal Body */}
-            <div style={{ padding: '1rem', background: 'white' }}>
+            <div className="shipment-modal-body">
               <form onSubmit={handleCreateShipment}>
                 {/* Company Selection */}
-                <div style={{ marginBottom: '1rem' }}>
-                  <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
-                    Company Name: <span style={{ color: 'red' }}>*</span>
+                <div className="shipment-form-group">
+                  <label className="shipment-form-label">
+                    Company Name: <span className="shipment-form-required">*</span>
                   </label>
                   <select
                     name="customer_id"
                     value={formData.customer_id}
                     onChange={handleInputChange}
                     disabled={showNewCustomerForm}
-                    style={{
-                      width: '100%',
-                      padding: '0.5rem',
-                      border: '2px solid',
-                      borderColor: '#808080 #ebebeb #ebebeb #808080',
-                      fontSize: '0.875rem',
-                      fontFamily: 'MS Sans Serif, sans-serif',
-                      opacity: showNewCustomerForm ? 0.6 : 1
-                    }}
+                    className={showNewCustomerForm ? 'shipment-form-select-disabled' : 'shipment-form-select'}
                   >
                     <option value="">-- Select a company --</option>
                     {customers.map(customer => (
@@ -735,93 +471,50 @@ function ShipmentTracking() {
                   <button
                     type="button"
                     onClick={() => setShowNewCustomerForm(!showNewCustomerForm)}
-                    onMouseDown={(e) => e.target.style.borderColor = '#000000 #ebebeb #ebebeb #000000'}
-                    onMouseUp={(e) => e.target.style.borderColor = '#ebebeb #000000 #000000 #ebebeb'}
-                    style={{
-                      width: '100%',
-                      marginTop: '0.5rem',
-                      padding: '0.5rem',
-                      background: '#c0c0c0',
-                      border: '2px solid',
-                      borderColor: '#ebebeb #000000 #000000 #ebebeb',
-                      cursor: 'pointer',
-                      fontWeight: 'bold',
-                      fontSize: '0.875rem',
-                      fontFamily: 'MS Sans Serif, sans-serif'
-                    }}
+                    className="shipment-form-toggle-button"
                   >
                     {showNewCustomerForm ? 'Cancel' : '+ Add New Company'}
                   </button>
 
                   {/* New Customer Form */}
                   {showNewCustomerForm && (
-                    <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '2px solid #c0c0c0' }}>
+                    <div className="shipment-new-customer-section">
                       <input
                         type="text"
                         placeholder="Company Name *"
                         value={newCustomer.company_name}
                         onChange={(e) => setNewCustomer({ ...newCustomer, company_name: e.target.value })}
-                        style={{
-                          width: '100%',
-                          padding: '0.5rem',
-                          border: '2px solid',
-                          borderColor: '#808080 #ebebeb #ebebeb #808080',
-                          marginBottom: '0.5rem',
-                          fontFamily: 'MS Sans Serif, sans-serif',
-                          fontSize: '0.875rem'
-                        }}
+                        className="shipment-form-input-spacing"
                       />
                       <input
                         type="email"
                         placeholder="Email *"
                         value={newCustomer.email}
                         onChange={(e) => setNewCustomer({ ...newCustomer, email: e.target.value })}
-                        style={{
-                          width: '100%',
-                          padding: '0.5rem',
-                          border: '2px solid',
-                          borderColor: '#808080 #ebebeb #ebebeb #808080',
-                          marginBottom: '0.5rem',
-                          fontFamily: 'MS Sans Serif, sans-serif',
-                          fontSize: '0.875rem'
-                        }}
+                        className="shipment-form-input-spacing"
                       />
                       <input
                         type="tel"
                         placeholder="Phone"
                         value={newCustomer.phone}
                         onChange={(e) => setNewCustomer({ ...newCustomer, phone: e.target.value })}
-                        style={{
-                          width: '100%',
-                          padding: '0.5rem',
-                          border: '2px solid',
-                          borderColor: '#808080 #ebebeb #ebebeb #808080',
-                          fontFamily: 'MS Sans Serif, sans-serif',
-                          fontSize: '0.875rem'
-                        }}
+                        className="shipment-form-input"
                       />
                     </div>
                   )}
                 </div>
 
                 {/* Carrier */}
-                <div style={{ marginBottom: '1rem' }}>
-                  <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
-                    Carrier: <span style={{ color: 'red' }}>*</span>
+                <div className="shipment-form-group">
+                  <label className="shipment-form-label">
+                    Carrier: <span className="shipment-form-required">*</span>
                   </label>
                   <select
                     name="carrier"
                     value={formData.carrier}
                     onChange={handleInputChange}
                     required
-                    style={{
-                      width: '100%',
-                      padding: '0.5rem',
-                      border: '2px solid',
-                      borderColor: '#808080 #ebebeb #ebebeb #808080',
-                      fontSize: '0.875rem',
-                      fontFamily: 'MS Sans Serif, sans-serif'
-                    }}
+                    className="shipment-form-select"
                   >
                     <option value="">-- Select carrier --</option>
                     <option value="FedEx">FedEx</option>
@@ -832,22 +525,15 @@ function ShipmentTracking() {
                 </div>
 
                 {/* Status */}
-                <div style={{ marginBottom: '1rem' }}>
-                  <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
+                <div className="shipment-form-group">
+                  <label className="shipment-form-label">
                     Status:
                   </label>
                   <select
                     name="status"
                     value={formData.status}
                     onChange={handleInputChange}
-                    style={{
-                      width: '100%',
-                      padding: '0.5rem',
-                      border: '2px solid',
-                      borderColor: '#808080 #ebebeb #ebebeb #808080',
-                      fontSize: '0.875rem',
-                      fontFamily: 'MS Sans Serif, sans-serif'
-                    }}
+                    className="shipment-form-select"
                   >
                     <option value="Pending">Pending</option>
                     <option value="Processing">Processing</option>
@@ -859,8 +545,8 @@ function ShipmentTracking() {
                 </div>
 
                 {/* Shipped Date */}
-                <div style={{ marginBottom: '1rem' }}>
-                  <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
+                <div className="shipment-form-group">
+                  <label className="shipment-form-label">
                     Shipped Date:
                   </label>
                   <input
@@ -868,20 +554,13 @@ function ShipmentTracking() {
                     name="shipped_date"
                     value={formData.shipped_date}
                     onChange={handleInputChange}
-                    style={{
-                      width: '100%',
-                      padding: '0.5rem',
-                      border: '2px solid',
-                      borderColor: '#808080 #ebebeb #ebebeb #808080',
-                      fontSize: '0.875rem',
-                      fontFamily: 'MS Sans Serif, sans-serif'
-                    }}
+                    className="shipment-form-input"
                   />
                 </div>
 
                 {/* Estimated Delivery */}
-                <div style={{ marginBottom: '1rem' }}>
-                  <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
+                <div className="shipment-form-group">
+                  <label className="shipment-form-label">
                     Estimated Delivery:
                   </label>
                   <input
@@ -889,20 +568,13 @@ function ShipmentTracking() {
                     name="estimated_delivery"
                     value={formData.estimated_delivery}
                     onChange={handleInputChange}
-                    style={{
-                      width: '100%',
-                      padding: '0.5rem',
-                      border: '2px solid',
-                      borderColor: '#808080 #ebebeb #ebebeb #808080',
-                      fontSize: '0.875rem',
-                      fontFamily: 'MS Sans Serif, sans-serif'
-                    }}
+                    className="shipment-form-input"
                   />
                 </div>
 
                 {/* From Location */}
-                <div style={{ marginBottom: '1rem' }}>
-                  <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
+                <div className="shipment-form-group">
+                  <label className="shipment-form-label">
                     From Location:
                   </label>
                   <input
@@ -911,20 +583,13 @@ function ShipmentTracking() {
                     value={formData.from_location}
                     onChange={handleInputChange}
                     placeholder="Origin address"
-                    style={{
-                      width: '100%',
-                      padding: '0.5rem',
-                      border: '2px solid',
-                      borderColor: '#808080 #ebebeb #ebebeb #808080',
-                      fontSize: '0.875rem',
-                      fontFamily: 'MS Sans Serif, sans-serif'
-                    }}
+                    className="shipment-form-input"
                   />
                 </div>
 
                 {/* To Location */}
-                <div style={{ marginBottom: '1rem' }}>
-                  <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
+                <div className="shipment-form-group">
+                  <label className="shipment-form-label">
                     To Location:
                   </label>
                   <input
@@ -933,20 +598,13 @@ function ShipmentTracking() {
                     value={formData.to_location}
                     onChange={handleInputChange}
                     placeholder="Destination address"
-                    style={{
-                      width: '100%',
-                      padding: '0.5rem',
-                      border: '2px solid',
-                      borderColor: '#808080 #ebebeb #ebebeb #808080',
-                      fontSize: '0.875rem',
-                      fontFamily: 'MS Sans Serif, sans-serif'
-                    }}
+                    className="shipment-form-input"
                   />
                 </div>
 
                 {/* Notes */}
-                <div style={{ marginBottom: '1rem' }}>
-                  <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold', fontSize: '0.875rem' }}>
+                <div className="shipment-form-group">
+                  <label className="shipment-form-label">
                     Notes:
                   </label>
                   <textarea
@@ -955,36 +613,16 @@ function ShipmentTracking() {
                     onChange={handleInputChange}
                     rows="3"
                     placeholder="Additional notes or special instructions"
-                    style={{
-                      width: '100%',
-                      padding: '0.5rem',
-                      border: '2px solid',
-                      borderColor: '#808080 #ebebeb #ebebeb #808080',
-                      fontSize: '0.875rem',
-                      fontFamily: 'MS Sans Serif, sans-serif',
-                      resize: 'vertical'
-                    }}
+                    className="shipment-form-textarea"
                   />
                 </div>
 
                 {/* Action Buttons */}
-                <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1.5rem' }}>
+                <div className="shipment-form-actions">
                   <button
                     type="submit"
                     disabled={submitting}
-                    onMouseDown={(e) => !submitting && (e.target.style.borderColor = '#000000 #ebebeb #ebebeb #000000')}
-                    onMouseUp={(e) => !submitting && (e.target.style.borderColor = '#ebebeb #000000 #000000 #ebebeb')}
-                    style={{
-                      flex: 1,
-                      padding: '0.75rem',
-                      background: submitting ? '#808080' : '#c0c0c0',
-                      border: '2px solid',
-                      borderColor: '#ebebeb #000000 #000000 #ebebeb',
-                      cursor: submitting ? 'not-allowed' : 'pointer',
-                      fontWeight: 'bold',
-                      fontSize: '0.875rem',
-                      fontFamily: 'MS Sans Serif, sans-serif'
-                    }}
+                    className={submitting ? 'shipment-form-submit-button-disabled' : 'shipment-form-submit-button'}
                   >
                     {submitting ? 'Creating...' : 'Create Shipment'}
                   </button>
@@ -992,19 +630,7 @@ function ShipmentTracking() {
                     type="button"
                     onClick={() => setShowModal(false)}
                     disabled={submitting}
-                    onMouseDown={(e) => !submitting && (e.target.style.borderColor = '#000000 #ebebeb #ebebeb #000000')}
-                    onMouseUp={(e) => !submitting && (e.target.style.borderColor = '#ebebeb #000000 #000000 #ebebeb')}
-                    style={{
-                      flex: 1,
-                      padding: '0.75rem',
-                      background: submitting ? '#808080' : '#c0c0c0',
-                      border: '2px solid',
-                      borderColor: '#ebebeb #000000 #000000 #ebebeb',
-                      cursor: submitting ? 'not-allowed' : 'pointer',
-                      fontWeight: 'bold',
-                      fontSize: '0.875rem',
-                      fontFamily: 'MS Sans Serif, sans-serif'
-                    }}
+                    className={submitting ? 'shipment-form-cancel-button-disabled' : 'shipment-form-cancel-button'}
                   >
                     Cancel
                   </button>
