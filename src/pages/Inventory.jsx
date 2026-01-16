@@ -6,7 +6,8 @@ function Inventory() {
   const [error, setError] = useState(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [searchBy, setSearchBy] = useState('all')
-  const [sortOrder, setSortOrder] = useState('name-asc')
+  const [sortColumn, setSortColumn] = useState(null)
+  const [sortDirection, setSortDirection] = useState('asc')
   const [stockFilter, setStockFilter] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 25
@@ -198,35 +199,51 @@ function Inventory() {
     }
 
     // Apply sorting
-    filtered.sort((a, b) => {
-      switch (sortOrder) {
-        case 'name-asc':
-          return (a.name || '').localeCompare(b.name || '')
-        case 'name-desc':
-          return (b.name || '').localeCompare(a.name || '')
-        case 'partNumber-asc':
-          return (a.part_number || '').localeCompare(b.part_number || '')
-        case 'partNumber-desc':
-          return (b.part_number || '').localeCompare(a.part_number || '')
-        case 'manufacturer-asc':
-          return (a.manufacturer || '').localeCompare(b.manufacturer || '')
-        case 'manufacturer-desc':
-          return (b.manufacturer || '').localeCompare(a.manufacturer || '')
-        case 'quantity-asc':
-          return a.quantity - b.quantity
-        case 'quantity-desc':
-          return b.quantity - a.quantity
-        case 'price-asc':
-          return a.price_per_unit - b.price_per_unit
-        case 'price-desc':
-          return b.price_per_unit - a.price_per_unit
-        default:
-          return 0
-      }
-    })
+    if (sortColumn) {
+      filtered.sort((a, b) => {
+        let aVal, bVal
+        
+        // Get values based on column
+        switch(sortColumn) {
+          case 'name':
+            aVal = (a.name || '').toLowerCase()
+            bVal = (b.name || '').toLowerCase()
+            break
+          case 'part_number':
+            aVal = (a.part_number || '').toLowerCase()
+            bVal = (b.part_number || '').toLowerCase()
+            break
+          case 'manufacturer':
+            aVal = (a.manufacturer || '').toLowerCase()
+            bVal = (b.manufacturer || '').toLowerCase()
+            break
+          case 'quantity':
+            aVal = a.quantity || 0
+            bVal = b.quantity || 0
+            break
+          case 'price_per_unit':
+            aVal = a.price_per_unit || 0
+            bVal = b.price_per_unit || 0
+            break
+          default:
+            return 0
+        }
+        
+        // Compare values
+        let comparison = 0
+        if (typeof aVal === 'number') {
+          comparison = aVal - bVal
+        } else {
+          comparison = aVal < bVal ? -1 : aVal > bVal ? 1 : 0
+        }
+        
+        // Apply sort direction
+        return sortDirection === 'asc' ? comparison : -comparison
+      })
+    }
 
     return filtered
-  }, [inventoryItems, searchTerm, searchBy, sortOrder, stockFilter])
+  }, [inventoryItems, searchTerm, searchBy, sortColumn, sortDirection, stockFilter])
 
   // Pagination calculations
   const totalPages = Math.ceil(filteredAndSortedItems.length / itemsPerPage)
@@ -237,7 +254,7 @@ function Inventory() {
   // Reset to page 1 when filters change
   useEffect(() => {
     setCurrentPage(1)
-  }, [searchTerm, searchBy, sortOrder, stockFilter])
+  }, [searchTerm, searchBy, sortColumn, sortDirection, stockFilter])
 
   const getStockStatus = (status) => {
     switch (status) {
@@ -249,6 +266,17 @@ function Inventory() {
         return { color: '#00ff00', text: '#000000' }
       default:
         return { color: '#c0c0c0', text: '#000000' }
+    }
+  }
+
+  const handleSort = (column) => {
+    if (sortColumn === column) {
+      // Toggle direction if same column
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
+    } else {
+      // New column, default to ascending
+      setSortColumn(column)
+      setSortDirection('asc')
     }
   }
 
@@ -334,30 +362,6 @@ function Inventory() {
               <option value="description">Search by Description</option>
             </select>
             <select
-              value={sortOrder}
-              onChange={(e) => setSortOrder(e.target.value)}
-              style={{
-                padding: '0.5rem',
-                border: '2px solid',
-                borderColor: '#808080 #ebebeb #ebebeb #808080',
-                fontSize: '0.875rem',
-                cursor: 'pointer',
-                minWidth: '180px',
-                fontFamily: 'MS Sans Serif, sans-serif'
-              }}
-            >
-              <option value="name-asc">Name (A-Z)</option>
-              <option value="name-desc">Name (Z-A)</option>
-              <option value="partNumber-asc">Part Number (A-Z)</option>
-              <option value="partNumber-desc">Part Number (Z-A)</option>
-              <option value="manufacturer-asc">Manufacturer (A-Z)</option>
-              <option value="manufacturer-desc">Manufacturer (Z-A)</option>
-              <option value="quantity-asc">Quantity (Low-High)</option>
-              <option value="quantity-desc">Quantity (High-Low)</option>
-              <option value="price-asc">Price (Low-High)</option>
-              <option value="price-desc">Price (High-Low)</option>
-            </select>
-            <select
               value={stockFilter}
               onChange={(e) => setStockFilter(e.target.value)}
               style={{
@@ -396,12 +400,72 @@ function Inventory() {
                   color: 'white'
                 }}>
                   <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Photo</th>
-                  <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Name</th>
-                  <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Part Number</th>
-                  <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Manufacturer</th>
+                  <th 
+                    onClick={() => handleSort('name')}
+                    style={{ 
+                      padding: '0.5rem', 
+                      textAlign: 'left', 
+                      fontWeight: 'bold', 
+                      borderRight: '1px solid #808080',
+                      cursor: 'pointer',
+                      userSelect: 'none'
+                    }}
+                  >
+                    Name {sortColumn === 'name' && (sortDirection === 'asc' ? '▲' : '▼')}
+                  </th>
+                  <th 
+                    onClick={() => handleSort('part_number')}
+                    style={{ 
+                      padding: '0.5rem', 
+                      textAlign: 'left', 
+                      fontWeight: 'bold', 
+                      borderRight: '1px solid #808080',
+                      cursor: 'pointer',
+                      userSelect: 'none'
+                    }}
+                  >
+                    Part Number {sortColumn === 'part_number' && (sortDirection === 'asc' ? '▲' : '▼')}
+                  </th>
+                  <th 
+                    onClick={() => handleSort('manufacturer')}
+                    style={{ 
+                      padding: '0.5rem', 
+                      textAlign: 'left', 
+                      fontWeight: 'bold', 
+                      borderRight: '1px solid #808080',
+                      cursor: 'pointer',
+                      userSelect: 'none'
+                    }}
+                  >
+                    Manufacturer {sortColumn === 'manufacturer' && (sortDirection === 'asc' ? '▲' : '▼')}
+                  </th>
                   <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Description</th>
-                  <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Quantity</th>
-                  <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold', borderRight: '1px solid #808080' }}>Price/Unit</th>
+                  <th 
+                    onClick={() => handleSort('quantity')}
+                    style={{ 
+                      padding: '0.5rem', 
+                      textAlign: 'left', 
+                      fontWeight: 'bold', 
+                      borderRight: '1px solid #808080',
+                      cursor: 'pointer',
+                      userSelect: 'none'
+                    }}
+                  >
+                    Quantity {sortColumn === 'quantity' && (sortDirection === 'asc' ? '▲' : '▼')}
+                  </th>
+                  <th 
+                    onClick={() => handleSort('price_per_unit')}
+                    style={{ 
+                      padding: '0.5rem', 
+                      textAlign: 'left', 
+                      fontWeight: 'bold', 
+                      borderRight: '1px solid #808080',
+                      cursor: 'pointer',
+                      userSelect: 'none'
+                    }}
+                  >
+                    Price/Unit {sortColumn === 'price_per_unit' && (sortDirection === 'asc' ? '▲' : '▼')}
+                  </th>
                   <th style={{ padding: '0.5rem', textAlign: 'left', fontWeight: 'bold' }}>Actions</th>
                 </tr>
               </thead>
