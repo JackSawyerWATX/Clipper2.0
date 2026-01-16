@@ -282,25 +282,8 @@ function Inventory() {
 
   return (
     <div className="page">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+      <div style={{ marginBottom: '2rem' }}>
         <h1>Inventory</h1>
-        <button
-          onClick={handleAddClick}
-          onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
-          onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
-          style={{
-            padding: '0.5rem 1.5rem',
-            background: '#c0c0c0',
-            border: '2px solid',
-            borderColor: '#ffffff #000000 #000000 #ffffff',
-            cursor: 'pointer',
-            fontWeight: 'bold',
-            fontFamily: 'MS Sans Serif, sans-serif',
-            fontSize: '0.875rem'
-          }}
-        >
-          + Add New Item
-        </button>
       </div>
 
       {loading && (
@@ -325,7 +308,7 @@ function Inventory() {
 
       {!loading && !error && (
         <>
-          <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
             <div style={{ flex: '1', minWidth: '300px' }}>
               <input
                 type="text"
@@ -379,6 +362,24 @@ function Inventory() {
               <option value="low-stock">Low Stock</option>
               <option value="out-of-stock">Out of Stock</option>
             </select>
+            <button
+              onClick={handleAddClick}
+              onMouseDown={(e) => e.target.style.borderColor = '#000000 #ffffff #ffffff #000000'}
+              onMouseUp={(e) => e.target.style.borderColor = '#ffffff #000000 #000000 #ffffff'}
+              style={{
+                padding: '0.5rem 1.5rem',
+                background: '#c0c0c0',
+                border: '2px solid',
+                borderColor: '#ffffff #000000 #000000 #ffffff',
+                cursor: 'pointer',
+                fontWeight: 'bold',
+                fontFamily: 'MS Sans Serif, sans-serif',
+                fontSize: '0.875rem',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              + Add New Item
+            </button>
           </div>
 
           <div style={{
