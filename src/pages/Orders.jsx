@@ -18,6 +18,8 @@ function Orders() {
   const [showSaveConfirm, setShowSaveConfirm] = useState(false)
   const [showCancelConfirm, setShowCancelConfirm] = useState(false)
   const [saving, setSaving] = useState(false)
+  const [sortColumn, setSortColumn] = useState(null)
+  const [sortDirection, setSortDirection] = useState('asc') // 'asc' or 'desc'
 
   useEffect(() => {
     fetchOrders()
@@ -42,6 +44,15 @@ function Orders() {
     }
   }
 
+  const handleSort = (column) => {
+    if (sortColumn === column) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
+    } else {
+      setSortColumn(column)
+      setSortDirection('asc')
+    }
+  }
+
   // Filter orders based on search and status
   const filteredOrders = orders.filter(order => {
     const matchesSearch = !searchTerm || 
@@ -50,6 +61,7 @@ function Orders() {
     const matchesStatus = !statusFilter || order.status?.toLowerCase() === statusFilter.toLowerCase()
     return matchesSearch && matchesStatus
   })
+
 
   const handleViewOrder = async (order) => {
     setSelectedOrder(order)
@@ -237,6 +249,41 @@ function Orders() {
     return stateMap[stateCode] || stateCode
   }
 
+  const getSortableValue = (order, column) => {
+    switch (column) {
+      case 'order_number':
+        return (order.order_number || '').toLowerCase()
+      case 'state':
+        return (getStateFromOrderNumber(order.order_number) || '').toLowerCase()
+      case 'customer_name':
+        return (order.customer_name || '').toLowerCase()
+      case 'order_date':
+        return order.order_date ? new Date(order.order_date).getTime() : 0
+      case 'grand_total':
+        return parseFloat(order.grand_total || 0)
+      case 'status':
+        return (order.status || '').toLowerCase()
+      default:
+        return ''
+    }
+  }
+
+  const sortedOrders = sortColumn
+    ? [...filteredOrders].sort((a, b) => {
+        const aVal = getSortableValue(a, sortColumn)
+        const bVal = getSortableValue(b, sortColumn)
+
+        let comparison = 0
+        if (typeof aVal === 'number' && typeof bVal === 'number') {
+          comparison = aVal - bVal
+        } else {
+          comparison = aVal < bVal ? -1 : aVal > bVal ? 1 : 0
+        }
+
+        return sortDirection === 'asc' ? comparison : -comparison
+      })
+    : filteredOrders
+
   const getStatusColor = (status) => {
     const colors = {
       'Completed': { bg: '#00ff00', text: '#000000' },
@@ -296,24 +343,36 @@ function Orders() {
         <table className="orders-table">
           <thead>
             <tr>
-              <th>Order ID</th>
-              <th>State</th>
-              <th>Customer</th>
-              <th>Date</th>
-              <th>Total</th>
-              <th>Status</th>
+              <th onClick={() => handleSort('order_number')}>
+                Order ID {sortColumn === 'order_number' && (sortDirection === 'asc' ? '▲' : '▼')}
+              </th>
+              <th onClick={() => handleSort('state')}>
+                State {sortColumn === 'state' && (sortDirection === 'asc' ? '▲' : '▼')}
+              </th>
+              <th onClick={() => handleSort('customer_name')}>
+                Customer {sortColumn === 'customer_name' && (sortDirection === 'asc' ? '▲' : '▼')}
+              </th>
+              <th onClick={() => handleSort('order_date')}>
+                Date {sortColumn === 'order_date' && (sortDirection === 'asc' ? '▲' : '▼')}
+              </th>
+              <th onClick={() => handleSort('grand_total')}>
+                Total {sortColumn === 'grand_total' && (sortDirection === 'asc' ? '▲' : '▼')}
+              </th>
+              <th onClick={() => handleSort('status')}>
+                Status {sortColumn === 'status' && (sortDirection === 'asc' ? '▲' : '▼')}
+              </th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {filteredOrders.length === 0 ? (
+            {sortedOrders.length === 0 ? (
               <tr>
                 <td colSpan="7" className="empty-cell">
                   {orders.length === 0 ? 'No orders found' : 'No orders match your filters'}
                 </td>
               </tr>
             ) : (
-              filteredOrders.map((order, index) => {
+              sortedOrders.map((order, index) => {
                 const statusColors = getStatusColor(order.status)
                 const isEvenRow = index % 2 === 0
                 return (
