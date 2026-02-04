@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import '../styles/Login.css'
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 function Login({ onLogin }) {
   const [credentials, setCredentials] = useState({
     username: '',
@@ -14,20 +16,43 @@ function Login({ onLogin }) {
     setError('')
     setIsLoading(true)
 
-    // Simulate authentication - will be replaced with actual auth later
-    setTimeout(() => {
-      if (credentials.username && credentials.password) {
-        // Successful login - will integrate with actual auth system
-        onLogin({
+    try {
+      const response = await fetch(`${API_URL}/api/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
           username: credentials.username,
-          role: 'admin', // Will be determined by backend
-          permissions: [] // Will be set by admin
+          password: credentials.password
         })
-      } else {
-        setError('Please enter both username and password')
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Login failed')
       }
+
+      // Store token in localStorage
+      localStorage.setItem('token', data.token)
+      localStorage.setItem('user', JSON.stringify(data.user))
+
+      // Call onLogin with user data
+      onLogin({
+        username: data.user.username,
+        role: data.user.role,
+        permissions: data.user.permissions || [],
+        user_id: data.user.user_id,
+        email: data.user.email
+      })
+
+    } catch (err) {
+      console.error('Login error:', err)
+      setError(err.message || 'Failed to login. Please try again.')
+    } finally {
       setIsLoading(false)
-    }, 500)
+    }
   }
 
   const handleChange = (e) => {

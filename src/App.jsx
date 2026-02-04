@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import './App.css'
+import { getUser, clearAuth, verifyToken } from './utils/auth'
 
 // Import page components
 import Login from './pages/Login'
@@ -22,6 +23,28 @@ function App() {
   const [currentTime, setCurrentTime] = useState(new Date())
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [currentUser, setCurrentUser] = useState(null)
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true)
+
+  // Check for existing authentication on mount
+  useEffect(() => {
+    const checkAuth = async () => {
+      const user = getUser()
+      
+      if (user) {
+        // Verify token is still valid
+        const isValid = await verifyToken()
+        
+        if (isValid) {
+          setCurrentUser(user)
+          setIsAuthenticated(true)
+        }
+      }
+      
+      setIsCheckingAuth(false)
+    }
+
+    checkAuth()
+  }, [])
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -36,8 +59,24 @@ function App() {
   }
 
   const handleLogout = () => {
+    clearAuth()
     setCurrentUser(null)
     setIsAuthenticated(false)
+  }
+
+  // Show loading while checking authentication
+  if (isCheckingAuth) {
+    return (
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        height: '100vh',
+        fontSize: '1.2rem'
+      }}>
+        Loading...
+      </div>
+    )
   }
 
   // Show login page if not authenticated
