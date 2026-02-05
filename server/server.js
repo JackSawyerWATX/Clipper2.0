@@ -23,6 +23,7 @@ app.use((req, res, next) => {
 });
 
 // Import routes
+const authRoutes = require('./routes/auth');
 const customersRoutes = require('./routes/customers');
 const ordersRoutes = require('./routes/orders');
 const suppliersRoutes = require('./routes/suppliers');
@@ -35,6 +36,7 @@ const paymentsRoutes = require('./routes/payments');
 const reportsRoutes = require('./routes/reports');
 
 // API Routes
+app.use('/api/auth', authRoutes);
 app.use('/api/customers', customersRoutes);
 app.use('/api/orders', ordersRoutes);
 app.use('/api/suppliers', suppliersRoutes);
