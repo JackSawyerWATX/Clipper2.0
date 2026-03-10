@@ -8,8 +8,4 @@ phases:
   build:
     commands:
       - npm run build --if-present
-      - echo "Tests temporarily disabled - see issue tracker"
-      # npm test - disabled due to Vitest/JSDOM ES module compatibility
-  post_build:
-    commands:
       - echo "Build completed successfully"
