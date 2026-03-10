@@ -1,18 +1,24 @@
 ﻿version: 0.2
+
 phases:
   install:
     runtime-versions:
       nodejs: 20
     commands:
+      - echo "Installing dependencies..."
       - npm ci
+
   build:
     commands:
-      - echo "Running build"
+      - echo "Building React frontend..."
       - npm run build --if-present
-      - echo "Tests temporarily disabled due to Vitest/JSDOM ES module compatibility issue"
-      - echo "Build artifacts created successfully"
-      # - npm test  # Temporarily commented out
+      - echo "✅ Build completed successfully"
+      - echo ""
+      - echo "⚠️  Tests temporarily disabled"
+      - echo "Reason: Vitest 4.x + JSDOM 28.x ES module compatibility issue"
+      - echo "See FIXING_VITEST_JSDOM.md for resolution steps"
+
   post_build:
     commands:
-      - echo "Build completed successfully"
-      - echo "TODO: Fix Vitest configuration and re-enable tests"
+      - echo "✅ Pipeline completed successfully"
+      - echo "Build artifacts ready for deployment to Elastic Beanstalk"
