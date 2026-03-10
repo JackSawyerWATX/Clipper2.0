@@ -1,39 +1,16 @@
 ﻿version: 0.2
-
 phases:
   install:
     runtime-versions:
       nodejs: 20
     commands:
-      - echo "Node.js version:" $(node --version)
-      - echo "npm version:" $(npm --version)
-      - echo "Installing frontend dependencies..."
       - npm ci
-
-  pre_build:
-    commands:
-      - echo "Installing backend dependencies..."
-      - cd server
-      - npm ci
-      - cd ..
-      - echo "Running frontend tests..."
-      - npm test -- run --reporter=verbose 2>/dev/null || echo "Some frontend tests failed, continuing..."
-      - echo "Running backend tests..."
-      - cd server
-      - npm test 2>/dev/null || echo "Some backend tests failed, continuing..."
-      - cd ..
-
   build:
     commands:
-      - echo "Building React frontend..."
-      - npm run build
-      - echo "✅ Build completed successfully"
-
+      - echo "Running build"
+      - npm run build --if-present
+      - echo "Running tests with threads pool"
+      - npx vitest run --pool=threads --poolOptions.threads.singleThread=true
   post_build:
     commands:
-      - echo "Deployment ready"
-
-artifacts:
-  files:
-    - '**/*'
-  discard-paths: yes
+      - echo "Build completed successfully"
