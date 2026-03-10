@@ -12,3 +12,4 @@ phases:
     commands:
       - npm run build --if-present
       - echo "Build completed successfully"
+
