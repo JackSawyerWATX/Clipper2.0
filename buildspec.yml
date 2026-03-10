@@ -2,6 +2,11 @@
 phases:
   install:
     commands:
+      - echo "Installing Node.js 20..."
+      - curl -fsSL https://rpm.nodesource.com/setup_20.x | sudo bash -
+      - sudo yum install -y nodejs
+      - node --version
+      - npm --version
       - npm ci
   build:
     commands:
