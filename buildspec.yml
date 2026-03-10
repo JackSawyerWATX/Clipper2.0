@@ -1,15 +1,17 @@
 ﻿version: 0.2
+
 phases:
   install:
+    runtime-versions:
+      nodejs: 20
     commands:
-      - echo "Installing Node.js 20..."
-      - curl -fsSL https://rpm.nodesource.com/setup_20.x | sudo bash -
-      - sudo yum install -y nodejs
-      - node --version
-      - npm --version
       - npm ci
+
   build:
     commands:
       - npm run build --if-present
-      - echo "Build completed successfully"
+
+  post_build:
+    commands:
+      - echo "Build completed"
 
