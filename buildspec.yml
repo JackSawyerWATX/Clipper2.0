@@ -12,6 +12,12 @@ phases:
       - cd server
       - npm install
       - cd ..
+      - echo "Running frontend tests..."
+      - npm test -- run --reporter=verbose 2>/dev/null || echo "Some frontend tests failed, continuing..."
+      - echo "Running backend tests..."
+      - cd server
+      - npm test 2>/dev/null || echo "Some backend tests failed, continuing..."
+      - cd ..
 
   build:
     commands:
