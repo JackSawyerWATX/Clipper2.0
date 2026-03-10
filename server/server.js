@@ -53,21 +53,18 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Clipper API is running' });
 });
 
-// Root endpoint
-app.get('/', (req, res) => {
-  res.json({ 
-    message: 'Clipper 2.0 API Server',
-    version: '1.0.0',
-    endpoints: {
-      customers: '/api/customers',
-      orders: '/api/orders',
-      suppliers: '/api/suppliers',
-      inventory: '/api/inventory',
-      customerOrders: '/api/customer-orders',
-      analytics: '/api/analytics',
-      users: '/api/users',
-      shipments: '/api/shipments',
-      payments: '/api/payments'
+// Serve static React frontend files
+const frontendPath = path.join(__dirname, '../dist');
+app.use(express.static(frontendPath, { 
+  etag: false,
+  maxAge: '1d'
+}));
+
+// Serve index.html for all non-API routes (for React Router)
+app.get(/^\/(?!api\/).*$/, (req, res) => {
+  res.sendFile(path.join(frontendPath, 'index.html'), (err) => {
+    if (err) {
+      res.status(404).json({ error: 'Frontend not built. Run npm run build' });
     }
   });
 });

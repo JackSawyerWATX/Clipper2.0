@@ -1,0 +1,29 @@
+﻿version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo "Installing frontend dependencies..."
+      - npm install
+
+  pre_build:
+    commands:
+      - echo "Installing backend dependencies..."
+      - cd server
+      - npm install
+      - cd ..
+
+  build:
+    commands:
+      - echo "Building React frontend..."
+      - npm run build
+      - echo "✅ Build completed successfully"
+
+  post_build:
+    commands:
+      - echo "Deployment ready"
+
+artifacts:
+  files:
+    - '**/*'
+  discard-paths: yes
