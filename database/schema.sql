@@ -193,7 +193,7 @@ CREATE TABLE IF NOT EXISTS payments (
 -- Insert Default Admin User (password: admin123)
 -- Note: In production, use bcrypt to hash passwords
 INSERT INTO users (username, password_hash, email, role, status, permissions) VALUES
-('admin', '$2b$10$rZ5qZ5qZ5qZ5qZ5qZ5qZ5O', 'admin@clipper.com', 'Administrator', 'Active', 
+('admin', '$2b$10$Oxcs3Sty9kqNw5P.gHZXu.9eB2.rH6rEm.kNGvIITwGJ0e/5ayqKa', 'admin@clipper.com', 'Administrator', 'Active', 
 '["dashboard", "customers", "orders", "place-order", "shipment-tracking", "suppliers", "inventory", "analytics", "payment-processing", "reports", "admin"]');
 
 -- Insert Sample Data for Development
