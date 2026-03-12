@@ -1,2 +1,2 @@
-// server.js (in root directory)
-require('./server/server.js');
+// server.js (ES module syntax)
+import('./server/server.js');
