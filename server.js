@@ -1,2 +1,4 @@
-// server.js (ES module syntax)
-import('./server/server.js');
+// server.js
+(async () => {
+  await import('./server/server.js');
+})();
