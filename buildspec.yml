@@ -1,28 +1,33 @@
 ﻿version: 0.2
 
 phases:
-  install:
-    runtime-versions:
-      nodejs: 20
+  pre_build:
     commands:
-      - echo "Installing frontend dependencies"
+      - echo "Installing dependencies..."
       - npm install
-      - echo "Installing backend dependencies"
       - cd server && npm install && cd ..
+  
   build:
     commands:
-      - echo "Building frontend"
-      - npm run build --if-present
+      - echo "Building frontend..."
+      - npm run build
       - echo "Build completed successfully"
 
 artifacts:
   files:
     - '**/*'
-  name: BuildOutput
+  name: BuildArtifact
+  discard-paths: no
   exclude:
     - node_modules/**/*
     - server/node_modules/**/*
     - .git/**/*
     - .gitignore
     - .env
+    - .env.local
+    - coverage/**/*
+    - '**/*.test.js'
+    - jest.config.js
+    - vitest.config.js
+
 
