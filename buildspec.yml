@@ -3,15 +3,19 @@
 phases:
   pre_build:
     commands:
-      - echo "Installing dependencies..."
-      - npm install
-      - cd server && npm install && cd ..
+      - echo "[$(date)] Installing frontend dependencies..."
+      - npm install --verbose
+      - echo "[$(date)] Installing backend dependencies..."
+      - cd server && npm install --verbose && cd ..
+      - echo "[$(date)] All dependencies installed"
   
   build:
     commands:
-      - echo "Building frontend..."
-      - npm run build
-      - echo "Build completed successfully"
+      - echo "[$(date)] Starting frontend build..."
+      - npm run build 2>&1
+      - echo "[$(date)] Checking dist directory..."
+      - ls -la dist/ || echo "ERROR: dist directory not created"
+      - echo "[$(date)] Build phase complete"
 
 artifacts:
   files:
