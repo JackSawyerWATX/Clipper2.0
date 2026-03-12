@@ -5,16 +5,24 @@ phases:
     runtime-versions:
       nodejs: 20
     commands:
-      - echo "Installing dependencies"
+      - echo "Installing frontend dependencies"
       - npm install
+      - echo "Installing backend dependencies"
+      - cd server && npm install && cd ..
   build:
     commands:
-      - echo "Running tests and type checks"
+      - echo "Building frontend"
       - npm run build --if-present
+      - echo "Build completed successfully"
 
 artifacts:
   files:
     - '**/*'
-  base-directory: 'dist'
   name: BuildOutput
+  exclude:
+    - node_modules/**/*
+    - server/node_modules/**/*
+    - .git/**/*
+    - .gitignore
+    - .env
 
