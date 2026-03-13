@@ -284,7 +284,7 @@ function Customers() {
       if (editingCustomer) {
         // Update existing customer
         response = await fetch(`${API_URL}/api/customers/${editingCustomer.customer_id}`, {
-          method: `PUT`,
+          method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
           },
@@ -293,7 +293,7 @@ function Customers() {
       } else {
         // Create new customer
         response = await fetch(`${API_URL}/api/customers`, {
-          method: `POST`,
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
