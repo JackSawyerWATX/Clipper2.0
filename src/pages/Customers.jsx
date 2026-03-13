@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import '../styles/Customers.css'
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 function Customers() {
   const [customers, setCustomers] = useState([])
   const [loading, setLoading] = useState(true)

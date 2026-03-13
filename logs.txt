@@ -1,0 +1,117 @@
+
+
+============= i-0841675dc1807b31b - /aws/elasticbeanstalk/clipper-backend-prod/var/log/eb-engine.log ==============
+
+[i-0841675dc1807b31b] 2026/03/13 18:40:44.155401 [INFO] start to create log streaming
+[i-0841675dc1807b31b] 2026/03/13 18:40:44.345604 [INFO] start to fetch config
+[i-0841675dc1807b31b] 2026/03/13 18:40:44.345639 [INFO] Running command: /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -c file:/opt/aws/amazon-cloudwatch-agent/etc/beanstalk.json -s
+[i-0841675dc1807b31b] 2026/03/13 18:40:48.647876 [INFO] ****** processing amazon-cloudwatch-agent ******
+[i-0841675dc1807b31b] Starting config-downloader, this will map back to a call to amazon-cloudwatch-agent
+[i-0841675dc1807b31b] Executing /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent with arguments: [config-downloader -download-source file:/opt/aws/amazon-cloudwatch-agent/etc/beanstalk.json -output-dir /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.d -config /opt/aws/amazon-cloudwatch-agent/etc/common-config.toml -multi-config default -mode ec2]I! Trying to detect region from ec2
+[i-0841675dc1807b31b] D! [EC2] Found active network interface
+[i-0841675dc1807b31b] I! imds retry client will retry 1 times
+[i-0841675dc1807b31b] Start configuration validation...
+[i-0841675dc1807b31b] Starting config-translator, this will map back to a call to amazon-cloudwatch-agent
+[i-0841675dc1807b31b] Executing /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent with arguments: [config-translator -output /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.toml -mode ec2 -config /opt/aws/amazon-cloudwatch-agent/etc/common-config.toml -multi-config default -input /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json -input-dir /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.d]I! Trying to detect region from ec2
+[i-0841675dc1807b31b] D! [EC2] Found active network interface
+[i-0841675dc1807b31b] I! imds retry client will retry 1 times
+[i-0841675dc1807b31b] /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent -schematest -config /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.toml
+[i-0841675dc1807b31b] Configuration validation second phase succeeded
+[i-0841675dc1807b31b] Configuration validation succeeded
+[i-0841675dc1807b31b] amazon-cloudwatch-agent has already been stopped
+
+[i-0841675dc1807b31b] 2026/03/13 18:40:48.648371 [INFO] 2026/03/13 18:40:47 Reading json config file path: /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.d/file_beanstalk.json.tmp ...
+[i-0841675dc1807b31b] 2026/03/13 18:40:47 I! Valid Json input schema.
+[i-0841675dc1807b31b] 2026/03/13 18:40:47 Configuration validation first phase succeeded
+[i-0841675dc1807b31b] Created symlink /etc/systemd/system/multi-user.target.wants/amazon-cloudwatch-agent.service \u2192 /etc/systemd/system/amazon-cloudwatch-agent.service.
+
+[i-0841675dc1807b31b] 2026/03/13 18:40:48.648384 [INFO] Executing instruction: GetToggleForceRotate
+[i-0841675dc1807b31b] 2026/03/13 18:40:48.648388 [INFO] Checking if logs need forced rotation
+[i-0841675dc1807b31b] 2026/03/13 18:40:48.648401 [INFO] Running command: /opt/aws/bin/cfn-get-metadata -s arn:aws:cloudformation:us-west-2:425566753105:stack/awseb-e-idyb6ednvk-stack/dfbad220-1f0b-11f1-8f52-028f0d7e3171 -r AWSEBAutoScalingGroup --region us-west-2
+[i-0841675dc1807b31b] 2026/03/13 18:40:49.052780 [INFO] Running command: /opt/aws/bin/cfn-get-metadata -s arn:aws:cloudformation:us-west-2:425566753105:stack/awseb-e-idyb6ednvk-stack/dfbad220-1f0b-11f1-8f52-028f0d7e3171 -r AWSEBBeanstalkMetadata --region us-west-2
+[i-0841675dc1807b31b] 2026/03/13 18:40:49.350410 [INFO] Generating rsyslog config from Procfile
+[i-0841675dc1807b31b] 2026/03/13 18:40:49.353083 [INFO] Running command: systemctl restart rsyslog.service
+[i-0841675dc1807b31b] 2026/03/13 18:40:49.797010 [INFO] Executing instruction: PostBuildEbExtension
+[i-0841675dc1807b31b] 2026/03/13 18:40:49.797084 [INFO] Starting executing the config set Infra-EmbeddedPostBuild.
+[i-0841675dc1807b31b] 2026/03/13 18:40:49.797101 [INFO] Running command: /opt/aws/bin/cfn-init -s arn:aws:cloudformation:us-west-2:425566753105:stack/awseb-e-idyb6ednvk-stack/dfbad220-1f0b-11f1-8f52-028f0d7e3171 -r AWSEBAutoScalingGroup --region us-west-2 --configsets Infra-EmbeddedPostBuild
+[i-0841675dc1807b31b] 2026/03/13 18:40:50.125132 [INFO] Finished executing the config set Infra-EmbeddedPostBuild.
+
+[i-0841675dc1807b31b] 2026/03/13 18:40:50.125211 [INFO] Executing instruction: CleanEbExtensions
+[i-0841675dc1807b31b] 2026/03/13 18:40:50.125303 [INFO] Cleaned ebextensions subdirectories from app staging directory.
+[i-0841675dc1807b31b] 2026/03/13 18:40:50.125308 [INFO] Executing instruction: RunAppDeployPreDeployHooks
+[i-0841675dc1807b31b] 2026/03/13 18:40:50.125321 [INFO] No hooks found in .platform/hooks/predeploy/, skipping
+[i-0841675dc1807b31b] 2026/03/13 18:40:50.125326 [INFO] Executing instruction: stop X-Ray
+[i-0841675dc1807b31b] 2026/03/13 18:40:50.125328 [INFO] stop X-Ray ...
+[i-0841675dc1807b31b] 2026/03/13 18:40:50.125336 [INFO] Running command: systemctl show -p PartOf xray.service
+[i-0841675dc1807b31b] 2026/03/13 18:40:50.139233 [WARN] stopProcess Warning: process xray is not registered 
+[i-0841675dc1807b31b] 2026/03/13 18:40:50.139300 [INFO] Running command: systemctl stop xray.service
+[i-0841675dc1807b31b] 2026/03/13 18:40:50.153432 [INFO] Executing instruction: stop proxy
+[i-0841675dc1807b31b] 2026/03/13 18:40:50.153475 [INFO] Running command: systemctl show -p PartOf httpd.service
+[i-0841675dc1807b31b] 2026/03/13 18:40:50.168144 [WARN] deregisterProcess Warning: process httpd is not registered, skipping...
+
+[i-0841675dc1807b31b] 2026/03/13 18:40:50.168207 [INFO] Running command: systemctl show -p PartOf nginx.service
+[i-0841675dc1807b31b] 2026/03/13 18:40:50.182276 [WARN] deregisterProcess Warning: process nginx is not registered, skipping...
+
+[i-0841675dc1807b31b] 2026/03/13 18:40:50.182304 [INFO] Executing instruction: FlipApplication
+[i-0841675dc1807b31b] 2026/03/13 18:40:50.182308 [INFO] Fetching environment variables...
+[i-0841675dc1807b31b] 2026/03/13 18:40:50.182434 [INFO] Purge old process...
+[i-0841675dc1807b31b] 2026/03/13 18:40:50.182448 [INFO] Removing /var/app/current/ if it exists
+[i-0841675dc1807b31b] 2026/03/13 18:40:50.182457 [INFO] Renaming /var/app/staging/ to /var/app/current/
+[i-0841675dc1807b31b] 2026/03/13 18:40:50.182480 [INFO] Register application processes...
+[i-0841675dc1807b31b] 2026/03/13 18:40:50.182483 [INFO] Registering the proc: web
+
+[i-0841675dc1807b31b] 2026/03/13 18:40:50.182491 [INFO] Running command: systemctl show -p PartOf web.service
+[i-0841675dc1807b31b] 2026/03/13 18:40:50.195171 [INFO] Running command: systemctl daemon-reload
+[i-0841675dc1807b31b] 2026/03/13 18:40:50.445852 [INFO] Running command: systemctl reset-failed
+[i-0841675dc1807b31b] 2026/03/13 18:40:50.454454 [INFO] Running command: systemctl is-enabled eb-app.target
+[i-0841675dc1807b31b] 2026/03/13 18:40:50.462917 [INFO] Copying file /opt/elasticbeanstalk/config/private/aws-eb.target to /etc/systemd/system/eb-app.target
+[i-0841675dc1807b31b] 2026/03/13 18:40:50.464146 [INFO] Running command: systemctl enable eb-app.target
+[i-0841675dc1807b31b] 2026/03/13 18:40:50.712922 [INFO] Created symlink /etc/systemd/system/multi-user.target.wants/eb-app.target \u2192 /etc/systemd/system/eb-app.target.
+
+[i-0841675dc1807b31b] 2026/03/13 18:40:50.712958 [INFO] Running command: systemctl start eb-app.target
+[i-0841675dc1807b31b] 2026/03/13 18:40:50.722056 [INFO] Running command: systemctl enable web.service
+[i-0841675dc1807b31b] 2026/03/13 18:40:51.004088 [INFO] Created symlink /etc/systemd/system/multi-user.target.wants/web.service \u2192 /etc/systemd/system/web.service.
+
+[i-0841675dc1807b31b] 2026/03/13 18:40:51.004133 [INFO] Running command: systemctl show -p PartOf web.service
+[i-0841675dc1807b31b] 2026/03/13 18:40:51.015827 [INFO] Running command: systemctl is-active web.service
+[i-0841675dc1807b31b] 2026/03/13 18:40:51.023295 [INFO] Running command: systemctl start web.service
+[i-0841675dc1807b31b] 2026/03/13 18:40:53.075401 [INFO] Executing instruction: start X-Ray
+[i-0841675dc1807b31b] 2026/03/13 18:40:53.075408 [INFO] X-Ray is not enabled.
+[i-0841675dc1807b31b] 2026/03/13 18:40:53.075411 [INFO] Executing instruction: start proxy with new configuration
+[i-0841675dc1807b31b] 2026/03/13 18:40:53.075433 [INFO] Running command: /usr/sbin/nginx -t -c /var/proxy/staging/nginx/nginx.conf
+[i-0841675dc1807b31b] 2026/03/13 18:40:53.141331 [INFO] nginx: [warn] could not build optimal types_hash, you should increase either types_hash_max_size: 1024 or types_hash_bucket_size: 64; ignoring types_hash_bucket_size
+[i-0841675dc1807b31b] nginx: the configuration file /var/proxy/staging/nginx/nginx.conf syntax is ok
+[i-0841675dc1807b31b] nginx: configuration file /var/proxy/staging/nginx/nginx.conf test is successful
+
+[i-0841675dc1807b31b] 2026/03/13 18:40:53.141543 [INFO] Running command: cp -rp /var/proxy/staging/nginx/* /etc/nginx
+[i-0841675dc1807b31b] 2026/03/13 18:40:53.147284 [INFO] Running command: systemctl show -p PartOf nginx.service
+[i-0841675dc1807b31b] 2026/03/13 18:40:53.240651 [INFO] Running command: systemctl daemon-reload
+[i-0841675dc1807b31b] 2026/03/13 18:40:53.562783 [INFO] Running command: systemctl reset-failed
+[i-0841675dc1807b31b] 2026/03/13 18:40:53.753137 [INFO] Running command: systemctl show -p PartOf nginx.service
+[i-0841675dc1807b31b] 2026/03/13 18:40:53.816334 [INFO] Running command: systemctl is-active nginx.service
+[i-0841675dc1807b31b] 2026/03/13 18:40:53.916479 [INFO] Running command: systemctl start nginx.service
+[i-0841675dc1807b31b] 2026/03/13 18:40:54.041920 [INFO] Executing instruction: configureSqsd
+[i-0841675dc1807b31b] 2026/03/13 18:40:54.041938 [INFO] This is a web server environment instance, skip configure sqsd daemon ...
+[i-0841675dc1807b31b] 2026/03/13 18:40:54.041942 [INFO] Executing instruction: startSqsd
+[i-0841675dc1807b31b] 2026/03/13 18:40:54.041945 [INFO] This is a web server environment instance, skip start sqsd daemon ...
+[i-0841675dc1807b31b] 2026/03/13 18:40:54.041948 [INFO] Executing instruction: Track pids in healthd
+[i-0841675dc1807b31b] 2026/03/13 18:40:54.041952 [INFO] This is an enhanced health env...
+[i-0841675dc1807b31b] 2026/03/13 18:40:54.041965 [INFO] Running command: systemctl show -p ConsistsOf aws-eb.target | cut -d= -f2
+[i-0841675dc1807b31b] 2026/03/13 18:40:54.052244 [INFO] cfn-hup.service healthd.service amazon-cloudwatch-agent.service nginx.service
+
+[i-0841675dc1807b31b] 2026/03/13 18:40:54.052283 [INFO] Running command: systemctl show -p ConsistsOf eb-app.target | cut -d= -f2
+[i-0841675dc1807b31b] 2026/03/13 18:40:54.062536 [INFO] web.service
+
+[i-0841675dc1807b31b] 2026/03/13 18:40:54.062616 [WARN] failed to read file /var/pids/web.pid with error: open /var/pids/web.pid: no such file or directory
+[i-0841675dc1807b31b] 2026/03/13 18:40:55.062746 [WARN] failed to read file /var/pids/web.pid with error: open /var/pids/web.pid: no such file or directory
+[i-0841675dc1807b31b] 2026/03/13 18:40:57.062944 [WARN] failed to read file /var/pids/web.pid with error: open /var/pids/web.pid: no such file or directory
+[i-0841675dc1807b31b] 2026/03/13 18:41:00.063174 [WARN] failed to read file /var/pids/web.pid with error: open /var/pids/web.pid: no such file or directory
+[i-0841675dc1807b31b] 2026/03/13 18:41:04.063394 [WARN] failed to read file /var/pids/web.pid with error: open /var/pids/web.pid: no such file or directory
+[i-0841675dc1807b31b] 2026/03/13 18:41:09.063570 [WARN] failed to read file /var/pids/web.pid with error: open /var/pids/web.pid: no such file or directory
+[i-0841675dc1807b31b] 2026/03/13 18:41:09.063630 [ERROR] update processes [web cfn-hup healthd amazon-cloudwatch-agent nginx] pid symlinks failed with error failed to read file /var/pids/web.pid after 6 attempts
+[i-0841675dc1807b31b] 2026/03/13 18:41:09.063655 [ERROR] An error occurred during execution of command [app-deploy] - [Track pids in healthd]. Stop running the command. Error: update processes [web cfn-hup healthd amazon-cloudwatch-agent nginx] pid symlinks failed with error failed to read file /var/pids/web.pid after 6 attempts 
+
+[i-0841675dc1807b31b] 2026/03/13 18:41:09.063658 [INFO] Executing cleanup logic
+[i-0841675dc1807b31b] 2026/03/13 18:41:09.063747 [INFO] CommandService Response: {"status":"FAILURE","api_version":"1.0","results":[{"status":"FAILURE","msg":"Engine execution has encountered an error.","returncode":1,"events":[{"msg":"Instance deployment failed. For details, see 'eb-engine.log'.","timestamp":1773427269063,"severity":"ERROR"}]}]}
+
+[i-0841675dc1807b31b] 2026/03/13 18:41:09.110604 [INFO] Platform Engine finished execution on command: app-deploy

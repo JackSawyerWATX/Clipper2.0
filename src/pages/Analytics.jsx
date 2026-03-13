@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, ArcElement, Title, Tooltip, Legend } from 'chart.js'
 import { Line, Bar, Pie } from 'react-chartjs-2'
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 // Register Chart.js components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, ArcElement, Title, Tooltip, Legend)
 
