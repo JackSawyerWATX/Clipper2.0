@@ -4,6 +4,11 @@ import { Line, Bar, Pie } from 'react-chartjs-2'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
+
+
+
+
+
 // Register Chart.js components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, ArcElement, Title, Tooltip, Legend)
 
@@ -24,13 +29,13 @@ function Analytics() {
       console.log('Fetching analytics data...')
       
       // Fetch sales data
-      const salesResponse = await fetch('http://localhost:5000/api/analytics/sales')
+      const salesResponse = await fetch(`${API_URL}/api/analytics/sales`)
       if (!salesResponse.ok) throw new Error('Failed to fetch sales data')
       const sales = await salesResponse.json()
       console.log('Sales data:', sales)
       
       // Fetch customer data
-      const customerResponse = await fetch('http://localhost:5000/api/analytics/customers')
+      const customerResponse = await fetch(`${API_URL}/api/analytics/customers`)
       if (!customerResponse.ok) throw new Error('Failed to fetch customer data')
       const customers = await customerResponse.json()
       console.log('Customer data:', customers)

@@ -3,6 +3,11 @@ import '../styles/Orders.css'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
+
+
+
+
+
 function Orders() {
   const [orders, setOrders] = useState([])
   const [loading, setLoading] = useState(true)
@@ -30,9 +35,9 @@ function Orders() {
   const fetchOrders = async () => {
     try {
       setLoading(true)
-      console.log('Fetching orders from:', 'http://localhost:5000/api/orders')
-      const response = await fetch('http://localhost:5000/api/orders')
-      console.log('Response status:', response.status)
+      console.log('Fetching orders from:', `${API_URL}/api/orders`)
+      const response = await fetch(`${API_URL}/api/orders`)
+      console.log(`Response status:`, response.status)
       if (!response.ok) throw new Error('Failed to fetch orders')
       const data = await response.json()
       console.log('Orders fetched:', data)
@@ -72,12 +77,12 @@ function Orders() {
     
     try {
       // Fetch order items for this specific order
-      const response = await fetch(`http://localhost:5000/api/customer-orders/order/${order.order_id}`)
+      const response = await fetch(`${API_URL}/api/customer-orders/order/${order.order_id}`)
       if (response.ok) {
         const items = await response.json()
         setOrderDetails(items)
       } else {
-        console.error('Failed to fetch order items')
+        console.error(`Failed to fetch order items`)
         setOrderDetails([])
       }
     } catch (error) {
@@ -118,7 +123,7 @@ function Orders() {
     
     try {
       // Fetch order items
-      const response = await fetch(`http://localhost:5000/api/customer-orders/order/${order.order_id}`)
+      const response = await fetch(`${API_URL}/api/customer-orders/order/${order.order_id}`)
       if (response.ok) {
         const items = await response.json()
         setEditOrderItems(items)
@@ -126,7 +131,7 @@ function Orders() {
         setEditOrderItems([])
       }
     } catch (error) {
-      console.error('Error fetching order details:', error)
+      console.error(`Error fetching order details:`, error)
       setEditOrderItems([])
     } finally {
       setLoadingDetails(false)
@@ -175,7 +180,7 @@ function Orders() {
       const { subtotal, grandTotal } = calculateTotals()
       
       // Update order
-      const orderResponse = await fetch(`http://localhost:5000/api/orders/${selectedOrder.order_id}`, {
+      const orderResponse = await fetch(`${API_URL}/api/orders/${selectedOrder.order_id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -189,7 +194,7 @@ function Orders() {
 
       // Update order items
       for (const item of editOrderItems) {
-        const itemResponse = await fetch(`http://localhost:5000/api/customer-orders/${item.order_item_id}`, {
+        const itemResponse = await fetch(`${API_URL}/api/customer-orders/${item.order_item_id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

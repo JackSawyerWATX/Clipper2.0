@@ -3,6 +3,11 @@ import '../styles/Suppliers.css'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
+
+
+
+
+
 function Suppliers() {
   const [suppliers, setSuppliers] = useState([])
   const [loading, setLoading] = useState(true)
@@ -18,7 +23,7 @@ function Suppliers() {
   const fetchSuppliers = async () => {
     try {
       setLoading(true)
-      const response = await fetch('http://localhost:5000/api/suppliers')
+      const response = await fetch(`${API_URL}/api/suppliers`)
       if (!response.ok) throw new Error('Failed to fetch suppliers')
       const data = await response.json()
       setSuppliers(Array.isArray(data) ? data : [])

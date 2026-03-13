@@ -2,6 +2,11 @@ import React, { useState, useEffect, useMemo } from 'react'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
+
+
+
+
+
 function Inventory() {
   const [inventoryItems, setInventoryItems] = useState([])
   const [loading, setLoading] = useState(true)
@@ -28,7 +33,7 @@ function Inventory() {
   const fetchInventory = async () => {
     try {
       setLoading(true)
-      const response = await fetch('http://localhost:5000/api/inventory')
+      const response = await fetch(`${API_URL}/api/inventory`)
       if (!response.ok) throw new Error('Failed to fetch inventory')
       const data = await response.json()
       setInventoryItems(Array.isArray(data) ? data : [])
@@ -85,10 +90,10 @@ function Inventory() {
 
     try {
       const url = isAddMode
-        ? 'http://localhost:5000/api/inventory'
+        ? `${API_URL}/api/inventory`
         : `http://localhost:5000/api/inventory/${editingItem.item_id}`
 
-      const method = isAddMode ? 'POST' : 'PUT'
+      const method = isAddMode ? `POST` : `PUT`
 
       const response = await fetch(url, {
         method: method,
@@ -135,7 +140,7 @@ function Inventory() {
     setShowDeleteConfirm(false)
 
     try {
-      const response = await fetch(`http://localhost:5000/api/inventory/${editingItem.item_id}`, {
+      const response = await fetch(`${API_URL}/api/inventory/${editingItem.item_id}`, {
         method: 'DELETE'
       })
 

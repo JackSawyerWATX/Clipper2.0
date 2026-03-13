@@ -23,10 +23,10 @@ function Dashboard() {
       
       // Fetch data from multiple endpoints
       const [inventoryRes, ordersRes, customersRes, analyticsRes] = await Promise.all([
-        fetch('http://localhost:5000/api/inventory'),
-        fetch('http://localhost:5000/api/orders'),
-        fetch('http://localhost:5000/api/customers'),
-        fetch('http://localhost:5000/api/analytics/dashboard/summary')
+        fetch(`${API_URL}/api/inventory`),
+        fetch(`${API_URL}/api/orders`),
+        fetch(`${API_URL}/api/customers`),
+        fetch(`${API_URL}/api/analytics/dashboard/summary`)
       ])
 
       if (!inventoryRes.ok || !ordersRes.ok || !customersRes.ok || !analyticsRes.ok) {

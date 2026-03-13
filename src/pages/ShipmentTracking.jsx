@@ -3,6 +3,11 @@ import '../styles/ShipmentTracking.css'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
+
+
+
+
+
 function ShipmentTracking() {
   const [shipments, setShipments] = useState([])
   const [loading, setLoading] = useState(true)
@@ -45,7 +50,7 @@ function ShipmentTracking() {
   const fetchShipments = async () => {
     try {
       setLoading(true)
-      const response = await fetch('http://localhost:5000/api/shipments')
+      const response = await fetch(`${API_URL}/api/shipments`)
       if (!response.ok) throw new Error('Failed to fetch shipments')
       const data = await response.json()
       setShipments(Array.isArray(data) ? data : [])
@@ -60,7 +65,7 @@ function ShipmentTracking() {
 
   const fetchCustomers = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/customers')
+      const response = await fetch(`${API_URL}/api/customers`)
       if (!response.ok) throw new Error('Failed to fetch customers')
       const data = await response.json()
       setCustomers(Array.isArray(data) ? data : [])
@@ -179,7 +184,7 @@ function ShipmentTracking() {
       
       // Create new customer if needed
       if (showNewCustomerForm) {
-        const customerResponse = await fetch('http://localhost:5000/api/customers', {
+        const customerResponse = await fetch(`${API_URL}/api/customers`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -193,7 +198,7 @@ function ShipmentTracking() {
       }
       
       // Create shipment with auto-generated order and tracking
-      const response = await fetch('http://localhost:5000/api/shipments', {
+      const response = await fetch(`${API_URL}/api/shipments`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -3,6 +3,11 @@ import '../styles/Customers.css'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
+
+
+
+
+
 function Customers() {
   const [customers, setCustomers] = useState([])
   const [loading, setLoading] = useState(true)
@@ -43,11 +48,11 @@ function Customers() {
   const fetchCustomers = async () => {
     try {
       setLoading(true)
-      const url = new URL('http://localhost:5000/api/customers')
+      const url = new URL(`${API_URL}/api/customers`)
       
       const response = await fetch(url)
       if (!response.ok) {
-        throw new Error('Failed to fetch customers')
+        throw new Error(`Failed to fetch customers`)
       }
       
       const data = await response.json()
@@ -236,7 +241,7 @@ function Customers() {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/api/customers/${deletingCustomer.customer_id}`, {
+      const response = await fetch(`${API_URL}/api/customers/${deletingCustomer.customer_id}`, {
         method: 'DELETE'
       })
 
@@ -278,8 +283,8 @@ function Customers() {
       let response
       if (editingCustomer) {
         // Update existing customer
-        response = await fetch(`http://localhost:5000/api/customers/${editingCustomer.customer_id}`, {
-          method: 'PUT',
+        response = await fetch(`${API_URL}/api/customers/${editingCustomer.customer_id}`, {
+          method: `PUT`,
           headers: {
             'Content-Type': 'application/json',
           },
@@ -287,8 +292,8 @@ function Customers() {
         })
       } else {
         // Create new customer
-        response = await fetch('http://localhost:5000/api/customers', {
-          method: 'POST',
+        response = await fetch(`${API_URL}/api/customers`, {
+          method: `POST`,
           headers: {
             'Content-Type': 'application/json',
           },

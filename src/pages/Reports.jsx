@@ -4,6 +4,11 @@ import autoTable from 'jspdf-autotable'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
+
+
+
+
+
 function Reports() {
   const [selectedReport, setSelectedReport] = useState('')
   const [dateRange, setDateRange] = useState('lifetime')
@@ -42,21 +47,21 @@ function Reports() {
 
   const fetchCustomers = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/reports/customers-list')
+      const response = await fetch(`${API_URL}/api/reports/customers-list`)
       const data = await response.json()
       setCustomers(data)
     } catch (error) {
-      console.error('Error fetching customers:', error)
+      console.error(`Error fetching customers:`, error)
     }
   }
 
   const fetchVendors = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/reports/vendors-list')
+      const response = await fetch(`${API_URL}/api/reports/vendors-list`)
       const data = await response.json()
       setVendors(data)
     } catch (error) {
-      console.error('Error fetching vendors:', error)
+      console.error(`Error fetching vendors:`, error)
     }
   }
 
@@ -68,10 +73,10 @@ function Reports() {
     setReportData(null)
 
     try {
-      let url = 'http://localhost:5000/api/reports/'
+      let url = `${API_URL}/api/reports/`
       let params = new URLSearchParams()
 
-      if (startDate) params.append('startDate', startDate)
+      if (startDate) params.append(`startDate`, startDate)
       if (endDate) params.append('endDate', endDate)
       if (dateRange) params.append('dateRange', dateRange)
 
