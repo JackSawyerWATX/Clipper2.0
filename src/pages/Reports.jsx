@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
 
-const API_URL = import.meta.env.VITE_API_URL ?? '';
+const API_URL = import.meta.env.VITE_API_URL ?? 'http://clipper-backend-prod.eba-cg2igaaf.us-west-2.elasticbeanstalk.com';
 
 
 
