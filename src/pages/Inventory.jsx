@@ -91,7 +91,7 @@ function Inventory() {
     try {
       const url = isAddMode
         ? `${API_URL}/api/inventory`
-        : `http://localhost:5000/api/inventory/${editingItem.item_id}`
+        : `${API_URL}/api/inventory/${editingItem.item_id}`
 
       const method = isAddMode ? `POST` : `PUT`
 
