@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL ?? '';
+const API_URL = import.meta.env.VITE_API_URL ?? 'http://clipper-backend-prod.eba-cg2igaaf.us-west-2.elasticbeanstalk.com';
 
 // Get authentication token from localStorage
 export const getToken = () => {
