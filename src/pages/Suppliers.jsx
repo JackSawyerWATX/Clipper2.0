@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import '../styles/Suppliers.css'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_URL = import.meta.env.VITE_API_URL ?? '';
 
 
 
