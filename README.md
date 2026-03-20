@@ -2,6 +2,8 @@
 
 A React-based business management system with Windows 3.1 aesthetic, featuring comprehensive tools for customer management, order processing, inventory tracking, and analytics.
 
+**Note**: This project is now organized as an npm workspaces monorepo. See [MONOREPO.md](./MONOREPO.md) for detailed workspace structure and development instructions.
+
 ## Getting Started
 
 1. Install dependencies:
@@ -9,10 +11,16 @@ A React-based business management system with Windows 3.1 aesthetic, featuring c
 npm install
 ```
 
-2. Start the development server:
+2. Start all development servers:
 ```bash
 npm run dev
-cd server; npm run dev
+```
+
+Or start individual services:
+```bash
+npm run dev:frontend      # React frontend (localhost:5173)
+npm run dev:express       # Express API (localhost:8080)
+npm run dev:python        # FastAPI (localhost:8000)
 ```
 
 3. Build for production:
@@ -20,12 +28,20 @@ cd server; npm run dev
 npm run build
 ```
 
-## Structure
+## Project Structure
 
-- `src/pages/` - Contains all page components
-- `src/styles/` - Page-specific CSS files
-- `src/App.jsx` - Main app component with routing and authentication
-- `src/main.jsx` - Application entry point
+This is an **npm workspaces monorepo** with three main packages:
+
+- **`packages/frontend`** (@clipper/frontend) - React frontend with Vite
+- **`packages/express-backend`** (@clipper/express-backend) - Express.js REST API
+- **`packages/python-backend`** (@clipper/python-backend) - FastAPI alternative backend
+
+### Frontend Structure
+
+- `packages/frontend/src/pages/` - Contains all page components
+- `packages/frontend/src/styles/` - Page-specific CSS files
+- `packages/frontend/src/App.jsx` - Main app component with routing and authentication
+- `packages/frontend/src/main.jsx` - Application entry point
 
 ## Features
 

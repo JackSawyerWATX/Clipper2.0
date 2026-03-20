@@ -1,0 +1,19 @@
+# Clipper 2.0 FastAPI Backend Requirements
+# Python 3.9+
+
+# FastAPI and server
+fastapi==0.115.5
+uvicorn[standard]==0.32.1
+
+# Database
+mysql-connector-python==9.1.0
+
+# Validation
+pydantic==2.10.3
+pydantic[email]==2.10.3
+
+# Environment variables
+python-dotenv==1.0.1
+
+# Optional but recommended
+python-multipart==0.0.20  # For form data
