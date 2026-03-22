@@ -1,6 +1,6 @@
 {
-  "name": "clipper-backend",
-  "version": "1.0.0",
+  "name": "@clipper/express-backend",
+  "version": "2.0.0",
   "description": "Backend API server for Clipper 2.0",
   "main": "server.js",
   "scripts": {
