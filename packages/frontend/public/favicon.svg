@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" width="240" height="160">
+  <!-- Two-tone Clipper Ship Logo - Wider Design -->
+  
+  <!-- Ocean waves (subtle background) -->
+  <path d="M 0 120 Q 30 115 60 120 Q 90 125 120 120 Q 150 115 180 120 Q 210 125 240 120 L 240 160 L 0 160 Z" 
+        fill="#d4e8ed" opacity="0.3"/>
+  
+  <!-- Dark hull (Tone 1: Dark Navy) -->
+  <ellipse cx="120" cy="115" rx="85" ry="12" fill="#0f1419" opacity="0.5"/>
+  <path d="M 45 110 Q 50 120 120 120 Q 190 120 195 110 L 190 105 Q 185 112 120 112 Q 55 112 50 105 Z" 
+        fill="#1a2332" stroke="#0d1520" stroke-width="2"/>
+  
+  <!-- Hull details and structure -->
+  <path d="M 55 105 L 60 95 L 180 95 L 185 105" fill="#2a3847" stroke="#1a2332" stroke-width="1.5"/>
+  <line x1="80" y1="95" x2="75" y2="110" stroke="#1a2332" stroke-width="2"/>
+  <line x1="120" y1="95" x2="120" y2="115" stroke="#1a2332" stroke-width="2.5"/>
+  <line x1="160" y1="95" x2="165" y2="110" stroke="#1a2332" stroke-width="2"/>
+  
+  <!-- Three masts (Dark Navy) -->
+  <line x1="75" y1="95" x2="75" y2="25" stroke="#1a2332" stroke-width="4"/>
+  <line x1="120" y1="95" x2="120" y2="15" stroke="#1a2332" stroke-width="5"/>
+  <line x1="165" y1="95" x2="165" y2="25" stroke="#1a2332" stroke-width="4"/>
+  
+  <!-- Horizontal yardarms (crossbeams) -->
+  <line x1="45" y1="35" x2="105" y2="35" stroke="#1a2332" stroke-width="3"/>
+  <line x1="45" y1="60" x2="105" y2="60" stroke="#1a2332" stroke-width="3"/>
+  <line x1="45" y1="80" x2="105" y2="80" stroke="#1a2332" stroke-width="2.5"/>
+  
+  <line x1="85" y1="25" x2="155" y2="25" stroke="#1a2332" stroke-width="3.5"/>
+  <line x1="85" y1="50" x2="155" y2="50" stroke="#1a2332" stroke-width="3.5"/>
+  <line x1="85" y1="75" x2="155" y2="75" stroke="#1a2332" stroke-width="3"/>
+  
+  <line x1="135" y1="35" x2="195" y2="35" stroke="#1a2332" stroke-width="3"/>
+  <line x1="135" y1="60" x2="195" y2="60" stroke="#1a2332" stroke-width="3"/>
+  <line x1="135" y1="80" x2="195" y2="80" stroke="#1a2332" stroke-width="2.5"/>
+  
+  <!-- Foremast sails (left) - Light cream tones -->
+  <path d="M 75 35 L 50 38 L 50 58 L 75 60 Z" fill="#f5f0e8" opacity="0.95" stroke="#e8dcc8" stroke-width="0.5"/>
+  <path d="M 75 38 L 100 40 L 100 56 L 75 58 Z" fill="#e8dcc8" opacity="0.95" stroke="#d4c4a8" stroke-width="0.5"/>
+  
+  <path d="M 75 60 L 50 63 L 50 78 L 75 80 Z" fill="#f5f0e8" opacity="0.95" stroke="#e8dcc8" stroke-width="0.5"/>
+  <path d="M 75 63 L 100 65 L 100 76 L 75 78 Z" fill="#e8dcc8" opacity="0.95" stroke="#d4c4a8" stroke-width="0.5"/>
+  
+  <path d="M 75 80 L 55 82 L 55 92 L 75 93 Z" fill="#f5f0e8" opacity="0.95" stroke="#e8dcc8" stroke-width="0.5"/>
+  <path d="M 75 82 L 95 84 L 95 90 L 75 92 Z" fill="#e8dcc8" opacity="0.95" stroke="#d4c4a8" stroke-width="0.5"/>
+  
+  <!-- Mainmast sails (center - largest) - Light cream tones -->
+  <path d="M 120 25 L 90 28 L 90 48 L 120 50 Z" fill="#f5f0e8" opacity="0.95" stroke="#e8dcc8" stroke-width="0.5"/>
+  <path d="M 120 28 L 150 30 L 150 46 L 120 48 Z" fill="#e8dcc8" opacity="0.95" stroke="#d4c4a8" stroke-width="0.5"/>
+  
+  <path d="M 120 50 L 90 53 L 90 73 L 120 75 Z" fill="#f5f0e8" opacity="0.95" stroke="#e8dcc8" stroke-width="0.5"/>
+  <path d="M 120 53 L 150 55 L 150 71 L 120 73 Z" fill="#e8dcc8" opacity="0.95" stroke="#d4c4a8" stroke-width="0.5"/>
+  
+  <path d="M 120 75 L 95 77 L 95 92 L 120 93 Z" fill="#f5f0e8" opacity="0.95" stroke="#e8dcc8" stroke-width="0.5"/>
+  <path d="M 120 77 L 145 79 L 145 90 L 120 92 Z" fill="#e8dcc8" opacity="0.95" stroke="#d4c4a8" stroke-width="0.5"/>
+  
+  <!-- Mizzenmast sails (right) - Light cream tones -->
+  <path d="M 165 35 L 140 38 L 140 58 L 165 60 Z" fill="#f5f0e8" opacity="0.95" stroke="#e8dcc8" stroke-width="0.5"/>
+  <path d="M 165 38 L 190 40 L 190 56 L 165 58 Z" fill="#e8dcc8" opacity="0.95" stroke="#d4c4a8" stroke-width="0.5"/>
+  
+  <path d="M 165 60 L 140 63 L 140 78 L 165 80 Z" fill="#f5f0e8" opacity="0.95" stroke="#e8dcc8" stroke-width="0.5"/>
+  <path d="M 165 63 L 190 65 L 190 76 L 165 78 Z" fill="#e8dcc8" opacity="0.95" stroke="#d4c4a8" stroke-width="0.5"/>
+  
+  <path d="M 165 80 L 145 82 L 145 92 L 165 93 Z" fill="#f5f0e8" opacity="0.95" stroke="#e8dcc8" stroke-width="0.5"/>
+  <path d="M 165 82 L 185 84 L 185 90 L 165 92 Z" fill="#e8dcc8" opacity="0.95" stroke="#d4c4a8" stroke-width="0.5"/>
+  
+  <!-- Flags at top of masts (accent) -->
+  <path d="M 75 25 L 75 18 L 65 21 Z" fill="#b8936d"/>
+  <path d="M 120 15 L 120 8 L 110 11 Z" fill="#b8936d"/>
+  <path d="M 165 25 L 165 18 L 175 21 Z" fill="#b8936d"/>
+  
+  <!-- Bow wave (detail) -->
+  <path d="M 35 110 Q 40 105 45 108" stroke="#a8c5d1" stroke-width="2" fill="none" opacity="0.6"/>
+  <path d="M 195 108 Q 200 105 205 110" stroke="#a8c5d1" stroke-width="2" fill="none" opacity="0.6"/>
+</svg>
