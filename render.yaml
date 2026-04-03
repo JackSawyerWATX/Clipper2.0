@@ -1,0 +1,27 @@
+﻿services:
+  - type: web
+    name: clipper-backend
+    runtime: node
+    buildCommand: npm install && cd server && npm install
+    startCommand: node server/server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 8080
+      - key: DB_HOST
+        value: b8rrovgobiy0cshdfktk-mysql.services.clever-cloud.com
+      - key: DB_USER
+        value: uifuqacfq3e4oo9n
+      - key: DB_PASSWORD
+        value: wL7HabLkd0SmCT3oVXUq
+      - key: DB_NAME
+        value: b8rrovgobiy0cshdfktk
+      - key: DB_PORT
+        value: 3306
+      - key: JWT_SECRET
+        value: L4Y6JPj3hnH84DCwf/5HYJMb78ZybB4ABi5c0/SB3OM=
+      - key: JWT_EXPIRES_IN
+        value: 24h
+      - key: FRONTEND_URL
+        value: https://main.d2whcdl9ws1tgt.amplifyapp.com
