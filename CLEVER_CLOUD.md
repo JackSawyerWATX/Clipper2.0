@@ -25,8 +25,8 @@ All application data is stored here:
 ## Account
 
 - **Console URL**: https://console.clever-cloud.com
-- **Login email**: *(store in your password manager — do not commit to repo)*
-- **Password**: *(store in your password manager — do not commit to repo)*
+- **Login method**: GitHub OAuth (click "Sign in with GitHub" on the Clever Cloud login page)
+- **GitHub account**: *(the GitHub account used to sign up — JackSawyerWATX)*
 
 ---
 
