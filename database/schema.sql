@@ -190,11 +190,9 @@ CREATE TABLE IF NOT EXISTS payments (
     INDEX idx_status (status)
 );
 
--- Insert Default Admin User (password: admin123)
--- Note: In production, use bcrypt to hash passwords
-INSERT INTO users (username, password_hash, email, role, status, permissions) VALUES
-('admin', '$2b$10$rZ5qZ5qZ5qZ5qZ5qZ5qZ5O', 'admin@clipper.com', 'Administrator', 'Active', 
-'["dashboard", "customers", "orders", "place-order", "shipment-tracking", "suppliers", "inventory", "analytics", "payment-processing", "reports", "admin"]');
+-- Default Admin User
+-- IMPORTANT: Use the createAdmin.js script to create the admin user after database setup:
+-- node server/scripts/createAdmin.js
 
 -- Insert Sample Data for Development
 -- Sample Customers

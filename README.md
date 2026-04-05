@@ -2,6 +2,8 @@
 
 A React-based business management system with Windows 3.1 aesthetic, featuring comprehensive tools for customer management, order processing, inventory tracking, and analytics.
 
+**Note**: This project is now organized as an npm workspaces monorepo. See [MONOREPO.md](./MONOREPO.md) for detailed workspace structure and development instructions.
+
 ## Getting Started
 
 1. Install dependencies:
@@ -9,10 +11,16 @@ A React-based business management system with Windows 3.1 aesthetic, featuring c
 npm install
 ```
 
-2. Start the development server:
+2. Start all development servers:
 ```bash
 npm run dev
-cd server; npm run dev
+```
+
+Or start individual services:
+```bash
+npm run dev:frontend      # React frontend (localhost:5173)
+npm run dev:express       # Express API (localhost:8080)
+npm run dev:python        # FastAPI (localhost:8000)
 ```
 
 3. Build for production:
@@ -20,12 +28,20 @@ cd server; npm run dev
 npm run build
 ```
 
-## Structure
+## Project Structure
 
-- `src/pages/` - Contains all page components
-- `src/styles/` - Page-specific CSS files
-- `src/App.jsx` - Main app component with routing and authentication
-- `src/main.jsx` - Application entry point
+This is an **npm workspaces monorepo** with three main packages:
+
+- **`packages/frontend`** (@clipper/frontend) - React frontend with Vite
+- **`packages/express-backend`** (@clipper/express-backend) - Express.js REST API
+- **`packages/python-backend`** (@clipper/python-backend) - FastAPI alternative backend
+
+### Frontend Structure
+
+- `packages/frontend/src/pages/` - Contains all page components
+- `packages/frontend/src/styles/` - Page-specific CSS files
+- `packages/frontend/src/App.jsx` - Main app component with routing and authentication
+- `packages/frontend/src/main.jsx` - Application entry point
 
 ## Features
 
@@ -62,3 +78,57 @@ Each page features Windows 3.1 styling with 3D beveled borders, gray panels, and
 - **Viewer** - Read-only access to selected pages
 
 Access permissions are managed through the Admin page.
+
+## Technologies Used
+
+### Frontend
+- **React** 18.3.1 - UI framework
+- **React Router DOM** 6.22.0 - Client-side routing
+- **Vite** 7.3.1 - Build tool and dev server
+- **Chart.js** 4.5.1 & **react-chartjs-2** 5.3.1 - Data visualization and analytics charts
+- **jsPDF** 4.0.0 & **jsPDF-AutoTable** 5.0.7 - PDF generation for reports
+- **DOMPurify** 3.3.2 - HTML sanitization
+
+### Backend
+#### Node.js/Express API
+- **Express** 4.18.2 - Web framework
+- **MySQL2** 3.6.5 - MySQL database driver
+- **jsonwebtoken** 9.0.2 - JWT authentication
+- **bcrypt** 5.1.1 - Password hashing
+- **CORS** 2.8.5 - Cross-origin resource sharing
+- **dotenv** 16.3.1 - Environment variable management
+- **Nodemon** 3.0.2 - Development auto-reload
+
+#### Python/FastAPI Backend
+- **FastAPI** 0.115.5 - Modern async Python web framework
+- **Uvicorn** 0.32.1 - ASGI server
+- **MySQL Connector** 9.1.0 - MySQL database connection
+- **Pydantic** 2.10.3 - Data validation
+- **python-dotenv** 1.0.1 - Environment variable management
+- **python-multipart** 0.0.20 - Form data parsing
+
+### Database
+- **MySQL** / **MariaDB** - Relational database
+
+### Testing & QA
+- **Vitest** 4.0.18 - Frontend unit testing framework
+- **Jest** 30.2.0 - Backend testing framework
+- **@testing-library/react** 16.3.2 - React component testing utilities
+- **@testing-library/jest-dom** 6.9.1 - DOM matchers for Jest
+- **Supertest** 7.2.2 - HTTP assertion library
+- **JSDOM** 28.1.0 - DOM implementation for Node.js
+
+### Development & Build Tools
+- **TypeScript** (@types/react, @types/react-dom) - Type safety
+- **@vitejs/plugin-react** 4.3.1 - Vite React plugin
+
+### DevOps & Deployment
+- **Docker** - Containerization
+- **AWS Elastic Beanstalk** - Cloud deployment platform
+- **AWS CodeBuild** - CI/CD pipeline support
+
+### Third-Party Integrations
+- **Stripe** - Payment processing for credit card transactions
+
+### Styling
+- **CSS3** - Custom styling with Windows 3.1 aesthetic

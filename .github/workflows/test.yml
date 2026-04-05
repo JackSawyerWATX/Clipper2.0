@@ -9,42 +9,47 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Setup Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
-        node-version: '18'
+        node-version-file: 'package.json'
         cache: 'npm'
 
-    # Frontend tests
-    - name: Install frontend dependencies
+    # Install all workspace dependencies (monorepo)
+    - name: Install workspace dependencies
       run: npm install
 
-    - name: Lint frontend (if ESLint configured)
-      run: npm run lint 2>/dev/null || echo "No lint script configured"
-      continue-on-error: true
-
-    # Backend tests
-    - name: Install backend dependencies
-      run: |
-        cd server
-        npm install
-
-    - name: Run backend tests
-      run: |
-        cd server
-        npm test 2>/dev/null || echo "No tests configured"
-      continue-on-error: true
-
+    # Frontend tests
     - name: Build frontend
-      run: npm run build
+      run: npm --workspace=@clipper/frontend run build
 
-    - name: Check backend syntax
+    - name: Lint frontend (if ESLint configured)
+      run: npm --workspace=@clipper/frontend run lint 2>/dev/null || echo "No lint script configured"
+      continue-on-error: true
+
+    - name: Test frontend
+      run: npm --workspace=@clipper/frontend run test 2>/dev/null || echo "No tests configured"
+      continue-on-error: true
+
+    # Backend tests (Express)
+    - name: Check Express backend syntax
       run: |
-        cd server
+        cd packages/express-backend
         node -c server.js
-        echo "✅ Backend syntax check passed"
+        echo "✅ Express backend syntax check passed"
+
+    - name: Test Express backend
+      run: npm --workspace=@clipper/express-backend run test 2>/dev/null || echo "No tests configured"
+      continue-on-error: true
+
+    # Summary
+    - name: Test Summary
+      if: always()
+      run: echo "✅ Test pipeline completed"

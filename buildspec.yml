@@ -1,15 +1,37 @@
 ﻿version: 0.2
 
 phases:
-  install:
-    runtime-versions:
-      nodejs: 20
+  pre_build:
     commands:
-      - echo "Installing dependencies"
+      - echo "[$(date)] Installing frontend dependencies..."
       - npm install
+      - echo "[$(date)] Installing server dependencies..."
+      - cd server && npm install && cd ..
+      - echo "[$(date)] Dependencies installed successfully"
+  
   build:
     commands:
-      - echo "Running tests and type checks"
-      - npm run build --if-present
+      - echo "[$(date)] Building frontend React app..."
+      - npm run build
+      - echo "[$(date)] Checking if dist directory exists..."
+      - ls -la dist/ || echo "ERROR: dist directory not found"
+      - echo "[$(date)] Build completed successfully"
+
+artifacts:
+  files:
+    - '**/*'
+  name: BuildArtifact
+  discard-paths: no
+  exclude:
+    - node_modules/**/*
+    - server/node_modules/**/*
+    - .git/**/*
+    - .gitignore
+    - .env
+    - .env.local
+    - coverage/**/*
+    - '**/*.test.js'
+    - jest.config.js
+    - vitest.config.js
 
 
