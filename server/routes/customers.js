@@ -1,12 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const { pool } = require('../config/database');
+const { v4: uuidv4 } = require('uuid');
+const { docClient } = require('../config/dynamodb');
+const TABLES = require('../config/tables');
+const { ScanCommand, GetCommand, PutCommand, UpdateCommand, DeleteCommand } = require('@aws-sdk/lib-dynamodb');
 
 // GET all customers
 router.get('/', async (req, res) => {
   try {
-    const [rows] = await pool.query('SELECT * FROM customers ORDER BY created_at DESC');
-    res.json(rows);
+    const result = await docClient.send(new ScanCommand({ TableName: TABLES.CUSTOMERS }));
+    const sorted = (result.Items || []).sort((a, b) => (b.created_at || '').localeCompare(a.created_at || ''));
+    res.json(sorted);
   } catch (error) {
     console.error('Error fetching customers:', error);
     res.status(500).json({ error: 'Failed to fetch customers' });
@@ -16,11 +20,12 @@ router.get('/', async (req, res) => {
 // GET single customer by ID
 router.get('/:id', async (req, res) => {
   try {
-    const [rows] = await pool.query('SELECT * FROM customers WHERE customer_id = ?', [req.params.id]);
-    if (rows.length === 0) {
-      return res.status(404).json({ error: 'Customer not found' });
-    }
-    res.json(rows[0]);
+    const result = await docClient.send(new GetCommand({
+      TableName: TABLES.CUSTOMERS,
+      Key: { customer_id: req.params.id },
+    }));
+    if (!result.Item) return res.status(404).json({ error: 'Customer not found' });
+    res.json(result.Item);
   } catch (error) {
     console.error('Error fetching customer:', error);
     res.status(500).json({ error: 'Failed to fetch customer' });
@@ -35,20 +40,16 @@ router.post('/', async (req, res) => {
       address_street, address_city, address_state, address_zip, address_country,
       status, customer_type
     } = req.body;
-
-    const [result] = await pool.query(
-      `INSERT INTO customers (company_name, contact_name, email, phone, 
-       address_street, address_city, address_state, address_zip, address_country, 
-       status, customer_type) 
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [company_name, contact_name, email, phone, address_street, address_city, 
-       address_state, address_zip, address_country, status, customer_type]
-    );
-
-    res.status(201).json({ 
-      message: 'Customer created successfully',
-      customer_id: result.insertId 
-    });
+    const now = new Date().toISOString();
+    const customer_id = uuidv4();
+    const item = {
+      customer_id, company_name, contact_name, email, phone,
+      address_street, address_city, address_state, address_zip, address_country,
+      status: status || 'Active', customer_type: customer_type || 'Regular',
+      created_at: now, updated_at: now,
+    };
+    await docClient.send(new PutCommand({ TableName: TABLES.CUSTOMERS, Item: item }));
+    res.status(201).json({ message: 'Customer created successfully', customer_id });
   } catch (error) {
     console.error('Error creating customer:', error);
     res.status(500).json({ error: 'Failed to create customer' });
@@ -63,23 +64,22 @@ router.put('/:id', async (req, res) => {
       address_street, address_city, address_state, address_zip, address_country,
       status, customer_type
     } = req.body;
-
-    const [result] = await pool.query(
-      `UPDATE customers SET 
-       company_name = ?, contact_name = ?, email = ?, phone = ?,
-       address_street = ?, address_city = ?, address_state = ?, 
-       address_zip = ?, address_country = ?, status = ?, customer_type = ?
-       WHERE customer_id = ?`,
-      [company_name, contact_name, email, phone, address_street, address_city,
-       address_state, address_zip, address_country, status, customer_type, req.params.id]
-    );
-
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ error: 'Customer not found' });
-    }
-
+    await docClient.send(new UpdateCommand({
+      TableName: TABLES.CUSTOMERS,
+      Key: { customer_id: req.params.id },
+      UpdateExpression: 'SET company_name=:cn, contact_name=:co, email=:e, phone=:ph, address_street=:as, address_city=:ac, address_state=:ast, address_zip=:az, address_country=:actr, #st=:s, customer_type=:ct, updated_at=:ua',
+      ExpressionAttributeNames: { '#st': 'status' },
+      ExpressionAttributeValues: {
+        ':cn': company_name, ':co': contact_name, ':e': email, ':ph': phone,
+        ':as': address_street, ':ac': address_city, ':ast': address_state,
+        ':az': address_zip, ':actr': address_country, ':s': status,
+        ':ct': customer_type, ':ua': new Date().toISOString(),
+      },
+      ConditionExpression: 'attribute_exists(customer_id)',
+    }));
     res.json({ message: 'Customer updated successfully' });
   } catch (error) {
+    if (error.name === 'ConditionalCheckFailedException') return res.status(404).json({ error: 'Customer not found' });
     console.error('Error updating customer:', error);
     res.status(500).json({ error: 'Failed to update customer' });
   }
@@ -88,14 +88,14 @@ router.put('/:id', async (req, res) => {
 // DELETE customer
 router.delete('/:id', async (req, res) => {
   try {
-    const [result] = await pool.query('DELETE FROM customers WHERE customer_id = ?', [req.params.id]);
-    
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ error: 'Customer not found' });
-    }
-
+    await docClient.send(new DeleteCommand({
+      TableName: TABLES.CUSTOMERS,
+      Key: { customer_id: req.params.id },
+      ConditionExpression: 'attribute_exists(customer_id)',
+    }));
     res.json({ message: 'Customer deleted successfully' });
   } catch (error) {
+    if (error.name === 'ConditionalCheckFailedException') return res.status(404).json({ error: 'Customer not found' });
     console.error('Error deleting customer:', error);
     res.status(500).json({ error: 'Failed to delete customer' });
   }
@@ -104,14 +104,13 @@ router.delete('/:id', async (req, res) => {
 // GET customer statistics
 router.get('/stats/summary', async (req, res) => {
   try {
-    const [stats] = await pool.query(`
-      SELECT 
-        COUNT(*) as total_customers,
-        SUM(CASE WHEN status = 'Active' THEN 1 ELSE 0 END) as active_customers,
-        SUM(CASE WHEN customer_type = 'Recurring' THEN 1 ELSE 0 END) as recurring_customers
-      FROM customers
-    `);
-    res.json(stats[0]);
+    const result = await docClient.send(new ScanCommand({ TableName: TABLES.CUSTOMERS }));
+    const customers = result.Items || [];
+    res.json({
+      total_customers: customers.length,
+      active_customers: customers.filter(c => c.status === 'Active').length,
+      recurring_customers: customers.filter(c => c.customer_type === 'Recurring').length,
+    });
   } catch (error) {
     console.error('Error fetching customer stats:', error);
     res.status(500).json({ error: 'Failed to fetch customer statistics' });

@@ -2,7 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
-const { testConnection } = require('./config/database');
 
 // Load environment variables from parent directory
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
@@ -87,20 +86,6 @@ app.use((req, res) => {
 });
 
 // Start server
-const startServer = async () => {
-  try {
-    // Test database connection
-    await testConnection();
-    
-    // Start listening
-    app.listen(PORT, () => {
-      console.log(`🚀 Server running on http://localhost:${PORT}`);
-      console.log(`📊 API documentation available at http://localhost:${PORT}`);
-    });
-  } catch (error) {
-    console.error('Failed to start server:', error);
-    process.exit(1);
-  }
-};
-
-startServer();
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});

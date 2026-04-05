@@ -1,18 +1,29 @@
-const express = require('express');
-const router = express.Router();
-const { pool } = require('../config/database');
+﻿const express = require('express');
+const router = require('express').Router();
+const { v4: uuidv4 } = require('uuid');
+const { docClient } = require('../config/dynamodb');
+const TABLES = require('../config/tables');
+const { ScanCommand, PutCommand } = require('@aws-sdk/lib-dynamodb');
 
 // GET all payments
 router.get('/', async (req, res) => {
   try {
-    const [rows] = await pool.query(`
-      SELECT p.*, o.order_number, c.company_name as customer_name
-      FROM payments p
-      LEFT JOIN orders o ON p.order_id = o.order_id
-      LEFT JOIN customers c ON o.customer_id = c.customer_id
-      ORDER BY p.payment_date DESC
-    `);
-    res.json(rows);
+    const [paymentsResult, ordersResult, customersResult] = await Promise.all([
+      docClient.send(new ScanCommand({ TableName: TABLES.PAYMENTS })),
+      docClient.send(new ScanCommand({ TableName: TABLES.ORDERS })),
+      docClient.send(new ScanCommand({ TableName: TABLES.CUSTOMERS })),
+    ]);
+    const orderMap = Object.fromEntries((ordersResult.Items || []).map(o => [o.order_id, o]));
+    const customerMap = Object.fromEntries((customersResult.Items || []).map(c => [c.customer_id, c.company_name]));
+    const payments = (paymentsResult.Items || []).map(p => {
+      const order = orderMap[p.order_id] || {};
+      return {
+        ...p,
+        order_number: order.order_number || null,
+        customer_name: customerMap[order.customer_id] || null,
+      };
+    }).sort((a, b) => (b.payment_date || '').localeCompare(a.payment_date || ''));
+    res.json(payments);
   } catch (error) {
     console.error('Error fetching payments:', error);
     res.status(500).json({ error: 'Failed to fetch payments' });
@@ -26,19 +37,20 @@ router.post('/', async (req, res) => {
       order_id, transaction_id, amount, payment_method,
       card_last_four, status, processor_response, notes
     } = req.body;
-
-    const [result] = await pool.query(
-      `INSERT INTO payments (order_id, transaction_id, amount, payment_method,
-       card_last_four, status, processor_response, notes)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-      [order_id, transaction_id, amount, payment_method, card_last_four,
-       status, processor_response, notes]
-    );
-
-    res.status(201).json({ 
-      message: 'Payment recorded successfully',
-      payment_id: result.insertId 
-    });
+    const now = new Date().toISOString();
+    const payment_id = uuidv4();
+    await docClient.send(new PutCommand({
+      TableName: TABLES.PAYMENTS,
+      Item: {
+        payment_id, order_id, transaction_id,
+        amount: Number(amount) || 0,
+        payment_method, card_last_four,
+        status: status || 'Pending',
+        payment_date: now, processor_response, notes,
+        created_at: now, updated_at: now,
+      },
+    }));
+    res.status(201).json({ message: 'Payment recorded successfully', payment_id });
   } catch (error) {
     console.error('Error creating payment:', error);
     res.status(500).json({ error: 'Failed to create payment' });

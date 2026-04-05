@@ -1,18 +1,29 @@
-const express = require('express');
+﻿const express = require('express');
 const router = express.Router();
-const { pool } = require('../config/database');
+const { v4: uuidv4 } = require('uuid');
+const { docClient } = require('../config/dynamodb');
+const TABLES = require('../config/tables');
+const { ScanCommand, GetCommand, PutCommand, UpdateCommand, QueryCommand } = require('@aws-sdk/lib-dynamodb');
 
 // GET all shipments
 router.get('/', async (req, res) => {
   try {
-    const [rows] = await pool.query(`
-      SELECT s.*, o.order_number, c.company_name as customer_name
-      FROM shipments s
-      LEFT JOIN orders o ON s.order_id = o.order_id
-      LEFT JOIN customers c ON o.customer_id = c.customer_id
-      ORDER BY s.created_at DESC
-    `);
-    res.json(rows);
+    const [shipmentsResult, ordersResult, customersResult] = await Promise.all([
+      docClient.send(new ScanCommand({ TableName: TABLES.SHIPMENTS })),
+      docClient.send(new ScanCommand({ TableName: TABLES.ORDERS })),
+      docClient.send(new ScanCommand({ TableName: TABLES.CUSTOMERS })),
+    ]);
+    const orderMap = Object.fromEntries((ordersResult.Items || []).map(o => [o.order_id, o]));
+    const customerMap = Object.fromEntries((customersResult.Items || []).map(c => [c.customer_id, c.company_name]));
+    const shipments = (shipmentsResult.Items || []).map(s => {
+      const order = orderMap[s.order_id] || {};
+      return {
+        ...s,
+        order_number: order.order_number || null,
+        customer_name: customerMap[order.customer_id] || null,
+      };
+    }).sort((a, b) => (b.created_at || '').localeCompare(a.created_at || ''));
+    res.json(shipments);
   } catch (error) {
     console.error('Error fetching shipments:', error);
     res.status(500).json({ error: 'Failed to fetch shipments' });
@@ -22,11 +33,12 @@ router.get('/', async (req, res) => {
 // GET single shipment
 router.get('/:id', async (req, res) => {
   try {
-    const [rows] = await pool.query('SELECT * FROM shipments WHERE shipment_id = ?', [req.params.id]);
-    if (rows.length === 0) {
-      return res.status(404).json({ error: 'Shipment not found' });
-    }
-    res.json(rows[0]);
+    const result = await docClient.send(new GetCommand({
+      TableName: TABLES.SHIPMENTS,
+      Key: { shipment_id: req.params.id },
+    }));
+    if (!result.Item) return res.status(404).json({ error: 'Shipment not found' });
+    res.json(result.Item);
   } catch (error) {
     console.error('Error fetching shipment:', error);
     res.status(500).json({ error: 'Failed to fetch shipment' });
@@ -35,69 +47,59 @@ router.get('/:id', async (req, res) => {
 
 // POST create shipment
 router.post('/', async (req, res) => {
-  const connection = await pool.getConnection();
   try {
-    await connection.beginTransaction();
-
     const {
       customer_id, carrier, status, shipped_date,
       estimated_delivery, from_location, to_location, notes
     } = req.body;
 
-    // Generate next order number
-    const [lastOrder] = await connection.query(
-      'SELECT order_number FROM orders ORDER BY order_id DESC LIMIT 1'
-    );
-    let nextOrderNum = 1001;
-    if (lastOrder.length > 0) {
-      const lastNum = parseInt(lastOrder[0].order_number.replace(/\D/g, ''));
-      nextOrderNum = lastNum + 1;
-    }
-    const orderNumber = `ORD-${nextOrderNum}`;
+    // Generate order number
+    const ordersResult = await docClient.send(new ScanCommand({ TableName: TABLES.ORDERS }));
+    const maxOrderNum = (ordersResult.Items || []).reduce((max, o) => {
+      const num = parseInt((o.order_number || '').replace(/\D/g, '')) || 0;
+      return num > max ? num : max;
+    }, 1000);
+    const orderNumber = `ORD-${maxOrderNum + 1}`;
 
-    // Generate tracking number based on carrier
-    const carrierPrefixes = {
-      'FedEx': 'FDX',
-      'UPS': 'UPS',
-      'USPS': 'USP',
-      'DHL': 'DHL'
-    };
+    // Generate tracking number
+    const carrierPrefixes = { FedEx: 'FDX', UPS: 'UPS', USPS: 'USP', DHL: 'DHL' };
     const prefix = carrierPrefixes[carrier] || 'TRK';
-    const timestamp = Date.now().toString().slice(-8);
-    const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
-    const trackingNumber = `${prefix}${timestamp}${random}`;
+    const trackingNumber = `${prefix}${Date.now().toString().slice(-8)}${Math.floor(Math.random() * 10000).toString().padStart(4, '0')}`;
 
-    // Create order first
-    const [orderResult] = await connection.query(
-      `INSERT INTO orders (order_number, customer_id, order_date, status, payment_status)
-       VALUES (?, ?, CURDATE(), 'Pending', 'Pending')`,
-      [orderNumber, customer_id]
-    );
-    const orderId = orderResult.insertId;
+    const now = new Date().toISOString();
+    const order_id = uuidv4();
+    const shipment_id = uuidv4();
+
+    // Create order
+    await docClient.send(new PutCommand({
+      TableName: TABLES.ORDERS,
+      Item: {
+        order_id, order_number: orderNumber, customer_id,
+        order_date: new Date().toISOString().split('T')[0],
+        status: 'Pending', payment_status: 'Pending',
+        total_amount: 0, tax_amount: 0, grand_total: 0,
+        created_at: now, updated_at: now,
+      },
+    }));
 
     // Create shipment
-    const [shipmentResult] = await connection.query(
-      `INSERT INTO shipments (order_id, tracking_number, carrier, status, shipped_date,
-       estimated_delivery, from_location, to_location, notes)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [orderId, trackingNumber, carrier, status || 'Pending', shipped_date, 
-       estimated_delivery, from_location, to_location, notes]
-    );
+    await docClient.send(new PutCommand({
+      TableName: TABLES.SHIPMENTS,
+      Item: {
+        shipment_id, order_id, tracking_number: trackingNumber, carrier,
+        status: status || 'Pending', shipped_date, estimated_delivery,
+        from_location, to_location, notes,
+        created_at: now, updated_at: now,
+      },
+    }));
 
-    await connection.commit();
-
-    res.status(201).json({ 
+    res.status(201).json({
       message: 'Shipment created successfully',
-      shipment_id: shipmentResult.insertId,
-      order_number: orderNumber,
-      tracking_number: trackingNumber
+      shipment_id, order_number: orderNumber, tracking_number: trackingNumber,
     });
   } catch (error) {
-    await connection.rollback();
     console.error('Error creating shipment:', error);
     res.status(500).json({ error: 'Failed to create shipment' });
-  } finally {
-    connection.release();
   }
 });
 
@@ -105,19 +107,20 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     const { status, actual_delivery, notes } = req.body;
-
-    const [result] = await pool.query(
-      `UPDATE shipments SET status = ?, actual_delivery = ?, notes = ?
-       WHERE shipment_id = ?`,
-      [status, actual_delivery, notes, req.params.id]
-    );
-
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ error: 'Shipment not found' });
-    }
-
+    await docClient.send(new UpdateCommand({
+      TableName: TABLES.SHIPMENTS,
+      Key: { shipment_id: req.params.id },
+      UpdateExpression: 'SET #st=:s, actual_delivery=:ad, notes=:n, updated_at=:ua',
+      ExpressionAttributeNames: { '#st': 'status' },
+      ExpressionAttributeValues: {
+        ':s': status, ':ad': actual_delivery, ':n': notes,
+        ':ua': new Date().toISOString(),
+      },
+      ConditionExpression: 'attribute_exists(shipment_id)',
+    }));
     res.json({ message: 'Shipment updated successfully' });
   } catch (error) {
+    if (error.name === 'ConditionalCheckFailedException') return res.status(404).json({ error: 'Shipment not found' });
     console.error('Error updating shipment:', error);
     res.status(500).json({ error: 'Failed to update shipment' });
   }
