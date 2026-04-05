@@ -10,17 +10,17 @@
       - key: PORT
         value: 8080
       - key: DB_HOST
-        value: b8rrovgobiy0cshdfktk-mysql.services.clever-cloud.com
+        sync: false
       - key: DB_USER
-        value: uifuqacfq3e4oo9n
+        sync: false
       - key: DB_PASSWORD
-        value: wL7HabLkd0SmCT3oVXUq
+        sync: false
       - key: DB_NAME
-        value: b8rrovgobiy0cshdfktk
+        sync: false
       - key: DB_PORT
-        value: 3306
+        sync: false
       - key: JWT_SECRET
-        value: L4Y6JPj3hnH84DCwf/5HYJMb78ZybB4ABi5c0/SB3OM=
+        sync: false
       - key: JWT_EXPIRES_IN
         value: 24h
       - key: FRONTEND_URL
